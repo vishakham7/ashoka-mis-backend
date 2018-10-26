@@ -290,6 +290,19 @@ class ProjectSerializer(serializers.LightSerializer):
 
     is_fan = Field(attr="is_fan_attr")
 
+    authority = Field()
+    concessionaire = Field()
+    package_no = Field()
+    start_and_end_chainage = Field()
+    independent_consultant_during_O_and_M_period = Field()
+    epc_contractor = Field()
+    date_of_signing_of_concession_agreement = Field()
+    appointed_date = Field()
+    O_M_handover_date = Field()
+    scheduled_end_of_concession = Field()
+    concession_period = Field()
+
+
     def get_members(self, obj):
         assert hasattr(obj, "members_attr"), "instance must have a members_attr attribute"
         if obj.members_attr is None:
@@ -405,6 +418,18 @@ class ProjectDetailSerializer(ProjectSerializer):
     issues_csv_uuid = Field()
     transfer_token = Field()
     milestones = MethodField()
+
+    authority = Field()
+    concessionaire = Field()
+    package_no = Field()
+    start_and_end_chainage = Field()
+    independent_consultant_during_O_and_M_period = Field()
+    epc_contractor = Field()
+    date_of_signing_of_concession_agreement = Field()
+    appointed_date = Field()
+    O_M_handover_date = Field()
+    scheduled_end_of_concession = Field()
+    concession_period = Field()
 
     def get_milestones(self, obj):
         assert hasattr(obj, "milestones_attr"), "instance must have a milestones_attr attribute"
@@ -523,15 +548,3 @@ class ProjectTemplateSerializer(serializers.LightSerializer):
     priorities = Field()
     severities = Field()
     roles = Field()
-    
-    authority = Field()
-    concessionaire = Field()
-    package_no = Field()
-    start_and_end_chainage = Field()
-    independent_consultant_during_O_and_M_period = Field()
-    epc_contractor = Field()
-    date_of_signing_of_concession_agreement = Field()
-    appointed_date = Field()
-    O_M_handover_date = Field()
-    scheduled_end_of_concession = Field()
-    concession_period = Field()
