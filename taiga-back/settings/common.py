@@ -178,13 +178,19 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_COOKIE_AGE = 1209600 # (2 weeks)
 
 # MAIL OPTIONS
-DEFAULT_FROM_EMAIL = "john@doe.com"
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = 'devtestsnt@gmail.com'
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-DJMAIL_REAL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# DJMAIL_REAL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 DJMAIL_SEND_ASYNC = True
 DJMAIL_MAX_RETRY_NUMBER = 3
 DJMAIL_TEMPLATE_EXTENSION = "jinja"
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'devtestsnt@gmail.com'
+EMAIL_HOST_PASSWORD = 'snt@2016'
+EMAIL_PORT = 587
 
 # Events backend
 EVENTS_PUSH_BACKEND = "taiga.events.backends.postgresql.EventsPushBackend"
