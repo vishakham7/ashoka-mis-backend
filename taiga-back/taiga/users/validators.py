@@ -39,23 +39,23 @@ class UserValidator(validators.ModelValidator):
         fields = ("username", "full_name", "color", "bio", "lang",
                   "theme", "timezone", "is_active")
 
-    def validate_username(self, attrs, source):
-        value = attrs[source]
-        validator = core_validators.RegexValidator(re.compile('^[\w.-]+$'), _("invalid username"),
-                                                   _("invalid"))
+    # def validate_username(self, attrs, source):
+    #     value = attrs[source]
+    #     validator = core_validators.RegexValidator(re.compile('^[\w.-]+$'), _("invalid username"),
+    #                                                _("invalid"))
 
-        try:
-            validator(value)
-        except ValidationError:
-            raise ValidationError(_("Required. 255 characters or fewer. Letters, "
-                                    "numbers and /./-/_ characters'"))
+    #     try:
+    #         validator(value)
+    #     except ValidationError:
+    #         raise ValidationError(_("Required. 255 characters or fewer. Letters, "
+    #                                 "numbers and /./-/_ characters'"))
 
-        if (self.object and
-                self.object.username != value and
-                User.objects.filter(username=value).exists()):
-            raise ValidationError(_("Invalid username. Try with a different one."))
+    #     if (self.object and
+    #             self.object.username != value and
+    #             User.objects.filter(username=value).exists()):
+    #         raise ValidationError(_("Invalid username. Try with a different one."))
 
-        return attrs
+    #     return attrs
 
 
 class UserAdminValidator(UserValidator):
