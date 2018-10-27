@@ -35,16 +35,16 @@ class BaseRegisterValidator(validators.Validator):
     aadhaar_no = serializers.CharField()
     address = serializers.CharField()
 
-    def validate_username(self, attrs, source):
-        value = attrs[source]
-        validator = core_validators.RegexValidator(re.compile('^[\w.-]+$'), _("invalid username"), "invalid")
+    # def validate_username(self, attrs, source):
+    #     value = attrs[source]
+    #     validator = core_validators.RegexValidator(re.compile('^[\w.-]+$'), _("invalid username"), "invalid")
 
-        try:
-            validator(value)
-        except ValidationError:
-            raise ValidationError(_("Required. 255 characters or fewer. Letters, numbers "
-                                    "and /./-/_ characters'"))
-        return attrs
+    #     try:
+    #         validator(value)
+    #     except ValidationError:
+    #         raise ValidationError(_("Required. 255 characters or fewer. Letters, numbers "
+    #                                 "and /./-/_ characters'"))
+    #     return attrs
 
 
 class PublicRegisterValidator(BaseRegisterValidator):
