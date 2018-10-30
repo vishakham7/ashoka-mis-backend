@@ -28,7 +28,7 @@ from taiga.users.serializers import UserBasicInfoSerializer
 
 from taiga.permissions.services import calculate_permissions
 from taiga.permissions.services import is_project_admin, is_project_owner
-
+from .models import Project, IssueType
 from . import services
 from .notifications.choices import NotifyLevel
 
@@ -300,8 +300,12 @@ class ProjectSerializer(serializers.LightSerializer):
     appointed_date = Field()
     O_M_handover_date = Field()
     scheduled_end_of_concession = Field()
-    concession_period = Field()
+    concession_period = Field()    
+    issue_count = MethodField()
 
+    def get_issue_count(self, obj):
+        issue_type = IssueType.objects.filter(project_id = obj.id).count()
+        return issue_type
 
     def get_members(self, obj):
         assert hasattr(obj, "members_attr"), "instance must have a members_attr attribute"
@@ -431,7 +435,7 @@ class ProjectDetailSerializer(ProjectSerializer):
     scheduled_end_of_concession = Field()
     concession_period = Field()
     is_closed = Field()
-    
+
     def get_milestones(self, obj):
         assert hasattr(obj, "milestones_attr"), "instance must have a milestones_attr attribute"
         if obj.milestones_attr is None:
