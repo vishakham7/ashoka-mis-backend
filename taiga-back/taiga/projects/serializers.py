@@ -430,7 +430,8 @@ class ProjectDetailSerializer(ProjectSerializer):
     O_M_handover_date = Field()
     scheduled_end_of_concession = Field()
     concession_period = Field()
-
+    is_closed = Field()
+    
     def get_milestones(self, obj):
         assert hasattr(obj, "milestones_attr"), "instance must have a milestones_attr attribute"
         if obj.milestones_attr is None:

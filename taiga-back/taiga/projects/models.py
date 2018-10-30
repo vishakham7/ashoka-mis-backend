@@ -265,8 +265,9 @@ class Project(ProjectDefaults, TaggedMixin, TagsColorsMixin, models.Model):
     date_of_signing_of_concession_agreement = models.DateField(verbose_name='Date of signing of Concession Agreement', null=True, blank=True)
     appointed_date = models.DateField(verbose_name='Appointed Date O & M Handover Date', null=True, blank=True)
     O_M_handover_date = models.DateField(verbose_name='O & M handover date', null=True, blank=True)
-    scheduled_end_of_concession = models.DateField(verbose_name='Scheduled End of Concession', null=True, blank=True)
-    concession_period = models.DateField(max_length=200, verbose_name='Scheduled End of Concession', null=True, blank=True)
+    scheduled_end_of_concession = models.DateField(verbose_name='Scheduled End of Concession', null=True, blank=True)    
+    concession_period = models.CharField(max_length=200, verbose_name='Scheduled End of Concession', null=True, blank=True)
+    is_closed = models.BooleanField(default=False, verbose_name='Is Closed')
 
     _importing = None
 

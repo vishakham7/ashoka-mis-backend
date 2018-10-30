@@ -133,12 +133,7 @@ def get_default_uuid():
 class User(AbstractBaseUser, PermissionsMixin):
     uuid = models.CharField(max_length=32, editable=False, null=False,
                             blank=False, unique=True, default=get_default_uuid)
-    username = models.CharField(_("username"), max_length=255, unique=True)
-        # help_text=_("Required. 30 characters or fewer. Letters, numbers and "
-        #             "/./-/_ characters"),
-        # validators=[
-        #     validators.RegexValidator(re.compile("^[\w.-]+$"), _("Enter a valid username."), "invalid")
-        # ])
+    username = models.CharField(_("username"), max_length=255, unique=True)        
     email = models.EmailField(_("email address"), max_length=255, blank=True, unique=True)
     is_active = models.BooleanField(_("active"), default=True,
         help_text=_("Designates whether this user should be treated as "
@@ -188,9 +183,9 @@ class User(AbstractBaseUser, PermissionsMixin):
                                                           verbose_name=_("max number of memberships for "
                                                                          "each owned public project"))
 
-    mobile_no = models.CharField(max_length=20, null=True, blank=True, verbose_name=_("Mobile Number"))
-    aadhaar_no = models.CharField(max_length=20, null=True, blank=True, verbose_name=_("Aadhaar Number"))
-    address = models.TextField(null=True, blank=True, verbose_name=_("Address"))
+    mobile_no = models.CharField(max_length=20, null=True, blank=True, default="", verbose_name=_("Mobile Number"))
+    aadhaar_no = models.CharField(max_length=20, null=True, blank=True, default="", verbose_name=_("Aadhaar Number"))
+    address = models.TextField(null=True, blank=True, default="", verbose_name=_("Address"))
 
     _cached_memberships = None
     _cached_liked_ids = None
@@ -295,6 +290,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             self.color = ""
             self.bio = ""
             self.lang = ""
+            self.address = ""
             self.theme = ""
             self.timezone = ""
             self.colorize_tags = True
