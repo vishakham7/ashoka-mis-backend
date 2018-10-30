@@ -77,13 +77,27 @@ class ProjectViewSet(LikedResourceMixin, HistoryResourceMixin,
     filter_backends = (project_filters.UserOrderFilterBackend,
                        project_filters.QFilterBackend,
                        project_filters.CanViewProjectObjFilterBackend,
-                       project_filters.DiscoverModeFilterBackend)
+                       project_filters.DiscoverModeFilterBackend,)
 
     filter_fields = (("member", "members"),
                      "is_looking_for_people",
                      "is_featured",
                      "is_backlog_activated",
-                     "is_kanban_activated")
+                     "is_kanban_activated",
+                     "authority",
+                     "concessionaire",
+                     "package_no",
+                     "start_and_end_chainage",
+                     "independent_consultant_during_O_and_M_period",
+                     "epc_contractor",
+                     "date_of_signing_of_concession_agreement",
+                     "appointed_date",
+                     "O_M_handover_date",
+                     "scheduled_end_of_concession",
+                     "concession_period",
+                     "name",
+                     "is_closed"
+                     )
 
     ordering = ("name", "id")
     order_by_fields = ("total_fans",
