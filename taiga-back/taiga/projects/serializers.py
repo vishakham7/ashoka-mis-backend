@@ -300,11 +300,21 @@ class ProjectSerializer(serializers.LightSerializer):
     appointed_date = Field()
     O_M_handover_date = Field()
     scheduled_end_of_concession = Field()
-    concession_period = Field()    
+    concession_period = Field()
     issue_count = MethodField()
+    compliance_count = MethodField()
+    accidents_count = MethodField()
 
     def get_issue_count(self, obj):
-        issue_type = IssueType.objects.filter(project_id = obj.id).count()
+        issue_type = IssueType.objects.filter(project_id = obj.id, name="issues").count()
+        return issue_type
+
+    def get_compliance_count(self, obj):
+        issue_type = IssueType.objects.filter(project_id = obj.id, name="compliances").count()
+        return issue_type
+
+    def get_accidents_count(self, obj):
+        issue_type = IssueType.objects.filter(project_id = obj.id, name="accidents").count()
         return issue_type
 
     def get_members(self, obj):
