@@ -817,7 +817,7 @@ class IssueTypeViewSet(MoveOnDestroyMixin, BlockedByProjectMixin,
     validator_class = validators.IssueTypeValidator
     permission_classes = (permissions.IssueTypePermission,)
     filter_backends = (filters.CanViewProjectFilterBackend,)
-    filter_fields = ("project",)
+    filter_fields = ("project","name")
     bulk_update_param = "bulk_issue_types"
     bulk_update_perm = "change_issuetype"
     bulk_update_order_action = services.bulk_update_issue_type_order
