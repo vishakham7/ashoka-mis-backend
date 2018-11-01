@@ -63,6 +63,8 @@ from . import services
 from . import utils as project_utils
 from . import throttling
 
+from .custom_attributes.models import IssueCustomAttribute
+
 ######################################################
 # Project
 ######################################################
@@ -536,6 +538,20 @@ class ProjectViewSet(LikedResourceMixin, HistoryResourceMixin,
 
         self._set_base_permissions(obj)
         super().pre_save(obj)
+
+    def post_save(self, object, created=False):
+        super().post_save(object, created=created)
+
+        if not created:
+            return
+        else:
+            field_list = ["i_chainage","i_status","i_date_created","i_target_date","i_description","i_created_at","i_updated_at",
+            "i_assignee","i_reportee","c_issue_no","c_date_created","c_desciption","c_raised_by","c_status","a_ref_no","a_date_and_time",
+            "a_chainage","a_nature","a_severity","a_created_at","a_updated_at"]
+
+            for field in field_list:
+                IssueCustomAttribute.objects.create(name=field, project_id=object.pk, type="text")
+
 
     def destroy(self, request, *args, **kwargs):
         obj = self.get_object_or_none()
