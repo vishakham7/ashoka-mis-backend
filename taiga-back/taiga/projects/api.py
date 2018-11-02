@@ -545,13 +545,28 @@ class ProjectViewSet(LikedResourceMixin, HistoryResourceMixin,
         if not created:
             return
         else:
-            field_list = ["i_chainage","i_status","i_date_created","i_target_date","i_description","i_created_at","i_updated_at",
-            "i_assignee","i_reportee","c_issue_no","c_date_created","c_desciption","c_raised_by","c_status","a_ref_no","a_date_and_time",
-            "a_chainage","a_nature","a_severity","a_created_at","a_updated_at"]
+            # field_list = ["i_chainage","i_status","i_date_created","i_target_date","i_description","i_created_at","i_updated_at",
+            # "i_assignee","i_reportee","c_issue_no","c_date_created","c_desciption","c_raised_by","c_status","a_ref_no","a_date_and_time",
+            # "a_chainage","a_nature","a_severity","a_created_at","a_updated_at"]
 
-            for field in field_list:
+            custom_field_list = ["issue_id","chainage_from","chainage_to","chainage_side","issue_category","issue_subcategory",
+            "quantity","unit_of_measurement","treatment"]
+
+            for field in custom_field_list:
                 IssueCustomAttribute.objects.create(name=field, project_id=object.pk, type="text")
 
+            issue_type_list = ["Issue","Compliance","Accident"]
+
+            for issue_type in issue_type_list:
+                models.IssueType.objects.create(name=issue_type, project_id=object.pk)
+
+
+            issue_status_delete = models.IssueStatus.objects.filter(project_id = object.pk).delete()
+
+            issue_statuses = ["Open","Closed"]
+
+            for status in issue_statuses:
+                models.IssueStatus.objects.create(name=status,project_id = object.pk)
 
     def destroy(self, request, *args, **kwargs):
         obj = self.get_object_or_none()
