@@ -862,6 +862,21 @@ class IssueTypeViewSet(MoveOnDestroyMixin, BlockedByProjectMixin,
             return super().create(request, *args, **kwargs)
 
 
+class IssueTypeIssueViewSet(IssueTypeViewSet):
+    def get_queryset(self):
+	    return models.IssueType.objects.filter(name="Issue")
+
+
+class IssueTypeComplianceViewSet(IssueTypeViewSet):
+    def get_queryset(self):
+	    return models.IssueType.objects.filter(name="Compliance")
+
+
+class IssueTypeAccidentViewSet(IssueTypeViewSet):
+    def get_queryset(self):
+	    return models.IssueType.objects.filter(name="Accident")
+
+
 class IssueStatusViewSet(MoveOnDestroyMixin, BlockedByProjectMixin,
                          ModelCrudViewSet, BulkUpdateOrderMixin):
     model = models.IssueStatus

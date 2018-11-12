@@ -62,7 +62,7 @@ from taiga.projects.api import UserStoryDueDateViewSet
 from taiga.projects.api import TaskStatusViewSet
 from taiga.projects.api import TaskDueDateViewSet
 from taiga.projects.api import IssueStatusViewSet
-from taiga.projects.api import IssueTypeViewSet
+from taiga.projects.api import IssueTypeViewSet, IssueTypeIssueViewSet, IssueTypeComplianceViewSet, IssueTypeAccidentViewSet
 from taiga.projects.api import IssueDueDateViewSet
 from taiga.projects.api import PriorityViewSet
 from taiga.projects.api import SeverityViewSet
@@ -82,6 +82,9 @@ router.register(r"task-statuses", TaskStatusViewSet, base_name="task-statuses")
 router.register(r"task-due-dates", TaskDueDateViewSet, base_name="task-due-dates")
 router.register(r"issue-statuses", IssueStatusViewSet, base_name="issue-statuses")
 router.register(r"issue-types", IssueTypeViewSet, base_name="issue-types")
+router.register(r"issue-types-issue", IssueTypeIssueViewSet, base_name="issue-types-issue")
+router.register(r"issue-types-compliance", IssueTypeComplianceViewSet, base_name="issue-types-compliance")
+router.register(r"issue-types-accident", IssueTypeAccidentViewSet, base_name="issue-types-accident")
 router.register(r"issue-due-dates", IssueDueDateViewSet, base_name="issue-due-dates")
 router.register(r"priorities", PriorityViewSet, base_name="priorities")
 router.register(r"severities",SeverityViewSet , base_name="severities")
