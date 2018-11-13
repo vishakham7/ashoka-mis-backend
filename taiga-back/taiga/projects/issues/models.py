@@ -65,6 +65,32 @@ class Issue(OCCModelMixin, WatchedModelMixin, BlockedMixin, TaggedMixin, DueDate
     attachments = GenericRelation("attachments.Attachment")
     external_reference = ArrayField(models.TextField(null=False, blank=False),
                                     null=True, blank=True, default=None, verbose_name=_("external reference"))
+
+    chainage_from = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Chainage From"))
+    chainage_to = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Chainage To"))
+    chainage_side = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Chainage Side"))
+    issue_category = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Issue Category"))
+    issue_subcategory = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Issue Subcategory"))
+    quantity = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Quantity"))
+    unit_of_measurement = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Unit Of Measurement"))
+    treatment = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Treatment"))
+    accident_date = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Accident Date"))
+    accident_time = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Accident Time"))
+    accident_nature = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Accident Nature"))
+    accident_classification = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Accident Classification"))
+    accident_causes = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Accident Causes"))
+    road_feature = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Road Feature"))
+    road_condition = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Road Condition"))
+    intersection_type = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Intersection Type"))
+    weather_condition = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Weather Condition"))
+    vehicle_responsible = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Vehicle Responsible"))
+    affected_persons_fatal = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Affected Persons Fatal"))
+    affected_persons_grievous = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Affected persons grievous"))
+    affected_persons_minor = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Affected persons minor"))
+    affected_persons_non_injured = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Affected persons non injured"))
+    animals_killed = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Animals killed"))
+    help_provided = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Help Provided"))
+
     _importing = None
 
     class Meta:

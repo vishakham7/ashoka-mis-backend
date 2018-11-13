@@ -168,7 +168,7 @@ from taiga.projects.tasks.api import TaskViewSet
 from taiga.projects.tasks.api import TaskVotersViewSet
 from taiga.projects.tasks.api import TaskWatchersViewSet
 
-from taiga.projects.issues.api import IssueViewSet
+from taiga.projects.issues.api import IssueViewSet, AccidentTypeIssue, IssueTypeIssue
 from taiga.projects.issues.api import IssueVotersViewSet
 from taiga.projects.issues.api import IssueWatchersViewSet
 
@@ -207,6 +207,10 @@ router.register(r"tasks/(?P<resource_id>\d+)/watchers", TaskWatchersViewSet,
 
 router.register(r"issues", IssueViewSet,
                 base_name="issues")
+router.register(r"accident-type-issues", AccidentTypeIssue,
+                base_name="accident-type-issues")
+router.register(r"issue-type-issues", IssueTypeIssue,
+                base_name="issue-type-issues")
 router.register(r"issues/(?P<resource_id>\d+)/voters", IssueVotersViewSet,
                 base_name="issue-voters")
 router.register(r"issues/(?P<resource_id>\d+)/watchers", IssueWatchersViewSet,

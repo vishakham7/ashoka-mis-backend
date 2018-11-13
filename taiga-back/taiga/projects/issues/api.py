@@ -43,6 +43,7 @@ from . import permissions
 from . import serializers
 from . import validators
 
+from ..custom_attributes.models import IssueCustomAttribute, IssueCustomAttributesValues
 
 class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, WatchedResourceMixin,
                    ByRefMixin, TaggedResourceMixin, BlockedByProjectMixin, ModelCrudViewSet):
@@ -159,6 +160,25 @@ class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, W
 
         super().pre_save(obj)
 
+    # def post_save(self, object, created=False):
+    #     super().post_save(object, created=created)
+
+    #     if not created:
+    #         return
+    #     else:
+    #         project_id = object.project_id
+
+    #         field_list = ["issue_id","chainage_from","chainage_to","chainage_side","issue_category","issue_subcategory",
+    #         "quantity","unit_of_measurement","treatment"]
+
+    #         for field in field_list:
+    #             issue_custom_attr = IssueCustomAttribute.objects.get(project_id = project_id, name=field)                
+
+    #             if issue_custom_attr:
+    #                 IssueCustomAttributesValues.objects.filter(issue_id=object.pk).update(version=1, attributes_values
+    #                 ='{\"'+str(issue_custom_attr.id)+'\":\"Check\" }, {"'+str(issue_custom_attr.id)+'":"Check Now" }')
+
+
     def pre_conditions_on_save(self, obj):
         if obj.milestone and obj.milestone.project != obj.project:
             raise exc.PermissionDenied(_("You don't have permissions to set this sprint "
@@ -247,6 +267,27 @@ class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, W
             return response.Ok(data=issues_serialized.data)
 
         return response.BadRequest(validator.errors)
+
+class AccidentTypeIssue(IssueViewSet):
+    def create(self, request, *args, **kwargs):        
+        try:
+            type_value = IssueType.objects.get(name='Accident')
+            request.DATA['type'] = type_value.id
+        except IssueType.DoesNotExist:
+            request.DATA['type'] = None
+
+        return super().create(request, *args, **kwargs)
+
+
+class IssueTypeIssue(IssueViewSet):
+    def create(self, request, *args, **kwargs):
+        try:
+            type_value = IssueType.objects.get(name='Issue')
+            request.DATA['type'] = type_value.id
+        except IssueType.DoesNotExist:
+            request.DATA['type'] = None
+
+        return super().create(request, *args, **kwargs)
 
 
 class IssueVotersViewSet(VotersViewSetMixin, ModelListViewSet):
