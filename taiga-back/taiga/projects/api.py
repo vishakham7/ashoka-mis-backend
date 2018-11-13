@@ -53,6 +53,7 @@ from taiga.projects.tasks.models import Task
 from taiga.projects.tagging.api import TagsColorsResourceMixin
 from taiga.projects.userstories.models import UserStory, RolePoints
 from taiga.users import services as users_services
+from taiga.users.models import Role
 
 from . import filters as project_filters
 from . import models
@@ -552,6 +553,13 @@ class ProjectViewSet(LikedResourceMixin, HistoryResourceMixin,
 
             # for field in custom_field_list:
             #     IssueCustomAttribute.objects.create(name=field, project_id=object.pk, type="text")
+
+            role_delete = Role.objects.filter(project_id = object.pk).delete()
+
+            role_list = ["Contractor", "Concessionaire", "Authority/ NHAI", "End user"]
+
+            for role in role_list:
+                Role.objects.create(name=role, project_id = object.pk)
 
             issue_type_list = ["Issue","Accident"]
 
