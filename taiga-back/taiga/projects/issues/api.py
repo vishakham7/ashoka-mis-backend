@@ -276,9 +276,10 @@ class AccidentTypeIssue(IssueViewSet):
         return qs
 
 
-    def create(self, request, *args, **kwargs):        
+    def create(self, request, *args, **kwargs):
+        project_id = request.DATA.get('project', None)
         try:
-            type_value = IssueType.objects.get(name='Accident')
+            type_value = IssueType.objects.get(name='Accident', project_id = project_id)
             request.DATA['type'] = type_value.id
         except IssueType.DoesNotExist:
             request.DATA['type'] = None
@@ -294,8 +295,9 @@ class IssueTypeIssue(IssueViewSet):
         return qs
 
     def create(self, request, *args, **kwargs):
+        project_id = request.DATA.get('project', None)
         try:
-            type_value = IssueType.objects.get(name='Issue')
+            type_value = IssueType.objects.get(name='Issue', project_id = project_id)
             request.DATA['type'] = type_value.id
         except IssueType.DoesNotExist:
             request.DATA['type'] = None
