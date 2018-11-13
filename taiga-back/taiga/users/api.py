@@ -459,6 +459,11 @@ class RolesViewSet(BlockedByProjectMixin, ModelCrudViewSet):
     filter_backends = (filters.CanViewProjectFilterBackend,)
     filter_fields = ('project',)
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.order_by("id")
+        return qs
+
     def pre_delete(self, obj):
         move_to = self.request.QUERY_PARAMS.get('moveTo', None)
         if move_to:
