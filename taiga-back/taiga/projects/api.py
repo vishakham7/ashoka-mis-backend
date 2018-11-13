@@ -547,13 +547,13 @@ class ProjectViewSet(LikedResourceMixin, HistoryResourceMixin,
         else:
             #field_list = ["i_chainage","i_status","i_date_created","i_target_date","i_description","i_created_at",#"i_updated_at", "i_assignee","i_reportee","c_issue_no","c_date_created","c_desciption","c_raised_by",#"c_status","a_ref_no","a_date_and_time", "a_chainage","a_nature","a_severity","a_created_at","a_updated_at"]
 
-            custom_field_list = ["issue_id","chainage_from","chainage_to","chainage_side","issue_category","issue_subcategory","quantity","unit_of_measurement","treatment","accident_date","accident_time","accident_nature","accident_classification","accident_causes","road_feature","road_condition","intersection_type","weather_condition","vehicle_responsible","affected_persons_fatal","affected_persons_grievous","affected_persons_minor","affected_persons_non_injured",
-            "animals_killed","help_provided"]
+            # custom_field_list = ["issue_id","chainage_from","chainage_to","chainage_side","issue_category","issue_subcategory","quantity","unit_of_measurement","treatment","accident_date","accident_time","accident_nature","accident_classification","accident_causes","road_feature","road_condition","intersection_type","weather_condition","vehicle_responsible","affected_persons_fatal","affected_persons_grievous","affected_persons_minor","affected_persons_non_injured",
+            # "animals_killed","help_provided"]
 
-            for field in custom_field_list:
-                IssueCustomAttribute.objects.create(name=field, project_id=object.pk, type="text")
+            # for field in custom_field_list:
+            #     IssueCustomAttribute.objects.create(name=field, project_id=object.pk, type="text")
 
-            issue_type_list = ["Issue","Compliance","Accident"]
+            issue_type_list = ["Issue","Accident"]
 
             for issue_type in issue_type_list:
                 models.IssueType.objects.create(name=issue_type, project_id=object.pk)
