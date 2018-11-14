@@ -29,6 +29,7 @@ from taiga.users.serializers import UserBasicInfoSerializer
 from taiga.permissions.services import calculate_permissions
 from taiga.permissions.services import is_project_admin, is_project_owner
 from .models import Project, IssueType
+from taiga.projects.issues.models import Issue
 from . import services
 from .notifications.choices import NotifyLevel
 
@@ -301,21 +302,36 @@ class ProjectSerializer(serializers.LightSerializer):
     O_M_handover_date = Field()
     scheduled_end_of_concession = Field()
     concession_period = Field()
-    issue_count = MethodField()
-    compliance_count = MethodField()
-    accidents_count = MethodField()
+    # issue_count = MethodField()
+    # compliance_count = MethodField()
+    # accidents_count = MethodField()
+    issue_identified = MethodField()
+    issue_closed = MethodField()
+    accidents_report = MethodField()
 
-    def get_issue_count(self, obj):
-        issue_type = IssueType.objects.filter(project_id = obj.id, name="issues").count()
-        return issue_type
+    def get_issue_identified(self, obj):
+        issues_identified = Issue.objects.filter(project_id = obj.id, status__name = 'Open', type__name = 'Issue').count()
+        return issues_identified
 
-    def get_compliance_count(self, obj):
-        issue_type = IssueType.objects.filter(project_id = obj.id, name="compliances").count()
-        return issue_type
+    def get_issue_closed(self, obj):
+        issue_closed = Issue.objects.filter(project_id = obj.id, status__name = 'Closed', type__name = 'Issue').count()
+        return issue_closed
 
-    def get_accidents_count(self, obj):
-        issue_type = IssueType.objects.filter(project_id = obj.id, name="accidents").count()
-        return issue_type
+    def get_accidents_report(self, obj):
+        accident_report = Issue.objects.filter(project_id = obj.id, type__name = 'Accident').count()
+        return accident_report
+
+    # def get_issue_count(self, obj):
+    #     issue_type = IssueType.objects.filter(project_id = obj.id, name="issues").count()
+    #     return issue_type
+
+    # def get_compliance_count(self, obj):
+    #     issue_type = IssueType.objects.filter(project_id = obj.id, name="compliances").count()
+    #     return issue_type
+
+    # def get_accidents_count(self, obj):
+    #     issue_type = IssueType.objects.filter(project_id = obj.id, name="accidents").count()
+    #     return issue_type
 
     def get_members(self, obj):
         assert hasattr(obj, "members_attr"), "instance must have a members_attr attribute"
