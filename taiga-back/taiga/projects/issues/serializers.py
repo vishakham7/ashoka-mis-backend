@@ -30,8 +30,7 @@ from taiga.projects.mixins.serializers import StatusExtraInfoSerializerMixin
 from taiga.projects.notifications.mixins import WatchedResourceSerializer
 from taiga.projects.tagging.serializers import TaggedInProjectResourceSerializer
 from taiga.projects.votes.mixins.serializers import VoteResourceSerializerMixin
-
-
+from taiga.projects.models import IssueStatus
 class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer,
                           OwnerExtraInfoSerializerMixin, AssignedToExtraInfoSerializerMixin,
                           StatusExtraInfoSerializerMixin, ProjectExtraInfoSerializerMixin,
@@ -78,6 +77,18 @@ class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer
     affected_persons_non_injured = Field()
     animals_killed = Field()
     help_provided = Field()
+    status_name = MethodField()
+
+    def get_status_name(self, obj):
+        try:
+            status = IssueStatus.objects.get(pk = obj.status_id)
+        except:
+            status = None
+        
+        if status:
+            return status.name
+        else:
+            return ''
 
 class IssueSerializer(IssueListSerializer):
     comment = MethodField()
@@ -109,7 +120,19 @@ class IssueSerializer(IssueListSerializer):
     affected_persons_non_injured = Field()
     animals_killed = Field()
     help_provided = Field()
+    status_name = MethodField()
 
+    def get_status_name(self, obj):
+        try:
+            status = IssueStatus.objects.get(pk = obj.status_id)
+        except:
+            status = None
+        
+        if status:
+            return status.name
+        else:
+            return ''
+                    
     def get_comment(self, obj):
         # NOTE: This method and field is necessary to historical comments work
         return ""
