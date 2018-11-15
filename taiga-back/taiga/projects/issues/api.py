@@ -30,6 +30,7 @@ from taiga.base.api.utils import get_object_or_404
 from taiga.projects.history.mixins import HistoryResourceMixin
 from taiga.projects.mixins.by_ref import ByRefMixin
 from taiga.projects.models import Project, IssueStatus, Severity, Priority, IssueType
+from taiga.projects.issues.models import Issue
 from taiga.projects.notifications.mixins import WatchedResourceMixin, WatchersViewSetMixin
 from taiga.projects.occ import OCCResourceMixin
 from taiga.projects.tagging.api import TaggedResourceMixin
@@ -278,6 +279,15 @@ class AccidentTypeIssue(IssueViewSet):
 
     def create(self, request, *args, **kwargs):
         project_id = request.DATA.get('project', None)
+
+        try:
+            issue_status_id = IssueStatus.objects.get(project_id = project_id, name = "Open")
+        except:
+            issue_status_id = None
+        
+        if issue_status_id:
+            Issue.objects.filter(project_id = project_id).update(status_id = issue_status_id.id)
+
         try:
             type_value = IssueType.objects.get(name='Accident', project_id = project_id)
             request.DATA['type'] = type_value.id
@@ -296,6 +306,15 @@ class IssueTypeIssue(IssueViewSet):
 
     def create(self, request, *args, **kwargs):
         project_id = request.DATA.get('project', None)
+
+        try:
+            issue_status_id = IssueStatus.objects.get(project_id = project_id, name = "Open")
+        except:
+            issue_status_id = None
+
+        if issue_status_id:
+            Issue.objects.filter(project_id = project_id).update(status_id = status_obj.id)
+
         try:
             type_value = IssueType.objects.get(name='Issue', project_id = project_id)
             request.DATA['type'] = type_value.id
