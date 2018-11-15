@@ -313,7 +313,7 @@ class IssueTypeIssue(IssueViewSet):
             issue_status_id = None
 
         if issue_status_id:
-            Issue.objects.filter(project_id = project_id).update(status_id = status_obj.id)
+            Issue.objects.filter(project_id = project_id).update(status_id = issue_status_id.id)
 
         try:
             type_value = IssueType.objects.get(name='Issue', project_id = project_id)
