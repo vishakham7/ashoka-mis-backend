@@ -32,7 +32,7 @@ from .models import Project, IssueType
 from taiga.projects.issues.models import Issue
 from . import services
 from .notifications.choices import NotifyLevel
-
+from taiga.projects.wiki.models import WikiPage
 
 ######################################################
 # Custom values for selectors
@@ -308,6 +308,30 @@ class ProjectSerializer(serializers.LightSerializer):
     issue_identified = MethodField()
     issue_closed = MethodField()
     accidents_report = MethodField()
+    asset_wiki_page_id = MethodField()
+    location_wiki_page_id = MethodField()
+
+    def get_asset_wiki_page_id(self, obj):
+        try:
+            wiki_page = WikiPage.objects.get(content='Assets', project_id = obj.id)
+        except:
+            wiki_page = None
+
+        if wiki_page:
+            return wiki_page.id
+        else:
+            return ''
+
+    def get_location_wiki_page_id(self, obj):
+        try:
+            wiki_page = WikiPage.objects.get(content='Locations', project_id = obj.id)
+        except:
+            wiki_page = None
+        
+        if wiki_page:
+            return wiki_page.id
+        else:
+            return ''
 
     def get_issue_identified(self, obj):
         issues_identified = Issue.objects.filter(project_id = obj.id, status__name = 'Open', type__name = 'Issue').count()
