@@ -306,7 +306,7 @@ class AccidentTypeIssue(IssueViewSet):
                 issue_status_id = None
 
             if issue_status_id:
-                Issue.objects.get(id = object.id).update(status_id = issue_status_id.id)
+                Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
 
 
 class IssueTypeIssue(IssueViewSet):
@@ -344,7 +344,7 @@ class IssueTypeIssue(IssueViewSet):
                 issue_status_id = None
 
             if issue_status_id:
-                Issue.objects.get(id = object.id).update(status_id = issue_status_id.id)
+                Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
 
 
 class IssueVotersViewSet(VotersViewSetMixin, ModelListViewSet):
