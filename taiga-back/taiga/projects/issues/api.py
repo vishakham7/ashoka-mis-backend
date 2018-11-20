@@ -312,10 +312,14 @@ class IssueTypeIssue(IssueViewSet):
 
     def create(self, request, *args, **kwargs):
         project_id = request.DATA.get('project', None)
-        issues_detail = Issue.objects.filter(type__name='Issue').last()
+        issues_detail = Issue.objects.filter(type__name='Issue').last()        
 
         if issues_detail:
-            issueidcount = issues_detail.issue_id_count
+            try:
+                issueidcount = issues_detail.issue_id_count
+            except:
+                issueidcount = 1
+                
             if issueidcount:
                 request.DATA['issue_id_count'] = issueidcount + 1
             else:
