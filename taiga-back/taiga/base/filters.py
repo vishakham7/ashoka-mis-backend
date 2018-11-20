@@ -315,7 +315,9 @@ class MembersFilterBackend(PermissionBasedFilterBackend):
 
         return qs.distinct()
 
-class UserMembersFilterBackend(MembersFilterBackend):
+
+class UserMembersFilterBackend(PermissionBasedFilterBackend):
+    permission = "view_project"
     def filter_queryset(self, request, queryset, view):
         project_id = None
         project = None

@@ -87,7 +87,7 @@ class UsersViewSet(ModelCrudViewSet):
         raise exc.NotSupported()
 
     def list(self, request, *args, **kwargs):
-        self.object_list = MembersFilterBackend().filter_queryset(request,
+        self.object_list = UserMembersFilterBackend().filter_queryset(request,
                                                                   self.get_queryset(),
                                                                   self)
 
