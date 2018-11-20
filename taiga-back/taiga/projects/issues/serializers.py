@@ -38,6 +38,7 @@ class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer
                           BasicAttachmentsInfoSerializerMixin, DueDateSerializerMixin,
                           TaggedInProjectResourceSerializer, serializers.LightSerializer):
     id = Field()
+    formatted_issue_id = Field()
     ref = Field()
     severity = Field(attr="severity_id")
     priority = Field(attr="priority_id")
@@ -93,6 +94,7 @@ class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer
             return ''
 
 class IssueSerializer(IssueListSerializer):
+    formatted_issue_id = Field()
     comment = MethodField()
     generated_user_stories = MethodField()
     blocked_note_html = MethodField()

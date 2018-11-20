@@ -316,17 +316,18 @@ class IssueTypeIssue(IssueViewSet):
 
         if issues_detail:
             issueidcount = issues_detail.issue_id_count
-            request.DATA['issue_id_count'] = issueidcount + 1
-        else:
-            request.DATA['issue_id_count'] = 1
+            if issueidcount:
+                request.DATA['issue_id_count'] = issueidcount + 1
+            else:
+                request.DATA['issue_id_count'] = 1
 
-        issue_id_count = request.DATA['issue_id_count']
+        issue_id_count = str(request.DATA['issue_id_count'])
         now = datetime.datetime.now()
 
-        year = now.year
-        mon = now.month
+        year = str(now.year)
+        mon = str(now.month)
 
-        request.DATA['formatted_issue_id'] = 'TOT/SHORT_NAME/'+mon+'/'+issue_id_count+'/'+year
+        request.DATA['formatted_issue_id'] = 'TOT/SHORT_NAME/'+mon+'/'+issue_id_count+'/'+year+''
 
         try:
             type_value = IssueType.objects.get(name='Issue', project_id = project_id)

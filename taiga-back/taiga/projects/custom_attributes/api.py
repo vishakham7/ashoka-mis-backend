@@ -79,7 +79,7 @@ class IssueCustomAttributeViewSet(BulkUpdateOrderMixin, BlockedByProjectMixin, M
     validator_class = validators.IssueCustomAttributeValidator
     permission_classes = (permissions.IssueCustomAttributePermission,)
     filter_backends = (filters.CanViewProjectFilterBackend,)
-    filter_fields = ("project",)
+    filter_fields = ("project","name")
     bulk_update_param = "bulk_issue_custom_attributes"
     bulk_update_perm = "change_issue_custom_attributes"
     bulk_update_order_action = services.bulk_update_issue_custom_attribute_order

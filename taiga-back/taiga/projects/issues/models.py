@@ -32,6 +32,8 @@ from taiga.projects.tagging.models import TaggedMixin
 
 
 class Issue(OCCModelMixin, WatchedModelMixin, BlockedMixin, TaggedMixin, DueDateMixin, models.Model):
+    formatted_issue_id = models.CharField(max_length=200, null=True, blank=True, verbose_name=_("Issue Id"))
+    issue_id_count = models.IntegerField(null=True, blank=True, verbose_name=_("Issue Id_Count"))
     ref = models.BigIntegerField(db_index=True, null=True, blank=True, default=None,
                                  verbose_name=_("ref"))
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, default=None,
