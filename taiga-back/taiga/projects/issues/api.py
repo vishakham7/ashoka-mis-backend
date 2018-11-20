@@ -313,7 +313,7 @@ class IssueTypeIssue(IssueViewSet):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        qs = qs.filter(type__name='Issue').select_related("owner", "assigned_to", "status", "project")
+        qs = qs.filter(type__name='Issue', status__name='Open').select_related("owner", "assigned_to", "status", "project")
         return qs
 
     def create(self, request, *args, **kwargs):
@@ -346,6 +346,11 @@ class IssueTypeIssue(IssueViewSet):
             if issue_status_id:
                 Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
 
+class ComplianceTypeIssue(IssueViewSet):
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(type__name='Issue', status__name='Closed').select_related("owner", "assigned_to", "status", "project")
+        return qs
 
 class IssueVotersViewSet(VotersViewSetMixin, ModelListViewSet):
     permission_classes = (permissions.IssueVotersPermission,)
