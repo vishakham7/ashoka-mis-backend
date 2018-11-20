@@ -43,7 +43,7 @@ from . import services
 from . import permissions
 from . import serializers
 from . import validators
-
+import datetime
 from ..custom_attributes.models import IssueCustomAttribute, IssueCustomAttributesValues
 
 class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, WatchedResourceMixin,
@@ -279,14 +279,12 @@ class AccidentTypeIssue(IssueViewSet):
 
     def create(self, request, *args, **kwargs):
         project_id = request.DATA.get('project', None)
+        # now = datetime.datetime.now()
 
-        try:
-            issue_status_id = IssueStatus.objects.get(project_id = project_id, name = "Open")
-        except:
-            issue_status_id = None
-        
-        if issue_status_id:
-            Issue.objects.filter(project_id = project_id).update(status_id = issue_status_id.id)
+        # year = now.year
+        # mon = now.month
+
+        # request.DATA['issue_id'] = 'TOT/SHORT_NAME/'+mon+'/001/'+year+''
 
         try:
             type_value = IssueType.objects.get(name='Accident', project_id = project_id)
@@ -295,6 +293,20 @@ class AccidentTypeIssue(IssueViewSet):
             request.DATA['type'] = None
 
         return super().create(request, *args, **kwargs)
+
+    def post_save(self, object, created=False):
+        super().post_save(object, created=created)
+
+        if created:
+            project_id = object.project_id
+
+            try:
+                issue_status_id = IssueStatus.objects.get(project_id = project_id, name = "Open")
+            except:
+                issue_status_id = None
+
+            if issue_status_id:
+                Issue.objects.filter(project_id = project_id).update(status_id = issue_status_id.id)
 
 
 class IssueTypeIssue(IssueViewSet):
@@ -306,6 +318,25 @@ class IssueTypeIssue(IssueViewSet):
 
     def create(self, request, *args, **kwargs):
         project_id = request.DATA.get('project', None)
+        # now = datetime.datetime.now()
+
+        # year = now.year
+        # mon = now.month
+
+        # request.DATA['issue_id'] = 'TOT/SHORT_NAME/'+mon+'/001/'+year+''
+        try:
+            type_value = IssueType.objects.get(name='Issue', project_id = project_id)
+            request.DATA['type'] = type_value.id
+        except IssueType.DoesNotExist:
+            request.DATA['type'] = None
+
+        return super().create(request, *args, **kwargs)
+
+def post_save(self, object, created=False):
+    super().post_save(object, created=created)
+
+    if created:
+        project_id = object.project_id
 
         try:
             issue_status_id = IssueStatus.objects.get(project_id = project_id, name = "Open")
@@ -314,14 +345,6 @@ class IssueTypeIssue(IssueViewSet):
 
         if issue_status_id:
             Issue.objects.filter(project_id = project_id).update(status_id = issue_status_id.id)
-
-        try:
-            type_value = IssueType.objects.get(name='Issue', project_id = project_id)
-            request.DATA['type'] = type_value.id
-        except IssueType.DoesNotExist:
-            request.DATA['type'] = None
-
-        return super().create(request, *args, **kwargs)
 
 
 class IssueVotersViewSet(VotersViewSetMixin, ModelListViewSet):
