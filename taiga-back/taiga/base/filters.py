@@ -315,6 +315,56 @@ class MembersFilterBackend(PermissionBasedFilterBackend):
 
         return qs.distinct()
 
+class UserMembersFilterBackend(MembersFilterBackend):
+    def filter_queryset(self, request, queryset, view):
+        project_id = None
+        project = None
+        qs = queryset
+        if "project" in request.QUERY_PARAMS:
+            try:
+                project_id = int(request.QUERY_PARAMS["project"])
+            except:
+                logger.error("Filtering project diferent value than an integer: {}".format(
+                             request.QUERY_PARAMS["project"]))
+                raise exc.BadRequest(_("'project' must be an integer value."))
+
+        if project_id:
+            Project = apps.get_model('projects', 'Project')
+            project = get_object_or_404(Project, pk=project_id)
+
+        if request.user.is_authenticated() and request.user.is_superuser:
+            qs = qs
+        elif request.user.is_authenticated():
+            Membership = apps.get_model('projects', 'Membership')
+            memberships_qs = Membership.objects.filter(user=request.user)
+            if project_id:
+                memberships_qs = memberships_qs.filter(project_id=project_id)
+            memberships_qs = memberships_qs.filter(Q(role__permissions__contains=[self.permission]) |
+                                                   Q(is_admin=True))
+
+            projects_list = [membership.project_id for membership in memberships_qs]
+
+            if project:
+                is_member = project.id in projects_list
+                has_project_public_view_permission = "view_project" in project.public_permissions
+                if not is_member and not has_project_public_view_permission:
+                    qs = qs.none()
+
+            q = Q(memberships__project_id__in=projects_list) | Q(id=request.user.id)
+
+            # If there is no selected project we want access to users from public projects
+            if not project:
+                q = q | Q(memberships__project__public_permissions__contains=[self.permission])
+
+            qs = qs.filter(q)
+
+        else:
+            if project and "view_project" not in project.anon_permissions:
+                qs = qs.none()
+
+            qs = qs.filter(memberships__project__anon_permissions__contains=[self.permission])
+
+        return qs.distinct()
 
 class NoMemberShipFilterBackend(FilterBackend):
 
