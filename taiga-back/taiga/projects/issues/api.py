@@ -279,12 +279,6 @@ class AccidentTypeIssue(IssueViewSet):
 
     def create(self, request, *args, **kwargs):
         project_id = request.DATA.get('project', None)
-        # now = datetime.datetime.now()
-
-        # year = now.year
-        # mon = now.month
-
-        # request.DATA['issue_id'] = 'TOT/SHORT_NAME/'+mon+'/001/'+year+''
 
         try:
             type_value = IssueType.objects.get(name='Accident', project_id = project_id)
@@ -318,12 +312,22 @@ class IssueTypeIssue(IssueViewSet):
 
     def create(self, request, *args, **kwargs):
         project_id = request.DATA.get('project', None)
-        # now = datetime.datetime.now()
+        issues_detail = Issue.objects.filter(type__name='Issue').last()
 
-        # year = now.year
-        # mon = now.month
+        if issues_detail:
+            issueidcount = issues_detail.issue_id_count
+            request.DATA['issue_id_count'] = issueidcount + 1
+        else:
+            request.DATA['issue_id_count'] = 1
 
-        # request.DATA['issue_id'] = 'TOT/SHORT_NAME/'+mon+'/001/'+year+''
+        issue_id_count = request.DATA['issue_id_count']
+        now = datetime.datetime.now()
+
+        year = now.year
+        mon = now.month
+
+        request.DATA['formatted_issue_id'] = 'TOT/SHORT_NAME/'+mon+'/'+issue_id_count+'/'+year
+
         try:
             type_value = IssueType.objects.get(name='Issue', project_id = project_id)
             request.DATA['type'] = type_value.id
