@@ -27,6 +27,7 @@ from taiga.projects.models import Project
 from .services import get_user_photo_url, get_user_big_photo_url
 from taiga.users.gravatar import get_user_gravatar_id
 from taiga.users.models import User
+from taiga.projects.issues.models import Issue
 
 
 ######################################################
@@ -58,6 +59,15 @@ class UserSerializer(serializers.LightSerializer):
     aadhaar_no = Field()
     address = Field()
     email = Field()
+    issues_identified = MethodField()
+
+    def get_issues_identified(self, obj):
+        issues_identified_count = 0
+        projects = Project.objects.filter(members = obj.id)
+        for project in projects:
+            issues_identified_count = issues_identified_count + Issue.objects.filter(project_id = project.id, status__name = 'Open', type__name = 'Issue').count()
+
+        return issues_identified_count
 
     def get_full_name_display(self, obj):
         return obj.get_full_name() if obj else ""
