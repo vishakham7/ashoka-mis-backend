@@ -306,7 +306,7 @@ class AccidentTypeIssue(IssueViewSet):
                 issue_status_id = None
 
             if issue_status_id:
-                Issue.objects.filter(project_id = project_id).update(status_id = issue_status_id.id)
+                Issue.objects.get(id = object.id).update(status_id = issue_status_id.id)
 
 
 class IssueTypeIssue(IssueViewSet):
@@ -332,19 +332,19 @@ class IssueTypeIssue(IssueViewSet):
 
         return super().create(request, *args, **kwargs)
 
-def post_save(self, object, created=False):
-    super().post_save(object, created=created)
+    def post_save(self, object, created=False):
+        super().post_save(object, created=created)
 
-    if created:
-        project_id = object.project_id
+        if created:
+            project_id = object.project_id
 
-        try:
-            issue_status_id = IssueStatus.objects.get(project_id = project_id, name = "Open")
-        except:
-            issue_status_id = None
+            try:
+                issue_status_id = IssueStatus.objects.get(project_id = project_id, name = "Open")
+            except:
+                issue_status_id = None
 
-        if issue_status_id:
-            Issue.objects.filter(project_id = project_id).update(status_id = issue_status_id.id)
+            if issue_status_id:
+                Issue.objects.get(id = object.id).update(status_id = issue_status_id.id)
 
 
 class IssueVotersViewSet(VotersViewSetMixin, ModelListViewSet):
