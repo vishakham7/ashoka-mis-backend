@@ -316,6 +316,17 @@ class MembersFilterBackend(PermissionBasedFilterBackend):
         return qs.distinct()
 
 
+class NoMemberShipFilterBackend(FilterBackend):
+
+    def filter_queryset(self, request, queryset, view):
+        qs = super().filter_queryset(request, queryset, view)
+
+        if 'project' in request.QUERY_PARAMS:
+            project_id = int(request.QUERY_PARAMS["project"])
+            return qs.filter(~Q(projects = project_id))
+        else:
+            return qs
+
 #####################################################################
 # Webhooks  filters
 #####################################################################

@@ -35,7 +35,7 @@ from taiga.base.api import ModelCrudViewSet
 from taiga.base.api.mixins import BlockedByProjectMixin
 from taiga.base.api.fields import validate_user_email_allowed_domains
 from taiga.base.api.utils import get_object_or_404
-from taiga.base.filters import MembersFilterBackend
+from taiga.base.filters import MembersFilterBackend, NoMemberShipFilterBackend
 from taiga.base.mails import mail_builder
 from taiga.users.services import get_user_by_username_or_email
 from easy_thumbnails.source_generators import pil_image
@@ -447,6 +447,15 @@ class UsersViewSet(ModelCrudViewSet):
 
         return response.Ok(response_data)
 
+class NoMemberUsersViewSet(ModelCrudViewSet):
+    permission_classes = (permissions.UserPermission,)
+    admin_serializer_class = serializers.UserAdminSerializer
+    serializer_class = serializers.UserSerializer
+    admin_validator_class = validators.UserAdminValidator
+    validator_class = validators.UserValidator
+    filter_backends = (NoMemberShipFilterBackend,)
+    throttle_classes = (UserDetailRateThrottle, UserUpdateRateThrottle)
+    model = models.User
 
 ######################################################
 # Role
