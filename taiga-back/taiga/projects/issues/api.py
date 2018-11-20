@@ -315,11 +315,7 @@ class IssueTypeIssue(IssueViewSet):
         issues_detail = Issue.objects.filter(type__name='Issue').last()        
 
         if issues_detail:
-            try:
-                issueidcount = issues_detail.issue_id_count
-            except:
-                issueidcount = 1
-                
+            issueidcount = issues_detail.issue_id_count
             if issueidcount:
                 request.DATA['issue_id_count'] = issueidcount + 1
             else:
