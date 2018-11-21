@@ -92,6 +92,7 @@ class Issue(OCCModelMixin, WatchedModelMixin, BlockedMixin, TaggedMixin, DueDate
     affected_persons_non_injured = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Affected persons non injured"))
     animals_killed = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Animals killed"))
     help_provided = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Help Provided"))
+    target_date = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Target Date"))
 
     _importing = None
 
