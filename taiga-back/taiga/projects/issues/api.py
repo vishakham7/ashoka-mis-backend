@@ -359,6 +359,19 @@ class IssueTypeIssue(IssueViewSet):
 
             if issue_status_id:
                 Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
+        else:
+            project_id = self.request.DATA['project']
+            status_name = self.request.DATA['status_name']
+
+            try:
+                issue_status_id = IssueStatus.objects.get(project_id = project_id, name = status_name)
+            except:
+                issue_status_id = None
+
+            if issue_status_id:
+                Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
+
+        return
 
 class ComplianceTypeIssue(IssueViewSet):
     def get_queryset(self):
