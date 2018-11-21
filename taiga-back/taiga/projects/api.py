@@ -570,6 +570,9 @@ class ProjectViewSet(LikedResourceMixin, HistoryResourceMixin,
                 elif role == "End user":
                     Role.objects.create(name=role, project_id = object.pk, permissions = end_user_permissions)
 
+
+            models.IssueType.objects.filter(project_id=object.pk).delete()
+
             issue_type_list = ["Issue","Accident"]
 
             for issue_type in issue_type_list:
