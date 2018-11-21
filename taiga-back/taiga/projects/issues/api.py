@@ -380,8 +380,6 @@ class IssueTypeIssue(IssueViewSet):
             if type_value_id:
                 Issue.objects.filter(id = object.id).update(type_id = type_value_id.id)
 
-        return
-
 class ComplianceTypeIssue(IssueViewSet):
     def get_queryset(self):
         qs = super().get_queryset()
