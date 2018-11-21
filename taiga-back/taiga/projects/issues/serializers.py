@@ -126,6 +126,7 @@ class IssueSerializer(IssueListSerializer):
     help_provided = Field()
     status_name = MethodField()
     description = Field()
+    target_date = Field()
 
     def get_status_name(self, obj):
         try:
