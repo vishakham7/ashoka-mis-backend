@@ -61,6 +61,7 @@ class UserSerializer(serializers.LightSerializer):
     email = Field()
     issues_identified = MethodField()
     issue_closed = MethodField()
+    accidents_report = MethodField()
 
     def get_issues_identified(self, obj):
         issues_identified_count = 0
@@ -81,6 +82,16 @@ class UserSerializer(serializers.LightSerializer):
             for project in projects:
                 issues_closed_count = issues_closed_count + Issue.objects.filter(project_id = project.id, status__name = 'Closed', type__name = 'Issue').count()
         return issues_closed_count
+
+    def get_accidents_report(self, obj):
+        accident_report_count = 0
+        if obj.is_superuser:
+            accident_report_count = Issue.objects.filter(type__name = 'Accident').count()
+        else:
+            projects = Project.objects.filter(members = obj.id)
+            for project in projects:
+                accident_report_count = accident_report_count + Issue.objects.filter(project_id = project.id, type__name = 'Accident').count()
+        return accident_report_count
 
     def get_full_name_display(self, obj):
         return obj.get_full_name() if obj else ""
