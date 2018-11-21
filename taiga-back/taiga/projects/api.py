@@ -555,9 +555,20 @@ class ProjectViewSet(LikedResourceMixin, HistoryResourceMixin,
             role_delete = Role.objects.filter(project_id = object.pk).delete()
 
             role_list = ["Contractor", "Concessionaire", "Authority/ NHAI", "End user"]
+            end_user_permissions = ["view_project","view_issues","add_issue","modify_issue"]
+            nhai_permissions = ["view_project","view_issues","add_issue","modify_issue","view_wiki_pages","view_wiki_links"]
+            concessionaire_permissions = ["view_project","view_issues","add_issue","modify_issue","view_wiki_pages","view_wiki_links"]
+            contractor_permissions = ["view_project","view_issues","add_issue","modify_issue","comment_issue","delete_issue","view_wiki_pages","add_wiki_page","modify_wiki_page","comment_wiki_page","delete_wiki_page","view_wiki_links","add_wiki_link","modify_wiki_link","delete_wiki_link"]
 
             for role in role_list:
-                Role.objects.create(name=role, project_id = object.pk)
+                if role == "Contractor":
+                    Role.objects.create(name=role, project_id = object.pk, permissions = contractor_permissions)
+                elif role == "Concessionaire":
+                    Role.objects.create(name=role, project_id = object.pk, permissions = concessionaire_permissions)
+                elif role == "Authority/ NHAI":
+                    Role.objects.create(name=role, project_id = object.pk, permissions = nhai_permissions)
+                elif role == "End user":
+                    Role.objects.create(name=role, project_id = object.pk, permissions = end_user_permissions)
 
             issue_type_list = ["Issue","Accident"]
 
