@@ -378,7 +378,7 @@ class IssueTypeIssue(IssueViewSet):
                 type_value_id = None
 
             if type_value_id:
-                IssueType.objects.filter(id = object.id).update(type_id = type_value_id.id)
+                Issue.objects.filter(id = object.id).update(type_id = type_value_id.id)
 
         return
 
