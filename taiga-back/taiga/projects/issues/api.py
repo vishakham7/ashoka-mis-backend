@@ -104,14 +104,14 @@ class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, W
                 if sprint_id is not None and new_project.milestones.filter(pk=sprint_id).count() == 0:
                     request.DATA['milestone'] = None
 
-                status_id = request.DATA.get('status', None)
-                if status_id is not None:
-                    try:
-                        old_status = self.object.project.issue_statuses.get(pk=status_id)
-                        new_status = new_project.issue_statuses.get(slug=old_status.slug)
-                        request.DATA['status'] = new_status.id
-                    except IssueStatus.DoesNotExist:
-                        request.DATA['status'] = new_project.default_issue_status.id
+                # status_id = request.DATA.get('status', None)
+                # if status_id is not None:
+                #     try:
+                #         old_status = self.object.project.issue_statuses.get(pk=status_id)
+                #         new_status = new_project.issue_statuses.get(slug=old_status.slug)
+                #         request.DATA['status'] = new_status.id
+                #     except IssueStatus.DoesNotExist:
+                #         request.DATA['status'] = new_project.default_issue_status.id
 
                 priority_id = request.DATA.get('priority', None)
                 if priority_id is not None:
@@ -131,14 +131,14 @@ class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, W
                     except Severity.DoesNotExist:
                         request.DATA['severity'] = new_project.default_severity.id
 
-                type_id = request.DATA.get('type', None)
-                if type_id is not None:
-                    try:
-                        old_type = self.object.project.issue_types.get(pk=type_id)
-                        new_type = new_project.issue_types.get(name=old_type.name)
-                        request.DATA['type'] = new_type.id
-                    except IssueType.DoesNotExist:
-                        request.DATA['type'] = new_project.default_issue_type.id
+                # type_id = request.DATA.get('type', None)
+                # if type_id is not None:
+                #     try:
+                #         old_type = self.object.project.issue_types.get(pk=type_id)
+                #         new_type = new_project.issue_types.get(name=old_type.name)
+                #         request.DATA['type'] = new_type.id
+                #     except IssueType.DoesNotExist:
+                #         request.DATA['type'] = new_project.default_issue_type.id
 
             except Project.DoesNotExist:
                 return response.BadRequest(_("The project doesn't exist"))
@@ -287,6 +287,18 @@ class AccidentTypeIssue(IssueViewSet):
             request.DATA['type'] = None
 
         return super().create(request, *args, **kwargs)
+
+    def create(self, request, *args, **kwargs):
+        project_id = request.DATA.get('project', None)
+
+        try:
+            type_value = IssueType.objects.get(name='Accident', project_id = project_id)
+            request.DATA['type'] = type_value.id
+        except IssueType.DoesNotExist:
+            request.DATA['type'] = None
+
+        return super().create(request, *args, **kwargs)
+
 
     def post_save(self, object, created=False):
         super().post_save(object, created=created)
