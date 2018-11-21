@@ -304,88 +304,88 @@ class AccidentTypeIssue(IssueViewSet):
 
 
 class IssueTypeIssue(IssueViewSet):
-    pass
-    # def get_queryset(self):
-    #     qs = super().get_queryset()
-    #     qs = qs.filter(type__name='Issue', status__name='Open').select_related("owner", "assigned_to", "status", "project")
-    #     return qs
 
-    # def create(self, request, *args, **kwargs):
-    #     project_id = request.DATA.get('project', None)
-    #     issues_detail = Issue.objects.filter(type__name='Issue').last()        
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(type__name='Issue', status__name='Open').select_related("owner", "assigned_to", "status", "project")
+        return qs
 
-    #     project = Project.objects.get(id = project_id)
+    def create(self, request, *args, **kwargs):
+        project_id = request.DATA.get('project', None)
+        issues_detail = Issue.objects.filter(type__name='Issue').last()        
 
-    #     if project:
-    #         short_name = str(project.package_no)
-    #     else:
-    #         short_name = ''
+        project = Project.objects.get(id = project_id)
 
-    #     if issues_detail:
-    #         issueidcount = issues_detail.issue_id_count
-    #         if issueidcount:
-    #             request.DATA['issue_id_count'] = issueidcount + 1
-    #         else:
-    #             request.DATA['issue_id_count'] = 1
-    #     else:
-    #         request.DATA['issue_id_count'] = 1
+        if project:
+            short_name = str(project.package_no)
+        else:
+            short_name = ''
 
-    #     issue_id_count = str(request.DATA['issue_id_count'])
-    #     now = datetime.datetime.now()
+        if issues_detail:
+            issueidcount = issues_detail.issue_id_count
+            if issueidcount:
+                request.DATA['issue_id_count'] = issueidcount + 1
+            else:
+                request.DATA['issue_id_count'] = 1
+        else:
+            request.DATA['issue_id_count'] = 1
 
-    #     year = str(now.year)
-    #     mon = str(now.month)
+        issue_id_count = str(request.DATA['issue_id_count'])
+        now = datetime.datetime.now()
 
-    #     request.DATA['formatted_issue_id'] = 'TOT/'+short_name+'/'+mon+'/'+issue_id_count+'/'+year+''
+        year = str(now.year)
+        mon = str(now.month)
 
-    #     try:
-    #         type_value = IssueType.objects.get(name='Issue', project_id = project_id)
-    #         request.DATA['type'] = type_value.id
-    #     except IssueType.DoesNotExist:
-    #         request.DATA['type'] = None
+        request.DATA['formatted_issue_id'] = 'TOT/'+short_name+'/'+mon+'/'+issue_id_count+'/'+year+''
 
-    #     return super().create(request, *args, **kwargs)
+        try:
+            type_value = IssueType.objects.get(name='Issue', project_id = project_id)
+            request.DATA['type'] = type_value.id
+        except IssueType.DoesNotExist:
+            request.DATA['type'] = None
+
+        return super().create(request, *args, **kwargs)
 
 
-    # def post_save(self, object, created=False):
-    #     super().post_save(object, created=created)
+    def post_save(self, object, created=False):
+        super().post_save(object, created=created)
 
-    #     if created:
-    #         project_id = object.project_id
+        if created:
+            project_id = object.project_id
 
-    #         try:
-    #             issue_status_id = IssueStatus.objects.get(project_id = project_id, name = "Open")
-    #         except:
-    #             issue_status_id = None
+            try:
+                issue_status_id = IssueStatus.objects.get(project_id = project_id, name = "Open")
+            except:
+                issue_status_id = None
 
-    #         if issue_status_id:
-    #             Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
-    #     else:
-    #         project_id = self.request.DATA['project']
-    #         status_name = self.request.DATA['status_name']            
+            if issue_status_id:
+                Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
+        else:
+            project_id = self.request.DATA['project']
+            status_name = self.request.DATA['status_name']            
             
-    #         try:
-    #             issue_status_id = IssueStatus.objects.get(project_id = project_id, name = status_name)
-    #         except:
-    #             issue_status_id = None
+            try:
+                issue_status_id = IssueStatus.objects.get(project_id = project_id, name = status_name)
+            except:
+                issue_status_id = None
 
-    #         if issue_status_id:
-    #             Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
+            if issue_status_id:
+                Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
 
-    #         try:
-    #             type_value_id = IssueType.objects.get(name='Issue', project_id = project_id)            
-    #         except:
-    #             type_value_id = None
+            try:
+                type_value_id = IssueType.objects.get(name='Issue', project_id = project_id)            
+            except:
+                type_value_id = None
 
-    #         if type_value_id:
-    #             IssueType.objects.filter(id = object.id).update(type_id = type_value_id.id)
+            if type_value_id:
+                IssueType.objects.filter(id = object.id).update(type_id = type_value_id.id)
 
-    #     return
+        return
 
 class ComplianceTypeIssue(IssueViewSet):
     def get_queryset(self):
         qs = super().get_queryset()
-        qs = qs.filter(type__name='Issue', status__name='Closed').select_related("owner", "assigned_to", "status", "project")
+        qs = qs.filter(type__name='Issue', status__name='Closed')
         return qs
 
 class IssueVotersViewSet(VotersViewSetMixin, ModelListViewSet):
