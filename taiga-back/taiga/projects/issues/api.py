@@ -288,18 +288,6 @@ class AccidentTypeIssue(IssueViewSet):
 
         return super().create(request, *args, **kwargs)
 
-    def create(self, request, *args, **kwargs):
-        project_id = request.DATA.get('project', None)
-
-        try:
-            type_value = IssueType.objects.get(name='Accident', project_id = project_id)
-            request.DATA['type'] = type_value.id
-        except IssueType.DoesNotExist:
-            request.DATA['type'] = None
-
-        return super().create(request, *args, **kwargs)
-
-
     def post_save(self, object, created=False):
         super().post_save(object, created=created)
 
@@ -358,20 +346,6 @@ class IssueTypeIssue(IssueViewSet):
 
         return super().create(request, *args, **kwargs)
 
-    def update(self, request, *args, **kwargs):
-        project_id = request.DATA.get('project', None)
-        status_name = request.DATA.get('status_name', None)
-
-        id = int(self.kwargs['pk'])
-        try:
-	        issue_status_id = IssueStatus.objects.get(project_id = project_id, name = status_name)
-        except:
-          issue_status_id = None
-
-        if issue_status_id:
-            Issue.objects.filter(id = id).update(status_id = issue_status_id.id)
-
-        return super().update(request, *args, **kwargs)
 
     def post_save(self, object, created=False):
         super().post_save(object, created=created)
@@ -386,17 +360,25 @@ class IssueTypeIssue(IssueViewSet):
 
             if issue_status_id:
                 Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
-        # else:
-        #     project_id = self.request.DATA['project']
-        #     status_name = self.request.DATA['status_name']
+        else:
+            project_id = self.request.DATA['project']
+            status_name = self.request.DATA['status_name']            
             
-        #     try:
-        #         issue_status_id = IssueStatus.objects.get(project_id = project_id, name = status_name)
-        #     except:
-        #         issue_status_id = None
+            try:
+                issue_status_id = IssueStatus.objects.get(project_id = project_id, name = status_name)
+            except:
+                issue_status_id = None
 
-        #     if issue_status_id:
-        #         Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
+            if issue_status_id:
+                Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
+
+            try:
+                type_value_id = IssueType.objects.get(name='Issue', project_id = project_id)            
+            except:
+                type_value_id = None
+
+            if type_value_id:
+                IssueType.objects.filter(id = object.id).update(type_id = type_value_id.id)
 
         return
 
