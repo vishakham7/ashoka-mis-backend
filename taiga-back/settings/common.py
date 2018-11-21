@@ -168,7 +168,7 @@ LOCALE_PATHS = (
 
 SITES = {
     "api": {"domain": "ashokamisapi.progfeel.co.in", "scheme": "http", "name": "api"},
-    "front": {"domain": "localhost:9001", "scheme": "http", "name": "front"},
+    "front": {"domain": "ashokamisqa.progfeel.co.in", "scheme": "http", "name": "front"},
 }
 
 SITE_ID = "api"
