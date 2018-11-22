@@ -127,6 +127,10 @@ class IssueSerializer(IssueListSerializer):
     status_name = MethodField()
     description = Field()
     target_date = Field()
+    project_start_end_chainage = MethodField()
+
+    def get_project_start_end_chainage(self, obj):
+        return objects.project__start_and_end_chainage
 
     def get_status_name(self, obj):
         try:
