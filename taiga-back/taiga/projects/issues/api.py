@@ -407,10 +407,11 @@ class IssueTypeIssue(IssueViewSet):
 
 
 class ComplianceTypeIssue(IssueViewSet):
-    def get_queryset(self):
-        qs = super().get_queryset()
-        qs = qs.filter(type__name='Issue', status__name='Closed')
-        return qs
+    pass
+    # def get_queryset(self):
+    #     qs = super().get_queryset()
+    #     qs = qs.filter(type__name='Issue', status__name='Closed')
+    #     return qs
 
 class IssueVotersViewSet(VotersViewSetMixin, ModelListViewSet):
     permission_classes = (permissions.IssueVotersPermission,)
