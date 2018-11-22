@@ -316,7 +316,7 @@ class AccidentTypeIssue(IssueViewSet):
                 Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
 
             try:
-                type_value_id = IssueType.objects.get(name='Issue', project_id = project)
+                type_value_id = IssueType.objects.get(name='Accident', project_id = project)
             except:
                 type_value_id = None
 
