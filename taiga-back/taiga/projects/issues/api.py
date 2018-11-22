@@ -272,7 +272,7 @@ class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, W
         return response.BadRequest(validator.errors)
 
 class AccidentTypeIssue(IssueViewSet):
-    pass
+    
     # def get_queryset(self):
     #     qs = super().get_queryset()
     #     qs = qs.filter(type__name='Accident').select_related("owner", "assigned_to", "status", "project")
@@ -303,6 +303,25 @@ class AccidentTypeIssue(IssueViewSet):
 
             if issue_status_id:
                 Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
+        else:
+            status_name = self.request.DATA['status_name']
+            project = self.request.DATA['project']
+
+            try:
+                issue_status_id = IssueStatus.objects.get(project_id = project, name = status_name)
+            except:
+                issue_status_id = None
+
+            if issue_status_id:
+                Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
+
+            try:
+                type_value_id = IssueType.objects.get(name='Issue', project_id = project)
+            except:
+                type_value_id = None
+
+            if type_value_id:
+                Issue.objects.filter(id = object.id).update(type_id = type_value_id.id)
 
 
 class IssueTypeIssue(IssueViewSet):
@@ -347,29 +366,6 @@ class IssueTypeIssue(IssueViewSet):
             request.DATA['type'] = None
 
         return super().create(request, *args, **kwargs)
-
-    # def update(self, request, *args, **kwargs):
-    #     project_id = self.request.DATA['project']
-    #     status_name = self.request.DATA['status_name']
-    #     try:
-    #         issue_status_id = IssueStatus.objects.get(project_id = project_id, name = status_name)
-    #     except:
-    #         issue_status_id = None
-
-    #     id = int(self.kwargs['pk'])
-
-    #     if issue_status_id:
-    #         Issue.objects.filter(id = id).update(status_id = issue_status_id.id)
-
-    #     try:
-    #         type_value_id = IssueType.objects.get(name='Issue', project_id = project_id)
-    #     except:
-    #         type_value_id = None
-
-    #     if type_value_id:
-    #         Issue.objects.filter(id = id).update(type_id = type_value_id.id)
-
-    #     return super().update(request, *args, **kwargs)
 
     def post_save(self, object, created=False):
         super().post_save(object, created=created)
