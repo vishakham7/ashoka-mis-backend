@@ -70,7 +70,8 @@ class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, W
                      "project",
                      "type_id",
                      "project__slug",
-                     "status__is_closed")
+                     "status__is_closed",
+                     "status__name")
     order_by_fields = ("type",
                        "project",
                        "status",
