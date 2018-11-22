@@ -272,11 +272,11 @@ class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, W
         return response.BadRequest(validator.errors)
 
 class AccidentTypeIssue(IssueViewSet):
-
-    def get_queryset(self):
-        qs = super().get_queryset()
-        qs = qs.filter(type__name='Accident').select_related("owner", "assigned_to", "status", "project")
-        return qs
+    pass
+    # def get_queryset(self):
+    #     qs = super().get_queryset()
+    #     qs = qs.filter(type__name='Accident').select_related("owner", "assigned_to", "status", "project")
+    #     return qs
 
 
     def create(self, request, *args, **kwargs):
