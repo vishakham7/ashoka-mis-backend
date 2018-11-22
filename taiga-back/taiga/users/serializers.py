@@ -62,6 +62,18 @@ class UserSerializer(serializers.LightSerializer):
     issues_identified = MethodField()
     issue_closed = MethodField()
     accidents_report = MethodField()
+    user_count = MethodField()
+
+    def get_user_count(self, obj):
+        user_count = 0
+        if obj.is_superuser:
+            User.objects.all().count()
+        else:
+            projects = Project.objects.filter(members__in = [obj.id])
+
+            for project in projects:
+                user_count = user_count + project.members.count()
+
 
     def get_issues_identified(self, obj):
         issues_identified_count = 0
