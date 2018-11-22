@@ -39,26 +39,7 @@ class ContactProjectDetailSerializer(serializers.LightSerializer):
     slug = Field()
     name = Field()
 
-
-class UserSerializer(serializers.LightSerializer):
-    id = Field()
-    username = Field()
-    full_name = Field()
-    full_name_display = MethodField()
-    color = Field()
-    bio = Field()
-    lang = Field()
-    theme = Field()
-    timezone = Field()
-    is_active = Field()
-    photo = MethodField()
-    big_photo = MethodField()
-    gravatar_id = MethodField()
-    roles = MethodField()
-    mobile_no = Field()
-    aadhaar_no = Field()
-    address = Field()
-    email = Field()
+class DashboardSerializer(serializers.LightSerializer):
     issues_identified = MethodField()
     issue_closed = MethodField()
     accidents_report = MethodField()
@@ -104,6 +85,28 @@ class UserSerializer(serializers.LightSerializer):
             for project in projects:
                 accident_report_count = accident_report_count + Issue.objects.filter(project_id = project.id, type__name = 'Accident').count()
         return accident_report_count
+
+class UserSerializer(serializers.LightSerializer):
+    id = Field()
+    username = Field()
+    full_name = Field()
+    full_name_display = MethodField()
+    color = Field()
+    bio = Field()
+    lang = Field()
+    theme = Field()
+    timezone = Field()
+    is_active = Field()
+    photo = MethodField()
+    big_photo = MethodField()
+    gravatar_id = MethodField()
+    roles = MethodField()
+    mobile_no = Field()
+    aadhaar_no = Field()
+    address = Field()
+    email = Field()
+
+
 
     def get_full_name_display(self, obj):
         return obj.get_full_name() if obj else ""

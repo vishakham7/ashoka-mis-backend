@@ -51,6 +51,11 @@ from .signals import user_cancel_account as user_cancel_account_signal
 from .signals import user_change_email as user_change_email_signal
 from .throttling import UserDetailRateThrottle, UserUpdateRateThrottle
 
+class DashBoardViewSet(ModelCrudViewSet):
+    permission_classes = (permissions.UserPermission,)
+    serializer_class = serializers.DashboardSerializer
+    model = models.User
+
 class UsersViewSet(ModelCrudViewSet):
     permission_classes = (permissions.UserPermission,)
     admin_serializer_class = serializers.UserAdminSerializer
