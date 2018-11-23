@@ -24,6 +24,7 @@ from taiga.base.fields import Field, MethodField, I18NField
 from taiga.base.utils.thumbnails import get_thumbnail_url
 
 from taiga.projects.models import Project
+from taiga.users.models import User
 from .services import get_user_photo_url, get_user_big_photo_url
 from taiga.users.gravatar import get_user_gravatar_id
 from taiga.users.models import User
