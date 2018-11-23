@@ -67,6 +67,8 @@ from . import throttling
 
 from .custom_attributes.models import IssueCustomAttribute
 
+from taiga.users.models import User
+
 ######################################################
 # Project
 ######################################################
@@ -1133,15 +1135,15 @@ class MembershipViewSet(BlockedByProjectMixin, ModelCrudViewSet):
             role_name = None
 
         if role_name == "Admin":
-            models.User.objects.filter(id = object.user_id).update(custom_role = '1')
+            User.objects.filter(id = object.user_id).update(custom_role = '1')
         elif role_name == "Contractor":
-            models.User.objects.filter(id = object.user_id).update(custom_role = '2')
+            User.objects.filter(id = object.user_id).update(custom_role = '2')
         elif role_name == "Concessionaire":
-            models.User.objects.filter(id = object.user_id).update(custom_role = '3')
+            User.objects.filter(id = object.user_id).update(custom_role = '3')
         elif role_name == "Authority/ NHAI":
-            models.User.objects.filter(id = object.user_id).update(custom_role = '4')
+            User.objects.filter(id = object.user_id).update(custom_role = '4')
         elif role_name == "End user":
-            models.User.objects.filter(id = object.user_id).update(custom_role = '5')
+            User.objects.filter(id = object.user_id).update(custom_role = '5')
         else:
             pass
 
