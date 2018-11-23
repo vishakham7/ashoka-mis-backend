@@ -56,6 +56,7 @@ class DashboardSerializer(serializers.LightSerializer):
             for project in projects:
                 user_count = user_count + project.members.count()
 
+        return user_count
 
     def get_issues_identified(self, obj):
         issues_identified_count = 0
