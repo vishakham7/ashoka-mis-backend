@@ -49,7 +49,7 @@ class DashboardSerializer(serializers.LightSerializer):
     def get_user_count(self, obj):
         user_count = 0
         if obj.is_superuser:
-            User.objects.all().count()
+            user_count = User.objects.all().count()
         else:
             projects = Project.objects.filter(members__in = [obj.id])
 
