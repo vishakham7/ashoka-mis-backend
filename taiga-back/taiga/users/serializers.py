@@ -105,7 +105,7 @@ class UserSerializer(serializers.LightSerializer):
     aadhaar_no = Field()
     address = Field()
     email = Field()
-
+    custom_role = Field()
 
 
     def get_full_name_display(self, obj):

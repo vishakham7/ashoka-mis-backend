@@ -1127,6 +1127,24 @@ class MembershipViewSet(BlockedByProjectMixin, ModelCrudViewSet):
     def post_save(self, object, created=False):
         super().post_save(object, created=created)
 
+        try:
+            role_name = self.request.DATA['role_name']
+        except:
+            role_name = None
+
+        if role_name == "Admin":
+            models.User.objects.filter(id = object.user_id).update(custom_role = '1')
+        elif role_name == "Contractor":
+            models.User.objects.filter(id = object.user_id).update(custom_role = '2')
+        elif role_name == "Concessionaire":
+            models.User.objects.filter(id = object.user_id).update(custom_role = '3')
+        elif role_name == "Authority/ NHAI":
+            models.User.objects.filter(id = object.user_id).update(custom_role = '4')
+        elif role_name == "End user":
+            models.User.objects.filter(id = object.user_id).update(custom_role = '5')
+        else:
+            pass
+
         if not created:
             return
 

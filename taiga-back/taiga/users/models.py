@@ -186,6 +186,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     mobile_no = models.CharField(max_length=20, null=True, blank=True, default="", verbose_name=_("Mobile Number"))
     aadhaar_no = models.CharField(max_length=20, null=True, blank=True, default="", verbose_name=_("Aadhaar Number"))
     address = models.TextField(null=True, blank=True, default="", verbose_name=_("Address"))
+    custom_role = models.CharField(max_length=20, null=True, blank=True, default="", verbose_name=_("Custom Role"))
 
     _cached_memberships = None
     _cached_liked_ids = None
