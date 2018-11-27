@@ -61,7 +61,7 @@ class DashboardSerializer(serializers.LightSerializer):
     def get_issues_identified(self, obj):
         issues_identified_count = 0
         if obj.is_superuser:
-            issues_identified_count = Issue.objects.filter(status__name = 'Open', type__name = 'Issue').count()
+            issues_identified_count = Issue.objects.filter(type__name = 'Issue').count()
         else:
             projects = Project.objects.filter(members = obj.id)
             for project in projects:
