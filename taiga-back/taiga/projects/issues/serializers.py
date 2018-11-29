@@ -81,7 +81,8 @@ class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer
     help_provided = Field()
     status_name = MethodField()
     description = Field()
-
+    inspection_category = Field()
+    
     def get_status_name(self, obj):
         try:
             status = IssueStatus.objects.get(pk = obj.status_id)
@@ -128,6 +129,7 @@ class IssueSerializer(IssueListSerializer):
     description = Field()
     target_date = Field()
     project_start_end_chainage = MethodField()
+    inspection_category = Field()
 
     def get_project_start_end_chainage(self, obj):
         return obj.project.start_and_end_chainage

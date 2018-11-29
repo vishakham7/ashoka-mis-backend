@@ -93,7 +93,8 @@ class Issue(OCCModelMixin, WatchedModelMixin, BlockedMixin, TaggedMixin, DueDate
     animals_killed = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Animals killed"))
     help_provided = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Help Provided"))
     target_date = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Target Date"))
-
+    inspection_category = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Inspection Category"))
+    
     _importing = None
 
     class Meta:
