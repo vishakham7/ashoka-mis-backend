@@ -352,11 +352,13 @@ class IssueTypeIssue(IssueViewSet):
 
         issue_id_count = str(request.DATA['issue_id_count'])
         now = datetime.datetime.now()
+        prev_year = str(now.year -1)
+        current_year = str(now.year)
 
-        year = str(now.year)
-        mon = str(now.month)
+        year = prev_year + "-" + current_year[2:]
+        mon = now.strftime("%b")
 
-        request.DATA['formatted_issue_id'] = 'TOT/'+short_name+'/'+mon+'/'+issue_id_count+'/'+year+''
+        request.DATA['formatted_issue_id'] = 'TOT-1/'+short_name+'/'+year+'/'+mon+'/'+issue_id_count+''
 
         try:
             type_value = IssueType.objects.get(name='Issue', project_id = project_id)
