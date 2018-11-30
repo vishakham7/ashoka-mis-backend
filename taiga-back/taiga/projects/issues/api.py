@@ -332,7 +332,7 @@ class IssueTypeIssue(IssueViewSet):
 
     def create(self, request, *args, **kwargs):
         project_id = request.DATA.get('project', None)
-        issues_detail = Issue.objects.filter(type__name='Issue').last()        
+        issues_detail = Issue.objects.filter(type__name='Issue').order_by('id').last()
 
         project = Project.objects.get(id = project_id)
 
