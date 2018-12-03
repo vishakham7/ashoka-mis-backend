@@ -189,7 +189,7 @@ DJMAIL_TEMPLATE_EXTENSION = "jinja"
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'info@safewayconcessions.com'
-EMAIL_HOST_PASSWORD = 'Reset_123'
+EMAIL_HOST_PASSWORD = 'info@safewayconcessions'
 EMAIL_PORT = 587
 
 # Events backend
