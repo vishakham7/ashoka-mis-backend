@@ -119,7 +119,7 @@ def public_register(username:str, password:str, email:str, full_name:str, mobile
                       mobile_no=mobile_no,
                       aadhaar_no=aadhaar_no,
                       address=address,
-                      is_active = False,
+                      is_active = True,
                       read_new_terms=True)
     user.set_password(password)
     try:
