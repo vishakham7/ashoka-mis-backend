@@ -45,6 +45,29 @@ from . import serializers
 from . import validators
 import datetime
 from ..custom_attributes.models import IssueCustomAttribute, IssueCustomAttributesValues
+from django.http import JsonResponse
+from django.db.models import Count
+
+
+def dashboard_graph_data(request):
+    mon_count_list = []
+
+    time_threshold = datetime.datetime.now() - datetime.timedelta(days=180)
+
+    queryset = Issue.objects.filter(created_date = time_threshold)
+
+    bymonth_select = {"month": """DATE_TRUNC('month', created_date)"""}
+
+    months = Issue.objects.filter(created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
+
+    for month in months:
+        mon_count_list.append({
+            "month": month['month'].strftime("%b"),
+            "count": month['num_issues']
+        })
+
+    return JsonResponse(mon_count_list, safe=False)
+
 
 class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, WatchedResourceMixin,
                    ByRefMixin, TaggedResourceMixin, BlockedByProjectMixin, ModelCrudViewSet):
