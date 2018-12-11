@@ -126,24 +126,24 @@ def accident_graph_data(request):
 
 class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, WatchedResourceMixin,
                    ByRefMixin, TaggedResourceMixin, BlockedByProjectMixin, ModelCrudViewSet):
-    # validator_class = validators.IssueValidator
+    validator_class = validators.IssueValidator
     queryset = models.Issue.objects.all()
-    # permission_classes = (permissions.IssuePermission, )
-    # filter_backends = (filters.CanViewIssuesFilterBackend,
-    #                    filters.RoleFilter,
-    #                    filters.OwnersFilter,
-    #                    filters.AssignedToFilter,
-    #                    filters.StatusesFilter,
-    #                    filters.IssueTypesFilter,
-    #                    filters.SeveritiesFilter,
-    #                    filters.PrioritiesFilter,
-    #                    filters.TagsFilter,
-    #                    filters.WatchersFilter,
-    #                    filters.QFilter,
-    #                    filters.CreatedDateFilter,
-    #                    filters.ModifiedDateFilter,
-    #                    filters.FinishedDateFilter,
-    #                    filters.OrderByFilterMixin)
+    permission_classes = (permissions.IssuePermission, )
+    filter_backends = (filters.CanViewIssuesFilterBackend,
+                       filters.RoleFilter,
+                       filters.OwnersFilter,
+                       filters.AssignedToFilter,
+                       filters.StatusesFilter,
+                       filters.IssueTypesFilter,
+                       filters.SeveritiesFilter,
+                       filters.PrioritiesFilter,
+                       filters.TagsFilter,
+                       filters.WatchersFilter,
+                       filters.QFilter,
+                       filters.CreatedDateFilter,
+                       filters.ModifiedDateFilter,
+                       filters.FinishedDateFilter,
+                       filters.OrderByFilterMixin)
     filter_fields = ("milestone",
                      "project",
                      "type_id",
