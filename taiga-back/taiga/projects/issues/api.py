@@ -91,7 +91,7 @@ def dashboard_graph_data(request):
             "count": 0
         })
 
-    issue_closed_months = Issue.objects.filter(status__name = 'open', created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
+    issue_closed_months = Issue.objects.filter(status__name = 'Closed', created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
     issue_closed_months_list.extend(empty_data)
 
     if issue_closed_months:
