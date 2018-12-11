@@ -50,30 +50,47 @@ from django.db.models import Count
 
 
 def dashboard_graph_data(request):
-    mon_count_list = []
+    issue_identified_months_list = []
+    issue_closed_months_list = []
+    accident_months_list = []
 
     time_threshold = datetime.datetime.now() - datetime.timedelta(days=180)
 
-    queryset = Issue.objects.filter(created_date = time_threshold)
+    # queryset = Issue.objects.filter(created_date = time_threshold)
 
     bymonth_select = {"month": """DATE_TRUNC('month', created_date)"""}
 
-    months = Issue.objects.filter(created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
+    issue_identified_months = Issue.objects.filter(created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
 
-    for month in months:
-        mon_count_list.append({
+    for month in issue_identified_months:
+        issue_identified_months_list.append({
+            "month": month['month'].strftime("%b"),
+            "count": month['num_issues']
+        })    
+
+    issue_closed_months = Issue.objects.filter(status__name = 'open', created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
+
+    for month in issue_closed_months:
+        issue_closed_months_list.append({
             "month": month['month'].strftime("%b"),
             "count": month['num_issues']
         })
 
-    # return JsonResponse(mon_count_list, safe=False)
+    accident_months = Issue.objects.filter(type__name = 'Accident', created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
+
+    for month in accident_months:
+        accident_months_list.append({
+            "month": month['month'].strftime("%b"),
+            "count": month['num_issues']
+        })
 
     response_data = {}
-    response_data['accident'] = [{ "month": "Jul", "count": 8 }, { "month": "Aug", "count": 7 }, { "month": "Sep", "count": 12 }, { "month": "Oct", "count": 16 }, { "month": "Nov", "count": 2 }]
 
-    response_data['issue_closed'] = [{ "month": "Jul", "count": 12 }, { "month": "Aug", "count": 11 }, { "month": "Sep", "count": 8 }, { "month": "Oct", "count": 8 }, { "month": "Nov", "count": 8 }]
+    response_data['accident'] = issue_identified_months_list
 
-    response_data['issue_identified'] = [{ "month": "Jul", "count": 12 }, { "month": "Aug", "count": 11 }, { "month": "Sep", "count": 8 }, { "month": "Oct", "count": 8 }, { "month": "Nov", "count": 8 }]
+    response_data['issue_closed'] = issue_closed_months_list
+
+    response_data['issue_identified'] = accident_months_list
 
     return JsonResponse(response_data)
 
