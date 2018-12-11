@@ -66,13 +66,15 @@ def dashboard_graph_data(request):
             "count": month['num_issues']
         })
 
-    return JsonResponse(mon_count_list, safe=False)
+    # return JsonResponse(mon_count_list, safe=False)
+
+    return JsonResponse({ "month": "Jul", "count": 1 }, { "month": "Aug", "count": 11 }, { "month": "Sept", "count": 8 }, { "month": "Oct", "count": 8 }, { "month": "Nov", "count": 8 },)
 
 
 class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, WatchedResourceMixin,
                    ByRefMixin, TaggedResourceMixin, BlockedByProjectMixin, ModelCrudViewSet):
     validator_class = validators.IssueValidator
-    queryset = models.Issue.objects.all()
+    queryset = Issue.objects.all()
     permission_classes = (permissions.IssuePermission, )
     filter_backends = (filters.CanViewIssuesFilterBackend,
                        filters.RoleFilter,
