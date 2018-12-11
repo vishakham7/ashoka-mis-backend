@@ -49,7 +49,7 @@ from django.http import JsonResponse
 from django.db.models import Count
 
 
-def issue_identified_graph_data(request):
+def dashboard_graph_data(request):
     mon_count_list = []
 
     time_threshold = datetime.datetime.now() - datetime.timedelta(days=180)
@@ -68,7 +68,15 @@ def issue_identified_graph_data(request):
 
     # return JsonResponse(mon_count_list, safe=False)
 
-    return JsonResponse([{ "month": "Jul", "count": 12 }, { "month": "Aug", "count": 11 }, { "month": "Sep", "count": 8 }, { "month": "Oct", "count": 8 }, { "month": "Nov", "count": 8 }], safe = False)
+    response_data = {}
+    response_data['accident'] = [{ "month": "Jul", "count": 8 }, { "month": "Aug", "count": 7 }, { "month": "Sep", "count": 12 }, { "month": "Oct", "count": 16 }, { "month": "Nov", "count": 2 }]
+
+    response_data['issue_closed'] = [{ "month": "Jul", "count": 12 }, { "month": "Aug", "count": 11 }, { "month": "Sep", "count": 8 }, { "month": "Oct", "count": 8 }, { "month": "Nov", "count": 8 }]
+
+    response_data['issue_identified'] = [{ "month": "Jul", "count": 12 }, { "month": "Aug", "count": 11 }, { "month": "Sep", "count": 8 }, { "month": "Oct", "count": 8 }, { "month": "Nov", "count": 8 }]
+
+    return JsonResponse(response_data)
+
 
 def issue_closed_graph_data(request):
     mon_count_list = []
@@ -87,7 +95,7 @@ def issue_closed_graph_data(request):
             "count": month['num_issues']
         })
 
-    # return JsonResponse(mon_count_list, safe=False)
+    response_data = {}
 
     return JsonResponse([{ "month": "Jul", "count": 4 }, { "month": "Aug", "count": 7 }, { "month": "Sep", "count": 10 }, { "month": "Oct", "count": 18 }, { "month": "Nov", "count": 22 }], safe = False)
 
@@ -108,9 +116,12 @@ def accident_graph_data(request):
             "count": month['num_issues']
         })
 
+    response_data = {}
+    response_data['accident_graph_data'] = [{ "month": "Jul", "count": 8 }, { "month": "Aug", "count": 7 }, { "month": "Sep", "count": 12 }, { "month": "Oct", "count": 16 }, { "month": "Nov", "count": 2 }]
+
     # return JsonResponse(mon_count_list, safe=False)
 
-    return JsonResponse([{ "month": "Jul", "count": 8 }, { "month": "Aug", "count": 7 }, { "month": "Sep", "count": 12 }, { "month": "Oct", "count": 16 }, { "month": "Nov", "count": 2 }], safe = False)
+    return JsonResponse(response_data)
 
 
 class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, WatchedResourceMixin,
