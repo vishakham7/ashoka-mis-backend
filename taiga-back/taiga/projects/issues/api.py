@@ -68,7 +68,7 @@ def dashboard_graph_data(request):
 
     # return JsonResponse(mon_count_list, safe=False)
 
-    return JsonResponse([{ "month": "Jul", "count": 12 }, { "month": "Aug", "count": 11 }, { "month": "Sept", "count": 8 }, { "month": "Oct", "count": 8 }, { "month": "Nov", "count": 8 }], safe = False)
+    return JsonResponse([{ "month": "Jul", "count": 12 }, { "month": "Aug", "count": 11 }, { "month": "Sep", "count": 8 }, { "month": "Oct", "count": 8 }, { "month": "Nov", "count": 8 }], safe = False)
 
 
 class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, WatchedResourceMixin,
