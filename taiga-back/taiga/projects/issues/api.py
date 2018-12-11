@@ -54,7 +54,7 @@ def dashboard_graph_data(request):
     issue_closed_months_list = []
     accident_months_list = []
 
-    time_threshold = datetime.datetime.now() - datetime.timedelta(days=180)
+    time_threshold = datetime.datetime.now() - datetime.timedelta(days=150)
 
     # queryset = Issue.objects.filter(created_date = time_threshold)
 
@@ -62,35 +62,73 @@ def dashboard_graph_data(request):
 
     issue_identified_months = Issue.objects.filter(created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
 
-    for month in issue_identified_months:
+    empty_data = [
+        {
+            "month": "Aug",
+            "count": 0
+        }, {
+            "month": "Sep",
+            "count": 0
+        }, {
+            "month": "Oct",
+            "count": 0
+        }, {
+            "month": "Nov",
+            "count": 0
+        }]
+
+    issue_identified_months_list.extend(empty_data)
+
+    if issue_identified_months:
+        for month in issue_identified_months:
+            issue_identified_months_list.append({
+                "month": month['month'].strftime("%b"),
+                "count": month['num_issues']
+            })
+    else:
         issue_identified_months_list.append({
-            "month": month['month'].strftime("%b"),
-            "count": month['num_issues']
-        })    
+            "month": "Dec",
+            "count": 0
+        })
 
     issue_closed_months = Issue.objects.filter(status__name = 'open', created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
+    issue_closed_months_list.extend(empty_data)
 
-    for month in issue_closed_months:
+    if issue_closed_months:
+        for month in issue_closed_months:
+            issue_closed_months_list.append({
+                "month": month['month'].strftime("%b"),
+                "count": month['num_issues']
+            })
+    else:
         issue_closed_months_list.append({
-            "month": month['month'].strftime("%b"),
-            "count": month['num_issues']
+            "month": "Dec",
+            "count": 0
         })
+
 
     accident_months = Issue.objects.filter(type__name = 'Accident', created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
-
-    for month in accident_months:
+    accident_months_list.extend(empty_data)
+    
+    if accident_months:
+        for month in accident_months:
+            accident_months_list.append({
+                "month": month['month'].strftime("%b"),
+                "count": month['num_issues']
+            })
+    else:
         accident_months_list.append({
-            "month": month['month'].strftime("%b"),
-            "count": month['num_issues']
+            "month": "Dec",
+            "count": 0
         })
-
+        
     response_data = {}
-
-    response_data['accident'] = issue_identified_months_list
 
     response_data['issue_closed'] = issue_closed_months_list
 
-    response_data['issue_identified'] = accident_months_list
+    response_data['issue_identified'] = issue_identified_months_list 
+
+    response_data['accident'] = accident_months_list
 
     return JsonResponse(response_data)
 
