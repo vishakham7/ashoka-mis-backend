@@ -227,7 +227,7 @@ class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, W
 
     def get_queryset(self):
         qs = super().get_queryset()
-        qs = qs.filter(owner=self.request.user).select_related("owner", "assigned_to", "status", "project")
+        qs = qs.select_related("owner", "assigned_to", "status", "project")
         include_attachments = "include_attachments" in self.request.QUERY_PARAMS
         qs = attach_extra_info(qs, user=self.request.user,
                                include_attachments=include_attachments)
