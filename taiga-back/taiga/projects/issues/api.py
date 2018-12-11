@@ -91,6 +91,27 @@ def issue_closed_graph_data(request):
 
     return JsonResponse([{ "month": "Jul", "count": 4 }, { "month": "Aug", "count": 7 }, { "month": "Sep", "count": 10 }, { "month": "Oct", "count": 18 }, { "month": "Nov", "count": 22 }], safe = False)
 
+def accident_graph_data(request):
+    mon_count_list = []
+
+    time_threshold = datetime.datetime.now() - datetime.timedelta(days=180)
+
+    queryset = Issue.objects.filter(created_date = time_threshold)
+
+    bymonth_select = {"month": """DATE_TRUNC('month', created_date)"""}
+
+    months = Issue.objects.filter(type__name = 'Accident', created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
+
+    for month in months:
+        mon_count_list.append({
+            "month": month['month'].strftime("%b"),
+            "count": month['num_issues']
+        })
+
+    # return JsonResponse(mon_count_list, safe=False)
+
+    return JsonResponse([{ "month": "Jul", "count": 8 }, { "month": "Aug", "count": 7 }, { "month": "Sep", "count": 12 }, { "month": "Oct", "count": 16 }, { "month": "Nov", "count": 2 }], safe = False)
+
 
 class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, WatchedResourceMixin,
                    ByRefMixin, TaggedResourceMixin, BlockedByProjectMixin, ModelCrudViewSet):
