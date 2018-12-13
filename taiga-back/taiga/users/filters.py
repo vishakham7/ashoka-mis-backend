@@ -43,3 +43,13 @@ class ContactsFilterBackend(PermissionBasedFilterBackend):
             qs = qs.extra(where=[where_clause], params=[to_tsquery(q)])
 
         return qs.distinct()
+
+
+class ProjectFilterBackend(PermissionBasedFilterBackend):
+    def filter_queryset(self, request, queryset, view):
+        project_id = request.QUERY_PARAMS.get('project_id', None)
+        if project_id:
+            import pdb
+            pdb.set_trace()
+            queryset = queryset.filter(project_id = int(project_id))
+        return queryset

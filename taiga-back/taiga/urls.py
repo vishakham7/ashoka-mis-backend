@@ -19,7 +19,7 @@
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
-from taiga.projects.issues.api import dashboard_graph_data
+from taiga.projects.issues.api import dashboard_graph_data, dashboard
 from .routers import router
 
 
@@ -30,7 +30,8 @@ from .routers import router
 urlpatterns = [
     url(r'^api/v1/', include(router.urls)),
     url(r'^admin/', include(admin.site.urls)),
-    url('^dashboard-graph-data$', dashboard_graph_data, name='dashboard-graph-data'),
+    url('^dashboard-graph-data/(?P<project_id>\d+)$', dashboard_graph_data, name='dashboard-graph-data'),
+    url('^dashboard/(?P<project_id>\d+)$', dashboard, name='dashboard'),
 ]
 
 handler500 = "taiga.base.api.views.api_server_error"

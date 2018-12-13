@@ -34,7 +34,7 @@ from taiga.users.api import RolesViewSet
 
 router.register(r"auth", AuthViewSet, base_name="auth")
 router.register(r"users", UsersViewSet, base_name="users")
-router.register(r"dashboard", DashBoardViewSet, base_name="dashboard")
+router.register(r"dashboard/(?P<project_id>\d+)", DashBoardViewSet, base_name="dashboard")
 router.register(r"nomemberusers", NoMemberUsersViewSet, base_name="no-member-users")
 router.register(r"roles", RolesViewSet, base_name="roles")
 

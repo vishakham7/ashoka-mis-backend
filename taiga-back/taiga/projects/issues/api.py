@@ -33,6 +33,7 @@ from taiga.projects.models import Project, IssueStatus, Severity, Priority, Issu
 from taiga.projects.issues.models import Issue
 from taiga.projects.notifications.mixins import WatchedResourceMixin, WatchersViewSetMixin
 from taiga.projects.occ import OCCResourceMixin
+from taiga.projects.models import Project
 from taiga.projects.tagging.api import TaggedResourceMixin
 from taiga.projects.votes.mixins.viewsets import VotedResourceMixin, VotersViewSetMixin
 
@@ -49,7 +50,19 @@ from django.http import JsonResponse
 from django.db.models import Count
 
 
-def dashboard_graph_data(request):
+def dashboard(request, project_id=None):
+    result = {}
+    project = Project.objects.get(pk = project_id)
+
+    result['user_count'] = project.members.count()
+
+    result['issues_identified'] = Issue.objects.filter(project_id = project_id, status__name = 'Open', type__name = 'Issue').count()
+    result['issue_closed'] = Issue.objects.filter(project_id = project_id, status__name = 'Closed', type__name = 'Issue').count()
+    result['accidents_report'] = Issue.objects.filter(project_id = project_id, type__name = 'Accident').count()
+
+    return JsonResponse(result)
+
+def dashboard_graph_data(request, project_id=None):
     issue_identified_months_list = []
     issue_closed_months_list = []
     accident_months_list = []
@@ -60,7 +73,7 @@ def dashboard_graph_data(request):
 
     bymonth_select = {"month": """DATE_TRUNC('month', created_date)"""}
 
-    issue_identified_months = Issue.objects.filter(created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
+    issue_identified_months = Issue.objects.filter(project_id = int(project_id), created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
 
     empty_data = [
         {
@@ -91,7 +104,7 @@ def dashboard_graph_data(request):
             "count": 0
         })
 
-    issue_closed_months = Issue.objects.filter(status__name = 'Closed', created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
+    issue_closed_months = Issue.objects.filter(project_id = int(project_id), status__name = 'Closed', created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
     issue_closed_months_list.extend(empty_data)
 
     if issue_closed_months:
@@ -107,7 +120,7 @@ def dashboard_graph_data(request):
         })
 
 
-    accident_months = Issue.objects.filter(type__name = 'Accident', created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
+    accident_months = Issue.objects.filter(project_id = int(project_id), type__name = 'Accident', created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
     accident_months_list.extend(empty_data)
     
     if accident_months:
@@ -121,7 +134,7 @@ def dashboard_graph_data(request):
             "month": "Dec",
             "count": 0
         })
-        
+    
     response_data = {}
 
     response_data['issue_closed'] = issue_closed_months_list
