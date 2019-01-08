@@ -86,8 +86,8 @@ class UsersViewSet(ModelCrudViewSet):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        qs = qs.prefetch_related("memberships")
-        qs = user_utils.attach_extra_info(qs, user=self.request.user)
+        # qs = qs.prefetch_related("memberships")
+        # qs = user_utils.attach_extra_info(qs, user=self.request.user)
         return qs
 
     def create(self, *args, **kwargs):
