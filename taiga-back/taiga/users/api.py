@@ -64,7 +64,7 @@ class UsersViewSet(ModelCrudViewSet):
     serializer_class = serializers.UserSerializer
     admin_validator_class = validators.UserAdminValidator
     validator_class = validators.UserValidator
-    filter_backends = (UserMembersFilterBackend,)
+    # filter_backends = (UserMembersFilterBackend,)
     throttle_classes = (UserDetailRateThrottle, UserUpdateRateThrottle)
     model = models.User
 
@@ -96,10 +96,9 @@ class UsersViewSet(ModelCrudViewSet):
     def list(self, request, *args, **kwargs):
         # self.object_list = UserMembersFilterBackend().filter_queryset(request,
         #                                                           self.get_queryset(),
-        #                                                           self)
+        #                                                           self)        
 
         self.object_list = self.get_queryset()
-
         page = self.paginate_queryset(self.object_list)
         if page is not None:
             serializer = self.get_pagination_serializer(page)
