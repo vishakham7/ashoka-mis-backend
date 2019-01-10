@@ -59,9 +59,9 @@ class DashBoardViewSet(ModelCrudViewSet):
     model = Issue
 
 class UsersViewSet(ModelCrudViewSet):
-    permission_classes = (permissions.UserPermission,)
-    admin_serializer_class = serializers.UserAdminSerializer
-    serializer_class = serializers.UserSerializer
+    # permission_classes = (permissions.UserPermission,)
+    # admin_serializer_class = serializers.UserAdminSerializer
+    # serializer_class = serializers.UserSerializer
     # admin_validator_class = validators.UserAdminValidator
     # validator_class = validators.UserValidator
     # filter_backends = (UserMembersFilterBackend,)
