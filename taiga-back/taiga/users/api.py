@@ -85,19 +85,21 @@ class UsersViewSet(ModelCrudViewSet):
         return self.validator_class
 
     def get_queryset(self):
-        qs = super().get_queryset()
-        qs = qs.prefetch_related("memberships")
-        qs = user_utils.attach_extra_info(qs, user=self.request.user)
+        # qs = super().get_queryset()
+        # qs = qs.prefetch_related("memberships")
+        # qs = user_utils.attach_extra_info(qs, user=self.request.user)
+        qs = models.User.objects.all()
         return qs
 
     def create(self, *args, **kwargs):
         raise exc.NotSupported()
 
     def list(self, request, *args, **kwargs):
-        self.object_list = UserMembersFilterBackend().filter_queryset(request,
-                                                                  self.get_queryset(),
-                                                                  self)
+        # self.object_list = UserMembersFilterBackend().filter_queryset(request,
+        #                                                           self.get_queryset(),
+        #                                                           self)
 
+        self.object_list = self.get_queryset()
         page = self.paginate_queryset(self.object_list)
         if page is not None:
             serializer = self.get_pagination_serializer(page)
