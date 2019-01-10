@@ -63,7 +63,7 @@ class UsersViewSet(ModelCrudViewSet):
     admin_serializer_class = serializers.UserAdminSerializer
     serializer_class = serializers.UserSerializer
     admin_validator_class = validators.UserAdminValidator
-    validator_class = validators.UserValidator
+    # validator_class = validators.UserValidator
     # filter_backends = (UserMembersFilterBackend,)
     throttle_classes = (UserDetailRateThrottle, UserUpdateRateThrottle)
     model = models.User
@@ -76,11 +76,11 @@ class UsersViewSet(ModelCrudViewSet):
 
         return self.serializer_class
 
-    def get_validator_class(self):
-        if self.action in ["partial_update", "update", "retrieve", "by_username"]:
-            user = self.object
-            if self.request.user == user or self.request.user.is_superuser:
-                return self.admin_validator_class
+    # def get_validator_class(self):
+    #     if self.action in ["partial_update", "update", "retrieve", "by_username"]:
+    #         user = self.object
+    #         if self.request.user == user or self.request.user.is_superuser:
+    #             return self.admin_validator_class
 
         return self.validator_class
 
@@ -93,25 +93,24 @@ class UsersViewSet(ModelCrudViewSet):
     def create(self, *args, **kwargs):
         raise exc.NotSupported()
 
-    def list(self, request, *args, **kwargs):
-        # self.object_list = UserMembersFilterBackend().filter_queryset(request,
-        #                                                           self.get_queryset(),
-        #                                                           self)        
+    # def list(self, request, *args, **kwargs):
+    #     self.object_list = UserMembersFilterBackend().filter_queryset(request,
+    #                                                               self.get_queryset(),
+    #                                                               self)
 
-        self.object_list = self.get_queryset()
-        page = self.paginate_queryset(self.object_list)
-        if page is not None:
-            serializer = self.get_pagination_serializer(page)
-        else:
-            serializer = self.get_serializer(self.object_list, many=True)
+    #     page = self.paginate_queryset(self.object_list)
+    #     if page is not None:
+    #         serializer = self.get_pagination_serializer(page)
+    #     else:
+    #         serializer = self.get_serializer(self.object_list, many=True)
 
-        return response.Ok(serializer.data)
+    #     return response.Ok(serializer.data)
 
-    def retrieve(self, request, *args, **kwargs):
-        self.object = get_object_or_404(self.get_queryset(), **kwargs)
-        self.check_permissions(request, 'retrieve', self.object)
-        serializer = self.get_serializer(self.object)
-        return response.Ok(serializer.data)
+    # def retrieve(self, request, *args, **kwargs):
+    #     self.object = get_object_or_404(self.get_queryset(), **kwargs)
+    #     self.check_permissions(request, 'retrieve', self.object)
+    #     serializer = self.get_serializer(self.object)
+    #     return response.Ok(serializer.data)
 
     # TODO: commit_on_success
     def partial_update(self, request, *args, **kwargs):
