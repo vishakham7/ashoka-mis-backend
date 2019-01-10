@@ -466,6 +466,21 @@ class NoMemberUsersViewSet(ModelCrudViewSet):
     throttle_classes = (UserDetailRateThrottle, UserUpdateRateThrottle)
     model = models.User
 
+    def list(self, request, *args, **kwargs):
+        self.object_list = UserMembersFilterBackend().filter_queryset(request,
+                                                                  self.get_queryset(),
+                                                                  self)
+
+        self.object_list = self.get_queryset()
+        page = self.paginate_queryset(self.object_list)
+        if page is not None:
+            # serializer = self.get_pagination_serializer(page)
+            serializer = self.get_serializer(self.object_list, many=True)
+        else:
+            serializer = self.get_serializer(self.object_list, many=True)
+
+        return response.Ok(serializer.data)
+
 ######################################################
 # Role
 ######################################################
