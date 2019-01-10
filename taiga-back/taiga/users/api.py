@@ -64,7 +64,7 @@ class UsersViewSet(ModelCrudViewSet):
     serializer_class = serializers.UserSerializer
     admin_validator_class = validators.UserAdminValidator
     # validator_class = validators.UserValidator
-    filter_backends = (UserMembersFilterBackend,)
+    # filter_backends = (UserMembersFilterBackend,)
     throttle_classes = (UserDetailRateThrottle, UserUpdateRateThrottle)
     model = models.User
 
