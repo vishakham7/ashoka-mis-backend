@@ -98,6 +98,8 @@ class UsersViewSet(ModelCrudViewSet):
         #                                                           self.get_queryset(),
         #                                                           self)
 
+        self.object_list = self.get_queryset()
+
         page = self.paginate_queryset(self.object_list)
         if page is not None:
             serializer = self.get_pagination_serializer(page)
