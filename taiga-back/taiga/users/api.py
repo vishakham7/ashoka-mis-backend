@@ -63,7 +63,7 @@ class UsersViewSet(ModelCrudViewSet):
     admin_serializer_class = serializers.UserAdminSerializer
     serializer_class = serializers.UserSerializer
     admin_validator_class = validators.UserAdminValidator
-    validator_class = validators.UserValidator
+    # validator_class = validators.UserValidator
     filter_backends = (UserMembersFilterBackend,)
     throttle_classes = (UserDetailRateThrottle, UserUpdateRateThrottle)
     model = models.User
@@ -86,8 +86,7 @@ class UsersViewSet(ModelCrudViewSet):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        # qs = qs.prefetch_related("memberships")
-        qs = models.User.objects.all()
+        qs = qs.prefetch_related("memberships")
         qs = user_utils.attach_extra_info(qs, user=self.request.user)
         return qs
 
