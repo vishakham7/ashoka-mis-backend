@@ -77,9 +77,6 @@ def dashboard_graph_data(request, project_id=None):
 
     empty_data = [
         {
-            "month": "Aug",
-            "count": 0
-        }, {
             "month": "Sep",
             "count": 0
         }, {
@@ -87,6 +84,9 @@ def dashboard_graph_data(request, project_id=None):
             "count": 0
         }, {
             "month": "Nov",
+            "count": 0
+        }, {
+            "month": "Dec",
             "count": 0
         }]
 
@@ -100,7 +100,7 @@ def dashboard_graph_data(request, project_id=None):
             })
     else:
         issue_identified_months_list.append({
-            "month": "Dec",
+            "month": "Jan",
             "count": 0
         })
 
@@ -115,7 +115,7 @@ def dashboard_graph_data(request, project_id=None):
             })
     else:
         issue_closed_months_list.append({
-            "month": "Dec",
+            "month": "Jan",
             "count": 0
         })
 
@@ -131,10 +131,10 @@ def dashboard_graph_data(request, project_id=None):
             })
     else:
         accident_months_list.append({
-            "month": "Dec",
+            "month": "Jan",
             "count": 0
         })
-    
+
     response_data = {}
 
     response_data['issue_closed'] = issue_closed_months_list
