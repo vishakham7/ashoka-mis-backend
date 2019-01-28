@@ -125,7 +125,7 @@ class ProjectViewSet(LikedResourceMixin, HistoryResourceMixin,
             return order_by[1:]
 
     def get_queryset(self):
-        qs = super().get_queryset().order_by('id')
+        qs = super().get_queryset().order_by('name')
         qs = qs.select_related("owner")
         if self.request.QUERY_PARAMS.get('discover_mode', False):
             qs = project_utils.attach_members(qs)
