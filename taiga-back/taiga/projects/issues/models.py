@@ -94,7 +94,7 @@ class Issue(OCCModelMixin, WatchedModelMixin, BlockedMixin, TaggedMixin, DueDate
     help_provided = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Help Provided"))
     target_date = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Target Date"))
     inspection_category = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Inspection Category"))
-    
+    compliance_is_update = models.BooleanField(default=False)
     _importing = None
 
     class Meta:
