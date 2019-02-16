@@ -81,6 +81,7 @@ class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer
     help_provided = Field()
     status_name = MethodField()
     description = Field()
+    compliance_description = Field()
     inspection_category = Field()
     compliance_is_update = Field()
 
@@ -128,6 +129,7 @@ class IssueSerializer(IssueListSerializer):
     help_provided = Field()
     status_name = MethodField()
     description = Field()
+    compliance_description = Field()
     target_date = Field()
     project_start_end_chainage = MethodField()
     inspection_category = Field()
