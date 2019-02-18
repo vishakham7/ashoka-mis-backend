@@ -195,7 +195,7 @@ def accident_graph_data(request):
 class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, WatchedResourceMixin,
                    ByRefMixin, TaggedResourceMixin, BlockedByProjectMixin, ModelCrudViewSet):
     validator_class = validators.IssueValidator
-    queryset = models.Issue.objects.all()
+    queryset = models.Issue.objects.order_by('-id')
     permission_classes = (permissions.IssuePermission, )
     filter_backends = (filters.CanViewIssuesFilterBackend,
                        filters.RoleFilter,
