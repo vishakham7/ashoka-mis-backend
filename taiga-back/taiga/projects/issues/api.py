@@ -58,6 +58,7 @@ def dashboard(request, project_id=None):
 
     result['issues_identified'] = Issue.objects.filter(project_id = project_id, type__name = 'Issue').count()
     result['issue_closed'] = Issue.objects.filter(project_id = project_id, status__name = 'Closed', type__name = 'Issue').count()
+    result['issue_pending'] = Issue.objects.filter(project_id = project_id, status__name = 'Pending', type__name = 'Issue').count()
     result['accidents_report'] = Issue.objects.filter(project_id = project_id, type__name = 'Accident').count()
 
     return JsonResponse(result)

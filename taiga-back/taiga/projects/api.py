@@ -583,7 +583,7 @@ class ProjectViewSet(LikedResourceMixin, HistoryResourceMixin,
 
             issue_status_delete = models.IssueStatus.objects.filter(project_id = object.pk).delete()
 
-            issue_statuses = ["Open","Closed"]
+            issue_statuses = ["Open","Closed","Pending"]
 
             for status in issue_statuses:
                 models.IssueStatus.objects.create(name=status,project_id = object.pk)

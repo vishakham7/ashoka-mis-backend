@@ -307,6 +307,7 @@ class ProjectSerializer(serializers.LightSerializer):
     # accidents_count = MethodField()
     issue_identified = MethodField()
     issue_closed = MethodField()
+    issue_pending = MethodField()
     accidents_report = MethodField()
     asset_wiki_page_id = MethodField()
     location_wiki_page_id = MethodField()
@@ -340,6 +341,10 @@ class ProjectSerializer(serializers.LightSerializer):
     def get_issue_closed(self, obj):
         issue_closed = Issue.objects.filter(project_id = obj.id, status__name = 'Closed', type__name = 'Issue').count()
         return issue_closed
+
+    def get_issue_pending(self, obj):
+        issue_pending = Issue.objects.filter(project_id = obj.id, status__name = 'Pending', type__name = 'Issue').count()
+        return issue_pending
 
     def get_accidents_report(self, obj):
         accident_report = Issue.objects.filter(project_id = obj.id, type__name = 'Accident').count()
