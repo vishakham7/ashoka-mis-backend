@@ -31,6 +31,7 @@ from taiga.projects.history.mixins import HistoryResourceMixin
 from taiga.projects.mixins.by_ref import ByRefMixin
 from taiga.projects.models import Project, IssueStatus, Severity, Priority, IssueType
 from taiga.projects.issues.models import Issue
+from taiga.users.models import User
 from taiga.projects.notifications.mixins import WatchedResourceMixin, WatchersViewSetMixin
 from taiga.projects.occ import OCCResourceMixin
 from taiga.projects.models import Project
@@ -62,6 +63,14 @@ def dashboard(request, project_id=None):
     result['accidents_report'] = Issue.objects.filter(project_id = project_id, type__name = 'Accident').count()
 
     return JsonResponse(result)
+
+
+def new_registerd_user(request):
+    result = {}
+    today_date = datetime.datetime.today().strftime('%Y-%m-%d')
+    result['new_registered_user'] = User.objects.filter(date_joined__icontains = today_date).count()
+    return JsonResponse(result)
+
 
 def dashboard_graph_data(request, project_id=None):
     issue_identified_months_list = []
