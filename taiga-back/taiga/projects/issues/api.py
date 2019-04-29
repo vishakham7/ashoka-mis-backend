@@ -52,6 +52,7 @@ from django.db.models import Count
 
 
 def dashboard(request, project_id=None):
+
     result = {}
     project = Project.objects.get(pk = project_id)
 
@@ -61,6 +62,8 @@ def dashboard(request, project_id=None):
     result['issue_closed'] = Issue.objects.filter(project_id = project_id, status__name = 'Closed', type__name = 'Issue').count()
     result['issue_pending'] = Issue.objects.filter(project_id = project_id, status__name = 'Pending', type__name = 'Issue').count()
     result['accidents_report'] = Issue.objects.filter(project_id = project_id, type__name = 'Accident').count()
+
+    result['test_and_investigation'] = Issue.objects.filter(project_id=project_id, type__name='Investigations').count()
 
     return JsonResponse(result)
 
@@ -241,6 +244,7 @@ class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, W
                        "total_voters")
 
     def get_serializer_class(self, *args, **kwargs):
+
         if self.action in ["retrieve", "by_ref"]:
             return serializers.IssueNeighborsSerializer
 
@@ -435,6 +439,7 @@ class AccidentTypeIssue(IssueViewSet):
 
 
     def create(self, request, *args, **kwargs):
+
         project_id = request.DATA.get('project', None)
 
         try:
