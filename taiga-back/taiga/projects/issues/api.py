@@ -205,8 +205,9 @@ def accident_graph_data(request):
     return JsonResponse(response_data)
 
 
-class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, WatchedResourceMixin,
-                   ByRefMixin, TaggedResourceMixin, BlockedByProjectMixin, ModelCrudViewSet):
+class IssueViewSet(
+    OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, WatchedResourceMixin,
+    ByRefMixin, TaggedResourceMixin, BlockedByProjectMixin, ModelCrudViewSet):
     validator_class = validators.IssueValidator
     queryset = models.Issue.objects.order_by('-id')
     permission_classes = (permissions.IssuePermission, )
@@ -308,6 +309,7 @@ class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, W
         return super().update(request, *args, **kwargs)
 
     def get_queryset(self):
+
         qs = super().get_queryset()
         qs = qs.select_related("owner", "assigned_to", "status", "project")
         include_attachments = "include_attachments" in self.request.QUERY_PARAMS
@@ -430,13 +432,13 @@ class IssueViewSet(OCCResourceMixin, VotedResourceMixin, HistoryResourceMixin, W
 
         return response.BadRequest(validator.errors)
 
+
 class AccidentTypeIssue(IssueViewSet):
     
     # def get_queryset(self):
     #     qs = super().get_queryset()
     #     qs = qs.filter(type__name='Accident').select_related("owner", "assigned_to", "status", "project")
     #     return qs
-
 
     def create(self, request, *args, **kwargs):
 
@@ -482,6 +484,92 @@ class AccidentTypeIssue(IssueViewSet):
 
             if type_value_id:
                 Issue.objects.filter(id = object.id).update(type_id = type_value_id.id)
+
+
+class InvestigationTypeIssue(IssueViewSet):
+
+    """
+    To save investigation issue type.
+
+    :parameter:
+
+        parameters -->
+
+        {
+            'project': 'CharField',
+            'subject': 'CharField',
+            'status_name': 'CharField'
+        }
+
+        example -->
+
+        {
+            'project': '135',
+            'subject': 'This is test issue.',
+            'status_name': 'Open'
+        }
+
+        response -->
+
+        {
+
+        }
+
+        authorization -->
+
+        Authorization: Bearer ${AUTH_TOKEN}
+
+    """
+
+    def create(self, request, *args, **kwargs):
+
+        project_id = request.DATA.get('project', None)
+
+        try:
+            type_value = IssueType.objects.get(name='Investigations', project_id=project_id)
+            request.DATA['type'] = type_value.id
+
+        except IssueType.DoesNotExist:
+            request.DATA['type'] = None
+
+        return super().create(request, *args, **kwargs)
+
+    def post_save(self, object, created=False):
+
+        super().post_save(object, created=created)
+
+        if created:
+
+            project_id = object.project_id
+
+            try:
+                issue_status_id = IssueStatus.objects.get(project_id=project_id, name='Open')
+            except:
+                issue_status_id = None
+
+            if issue_status_id:
+                Issue.objects.filter(id=object.id).update(status_id=issue_status_id)
+
+        else:
+
+            status_name = self.request.DATA['status_name']
+            project = self.request.DATA['project']
+
+            try:
+                issue_status_id = IssueStatus.objects.get(project_id=project, name=status_name)
+            except:
+                issue_status_id = None
+
+            if issue_status_id:
+                Issue.objects.filter(id=object.id).update(status_id=issue_status_id)
+
+            try:
+                type_value_id = IssueType.objects.get(name='Investigations', project_id=project)
+            except:
+                type_value_id = None
+
+            if type_value_id:
+                Issue.objects.filter(id=object.id).update(type_id=type_value_id.id)
 
 
 class IssueTypeIssue(IssueViewSet):

@@ -167,13 +167,15 @@ from taiga.projects.tasks.api import TaskViewSet
 from taiga.projects.tasks.api import TaskVotersViewSet
 from taiga.projects.tasks.api import TaskWatchersViewSet
 
-from taiga.projects.issues.api import IssueViewSet, AccidentTypeIssue, IssueTypeIssue, ComplianceTypeIssue
+from taiga.projects.issues.api import IssueViewSet, InvestigationTypeIssue, AccidentTypeIssue, IssueTypeIssue, ComplianceTypeIssue
 from taiga.projects.issues.api import IssueVotersViewSet
 from taiga.projects.issues.api import IssueWatchersViewSet
 
 from taiga.projects.wiki.api import WikiViewSet
 from taiga.projects.wiki.api import WikiLinkViewSet
 from taiga.projects.wiki.api import WikiWatchersViewSet
+
+
 
 router.register(r"milestones", MilestoneViewSet,
                 base_name="milestones")
@@ -208,6 +210,8 @@ router.register(r"issues", IssueViewSet,
                 base_name="issues")
 router.register(r"accident-type-issues", AccidentTypeIssue,
                 base_name="accident-type-issues")
+router.register(r"investigation-type-issues", InvestigationTypeIssue,
+                base_name="investigation-type-issues")
 router.register(r"issue-type-issues", IssueTypeIssue,
                 base_name="issue-type-issues")
 router.register(r"issue-types-compliance", ComplianceTypeIssue,
