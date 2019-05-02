@@ -63,7 +63,8 @@ def dashboard(request, project_id=None):
     result['issue_pending'] = Issue.objects.filter(project_id = project_id, status__name = 'Pending', type__name = 'Issue').count()
     result['accidents_report'] = Issue.objects.filter(project_id = project_id, type__name = 'Accident').count()
 
-    result['test_and_investigation'] = Issue.objects.filter(project_id=project_id, type__name='Investigations').count()
+    result['test_and_investigation'] = Issue.objects.filter(project_id=project_id,
+                                                            type__name='Investigation').count()
 
     return JsonResponse(result)
 
@@ -526,7 +527,7 @@ class InvestigationTypeIssue(IssueViewSet):
         project_id = request.DATA.get('project', None)
 
         try:
-            type_value = IssueType.objects.get(name='Investigations', project_id=project_id)
+            type_value = IssueType.objects.get(name='Investigation', project_id=project_id)
             request.DATA['type'] = type_value.id
 
         except IssueType.DoesNotExist:
@@ -564,7 +565,7 @@ class InvestigationTypeIssue(IssueViewSet):
                 Issue.objects.filter(id=object.id).update(status_id=issue_status_id)
 
             try:
-                type_value_id = IssueType.objects.get(name='Investigations', project_id=project)
+                type_value_id = IssueType.objects.get(name='Investigation', project_id=project)
             except:
                 type_value_id = None
 
