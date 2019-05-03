@@ -97,6 +97,20 @@ class Issue(OCCModelMixin, WatchedModelMixin, BlockedMixin, TaggedMixin, DueDate
     target_date = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Target Date"))
     inspection_category = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Inspection Category"))
     compliance_is_update = models.BooleanField(default=False)
+
+    # Investigation
+    investigation_description = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Investigation Description"))
+    investigation_date = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Investigation Date"))
+    asset_name = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Asset Type"))
+    test_name = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Test Name"))
+    test_specifications = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Test Specification"))
+    desirable = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Desirable"))
+    acceptable = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Acceptable"))
+    frequency = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Frequency"))
+    investigation_chainage_from = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Chainage From"))
+    investigation_chainage_to = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Chainage To"))
+    investigation_chainage_side = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Chainage Side"))
+
     _importing = None
 
     class Meta:
