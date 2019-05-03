@@ -31,7 +31,7 @@ from taiga.projects.notifications.mixins import WatchedResourceSerializer
 from taiga.projects.tagging.serializers import TaggedInProjectResourceSerializer
 from taiga.projects.votes.mixins.serializers import VoteResourceSerializerMixin
 from taiga.projects.models import IssueStatus, IssueType
-
+from .models import Issue
 class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer,
                           OwnerExtraInfoSerializerMixin, AssignedToExtraInfoSerializerMixin,
                           StatusExtraInfoSerializerMixin, ProjectExtraInfoSerializerMixin,
@@ -84,6 +84,18 @@ class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer
     compliance_description = Field()
     inspection_category = Field()
     compliance_is_update = Field()
+    investigation_description = Field()
+    investigation_date = Field()
+    asset_name = Field()
+    test_name = Field()
+    test_specifications = Field()
+    desirable = Field()
+    acceptable = Field()
+    frequency = Field()
+    investigation_chainage_from = Field()
+    investigation_chainage_to = Field()
+    investigation_chainage_side = Field()
+    image_url = Field()
 
     def get_status_name(self, obj):
         try:
@@ -134,7 +146,19 @@ class IssueSerializer(IssueListSerializer):
     project_start_end_chainage = MethodField()
     inspection_category = Field()
     compliance_is_update = Field()
-
+    investigation_description = Field()
+    investigation_date = Field()
+    asset_name = Field()
+    test_name = Field()
+    test_specifications = Field()
+    desirable = Field()
+    acceptable = Field()
+    frequency = Field()
+    investigation_chainage_from = Field()
+    investigation_chainage_to = Field()
+    investigation_chainage_side = Field()
+    image_url = Field()
+    
     def get_project_start_end_chainage(self, obj):
         return obj.project.start_and_end_chainage
 
@@ -166,3 +190,9 @@ class IssueSerializer(IssueListSerializer):
 
 class IssueNeighborsSerializer(NeighborsSerializerMixin, IssueSerializer):
     pass
+
+
+class FileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Issue
+        fields = "__all__"
