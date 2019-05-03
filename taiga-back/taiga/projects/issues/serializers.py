@@ -158,7 +158,7 @@ class IssueSerializer(IssueListSerializer):
     investigation_chainage_to = Field()
     investigation_chainage_side = Field()
     image_url = Field()
-    
+
     def get_project_start_end_chainage(self, obj):
         return obj.project.start_and_end_chainage
 
@@ -190,9 +190,3 @@ class IssueSerializer(IssueListSerializer):
 
 class IssueNeighborsSerializer(NeighborsSerializerMixin, IssueSerializer):
     pass
-
-
-class FileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Issue
-        fields = "__all__"

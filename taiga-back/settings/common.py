@@ -19,7 +19,7 @@
 import os.path, sys, os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
+print(BASE_DIR)
 APPEND_SLASH = False
 ALLOWED_HOSTS = ["*"]
 
@@ -203,7 +203,7 @@ MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 # The absolute url is mandatory because attachments
 # urls depends on it. On production should be set
 # something like https://media.taiga.io/
-MEDIA_URL = "http://ashokamisapi.progfeel.co.in/media/"
+MEDIA_URL = "http://ashokamisp2.progfeel.co.in/media/"
 STATIC_URL = "http://localhost:8000/static/"
 
 # Static configuration.
