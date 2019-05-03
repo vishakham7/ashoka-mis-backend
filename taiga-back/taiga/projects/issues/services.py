@@ -99,7 +99,6 @@ def issues_to_csv(project, queryset):
                                        "project")
     queryset = attach_total_voters_to_queryset(queryset)
     queryset = attach_watchers_to_queryset(queryset)
-
     writer = csv.DictWriter(csv_data, fieldnames=fieldnames)
     writer.writeheader()
     for issue in queryset:
@@ -117,8 +116,8 @@ def issues_to_csv(project, queryset):
             "assigned_to": issue.assigned_to.username if issue.assigned_to else None,
             "assigned_to_full_name": issue.assigned_to.get_full_name() if issue.assigned_to else None,
             "status": issue.status.name if issue.status else None,
-            "severity": issue.severity.name,
-            "priority": issue.priority.name,
+            "severity": issue.severity.name if issue.severity else None,
+            "priority": issue.priority.name if issue.priority else None,
             "type": issue.type.name,
             "is_closed": issue.is_closed,
             "attachments": issue.attachments.count(),
