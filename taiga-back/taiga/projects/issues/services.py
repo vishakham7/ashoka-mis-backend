@@ -91,7 +91,7 @@ def issues_to_csv(project, queryset):
     queryset = attach_watchers_to_queryset(queryset)
     for issue in queryset:
         
-        if issue.type.name == 'Issue':
+        if issue.type.name == 'Issues':
             fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
                           "Photograph During Inspection", "Asset Type", "Performance Parameter",
                           "Issue Raised On (Date)", "Issue Raised By (Name of Concessionaire)",
