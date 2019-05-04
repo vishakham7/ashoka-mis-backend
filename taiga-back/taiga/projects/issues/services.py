@@ -107,10 +107,11 @@ def issues_to_csv(project, queryset, type):
                           "Issue_Closed_On_Date", "Complianced", "Issue_Closed_By"
                           "Photograph_Post_Compliance", "Remark", "Current_Status" ]
     if type == 'Investigation':
-        fieldnames = ["Sr.No", "Project_Namee", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
+        fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
                           "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
-                          "Issue_Raised_On", "Issue_Raised_By",
-                          "Issue_Raised_To"]
+                          "Issue_Raised_On", "Name_of_Test", "Testing_Method", "Standard_References_for_testing",
+                          "Test_Carried_Out_Date", "Testing_Carried_Out_By", "Remark", "Outcome_Report"]
+        
 
     if type == 'Accident':
         fieldnames = ["Sr.No", "Description","No_of_Accidents_in_previous_month","No._of_Peoples_affected","No_of_Accidents",
@@ -127,10 +128,9 @@ def issues_to_csv(project, queryset, type):
         
         if issue.type.name == 'Issue':
             project_name = issue.project.name.split('(')[0]
-            print(project_name)
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" : (' '.join(project_name.split(' ')).strip()),
+                "Project_Name" : project_name,
                 "Chainage_From" : issue.chainage_from,
                 "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
@@ -143,19 +143,15 @@ def issues_to_csv(project, queryset, type):
                 "Issue_Raised_To" : issue.assigned_to.full_name if issue.assigned_to else None,
 
             }
-            for custom_attr in custom_attrs:
-                value = issue.custom_attributes_values.attributes_values.get(str(custom_attr.id), None)
-                issue_data[custom_attr.name] = value
 
-            writer.writerow(issue_data)
 
         if issue.type.name == 'Compliance':
             
     
-            project_name = issue.project.name.split('(')
+            project_name = issue.project.name.split('(')[0]
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" : ' '.join(project_name[0].split(' ')),
+                "Project_Name" : project_name,
                 "Chainage_From" : issue.chainage_from,
                 "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
@@ -175,15 +171,15 @@ def issues_to_csv(project, queryset, type):
                 "Photograph_Post_Compliance" : issue.attachments,
                 "Remark":"",
                 "Current_Status" : "Closed" if issue.status.is_closed else "Open",
-            } 
+            }
+            
 
           
         if issue.type.name == 'Investigation':
-            
-            project_name = issue.project.name.split('(')
+            project_name = issue.project.name.split('(')[0]
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" : ' '.join(project_name[0].split(' ')),
+                "Project_Name" : project_name,
                 "Chainage_From" : issue.investigation_chainage_from,
                 "Chainage_To" : issue.investigation_chainage_to,
                 "Direction" : issue.investigation_chainage_side,
@@ -199,12 +195,12 @@ def issues_to_csv(project, queryset, type):
                 "Testing_Carried_Out_By" :issue.assigned_to.username if issue.assigned_to else None,
                 "Outcome_Report" : "",
                 "Remark" :"",
-            } 
+            }
+
 
             
 
         if issue.type.name == 'Accident':
-            project_name = issue.project.name.split('(')
             
 
             
@@ -213,7 +209,12 @@ def issues_to_csv(project, queryset, type):
                 "Description" : issue.accident_classification,
 
 
-            } 
+            }
+        for custom_attr in custom_attrs:
+            value = issue.custom_attributes_values.attributes_values.get(str(custom_attr.id), None)
+            issue_data[custom_attr.name] = value
+
+        writer.writerow(issue_data) 
 
     return csv_data
 
