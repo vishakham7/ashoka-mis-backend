@@ -99,22 +99,22 @@ def issues_to_csv(project, queryset, type):
                               "Issue_Raised_To"]
 
     if type == 'Compliance':
-        fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
-                          "Photograph During Inspection", "Asset Type", "Performance Parameter",
-                          "Issue Raised On", "Issue Raised By",
-                          "Issue Raised To , Timeline (As per  Schedule F)",
-                          "Target Date (As per  Schedule F)", "Status (Open/Closed/Under Rectification)",
-                          "Issue Closed On Date", "Complianced (Yes/No)", "Issue Closed By"
-                          "Photograph Post Compliance", "Remark (If Any)", "Current Status" ]
+        fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
+                          "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
+                          "Issue_Raised_On", "Issue_Raised_By",
+                          "Issue_Raised_To , Timeline",
+                          "Target_Date", "Status",
+                          "Issue_Closed_On_Date", "Complianced", "Issue_Closed_By"
+                          "Photograph_Post_Compliance", "Remark", "Current_Status" ]
     if type == 'Investigation':
-        fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
-                          "Photograph During Inspection", "Asset Type", "Performance Parameter",
-                          "Issue Raised On (Date)", "Issue Raised By (Name of Concessionaire)",
-                          "Issue Raised To (Assignee Name Max Upto 3 Persons)"]
+        fieldnames = ["Sr.No", "Project_Namee", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
+                          "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
+                          "Issue_Raised_On", "Issue_Raised_By",
+                          "Issue_Raised_To"]
 
     if type == 'Accident':
-        fieldnames = ["Sr.No", "Description","No. of Accidents","No. of Peoples affected","No. of Accidents",
-                        "No. of Peoples affected", "No. of Accidents", "No. of Peoples affected"]
+        fieldnames = ["Sr.No", "Description","No_of_Accidents_in_previous_month","No._of_Peoples_affected","No_of_Accidents",
+                        "No_of_Peoples_affected", "No_of_Accidents", "No_of_Peoples_affected"]
 
     custom_attrs = project.issuecustomattributes.all()
     for custom_attr in custom_attrs:
@@ -154,26 +154,26 @@ def issues_to_csv(project, queryset, type):
             project_name = issue.project.name.split('(')
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project Name" : ' '.join(project_name[0].split(' ')),
-                "Chainage From" : issue.chainage_from,
-                "Chainage To" : issue.chainage_to,
+                "Project_Name" : ' '.join(project_name[0].split(' ')),
+                "Chainage_From" : issue.chainage_from,
+                "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
-                "Description of Issue" : issue.description,
-                "Photograph During Inspection" : issue.attachments,
-                "Asset Type" : issue.issue_category,
-                "Performance Parameter" : issue.issue_subcategory,
-                "Issue Raised On" : issue.created_date,
-                "Issue Raised By" : issue.owner.full_name if issue.owner else None,
-                "Issue Raised To" : issue.assigned_to.full_name if issue.assigned_to else None,
-                "Timeline (As per  Schedule F)" : issue,
-                "Target Date (As per  Schedule F)" : issue.target_date,
-                "Status (Open/Closed/Under Rectification)" : issue.status.name if issue.status else None,
-                "Issue Closed On Date" : issue.finished_date if issue.status=='close' else None,
-                "Complianced (Yes/No)" : 'Yes' if issue.compliance_is_update==False else 'No',
-                "Issue Closed By" : "",
-                "Photograph Post Compliance" : issue.attachments,
-                "Remark (If Any)":"",
-                "Current Status" : "Closed" if issue.status.is_closed else "Open",
+                "Description_of_Issue" : issue.description,
+                "Photograph_During_Inspection" : issue.attachments,
+                "Asset_Type" : issue.issue_category,
+                "Performance_Parameter" : issue.issue_subcategory,
+                "Issue_Raised_On" : issue.created_date,
+                "Issue_Raised By" : issue.owner.full_name if issue.owner else None,
+                "Issue_Raised_To" : issue.assigned_to.full_name if issue.assigned_to else None,
+                "Timeline" : issue,
+                "Target_Date" : issue.target_date,
+                "Status" : issue.status.name if issue.status else None,
+                "Issue_Closed_On_Date" : issue.finished_date if issue.status=='close' else None,
+                "Complianced" : 'Yes' if issue.compliance_is_update==False else 'No',
+                "Issue_Closed_By" : "",
+                "Photograph_Post_Compliance" : issue.attachments,
+                "Remark":"",
+                "Current_Status" : "Closed" if issue.status.is_closed else "Open",
             } 
 
           
@@ -182,22 +182,22 @@ def issues_to_csv(project, queryset, type):
             project_name = issue.project.name.split('(')
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project Name" : ' '.join(project_name[0].split(' ')),
-                "Chainage From" : issue.investigation_chainage_from,
-                "Chainage To" : issue.investigation_chainage_to,
+                "Project_Name" : ' '.join(project_name[0].split(' ')),
+                "Chainage_From" : issue.investigation_chainage_from,
+                "Chainage_To" : issue.investigation_chainage_to,
                 "Direction" : issue.investigation_chainage_side,
-                "Description of Issue" : issue.investigation_description,
-                "Photograph During Inspection" : issue.attachments.name,
-                "Asset Type" : issue.asset_name,
-                "Performance Parameter" : issue.test_name,
-                "Issue Raised On (Date)" : issue.created_date,
-                "Name of Test" : "",
-                "Testing Method" : "",
-                "Standard References for testing" : "",
-                "Test Carried Out Date" :"",
-                "Testing Carried Out By (Name)" :issue.assigned_to.username if issue.assigned_to else None,
-                "Outcome Report" : "",
-                "Remark (If Any)" :"",
+                "Description_of_Issue" : issue.investigation_description,
+                "Photograph_During_Inspection" : issue.attachments.name,
+                "Asset_Type" : issue.asset_name,
+                "Performance_Parameter" : issue.test_name,
+                "Issue_Raised_On" : issue.created_date,
+                "Name_of_Test" : "",
+                "Testing_Method" : "",
+                "Standard_References_for_testing" : "",
+                "Test_Carried_Out_Date" :"",
+                "Testing_Carried_Out_By" :issue.assigned_to.username if issue.assigned_to else None,
+                "Outcome_Report" : "",
+                "Remark" :"",
             } 
 
             
@@ -214,10 +214,6 @@ def issues_to_csv(project, queryset, type):
 
             } 
 
-       
-
-
-        print(issue_data)
     return csv_data
 
 
