@@ -144,7 +144,7 @@ class ProjectDefaults(models.Model):
 
 
 class Project(ProjectDefaults, TaggedMixin, TagsColorsMixin, models.Model):
-    name = models.TextField(max_length=250, null=False, blank=False,
+    name = models.TextField(null=False, blank=False,
                             verbose_name=_("name"))
     slug = models.SlugField(max_length=250, unique=True, null=False, blank=True,
                             verbose_name=_("slug"))

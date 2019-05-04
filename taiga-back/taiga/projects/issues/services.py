@@ -200,7 +200,7 @@ def issues_to_csv(project, queryset, type):
 
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" : project_name,
+                "Project_Name" : issue.project.name,
                 "Chainage_From" : issue.chainage_from,
                 "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
@@ -219,7 +219,7 @@ def issues_to_csv(project, queryset, type):
 
         if issue.type.name == 'Compliance':
     
-            project_name = issue.project.name.split('(')[0]
+            # project_name = issue.project.name.split('(')[0]
             issue_data = {
                 "Sr.No" : issue.ref,
                 "Project_Name" : project_name,
