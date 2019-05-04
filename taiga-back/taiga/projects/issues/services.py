@@ -200,7 +200,7 @@ def issues_to_csv(project, queryset, type):
 
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" : "project_name",
+                "Project_Name" : project_name,
                 "Chainage_From" : issue.chainage_from,
                 "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
@@ -224,7 +224,7 @@ def issues_to_csv(project, queryset, type):
             project_name = issue.project.name.split('(')[0]
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" : "project_name",
+                "Project_Name" : project_name,
                 "Chainage_From" : issue.chainage_from,
                 "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
@@ -252,7 +252,7 @@ def issues_to_csv(project, queryset, type):
             project_name = issue.project.name.split('(')[0]
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" : "project_name",
+                "Project_Name" :   project_name,
                 "Chainage_From" : issue.investigation_chainage_from,
                 "Chainage_To" : issue.investigation_chainage_to,
                 "Direction" : issue.investigation_chainage_side,
