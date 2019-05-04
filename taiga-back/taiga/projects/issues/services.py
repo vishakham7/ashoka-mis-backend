@@ -107,8 +107,8 @@ def issues_to_csv(project, queryset, type):
         issue_data = {
             "id": issue.id,
             "ref": issue.ref,
-            "subject": "this is my ...",
-            "description": issue.description,
+            "subject": "norepy",
+            "description": "this is my awesome",
             "sprint_id": issue.milestone.id if issue.milestone else None,
             "sprint": issue.milestone.name if issue.milestone else None,
             "sprint_estimated_start": issue.milestone.estimated_start if issue.milestone else None,
