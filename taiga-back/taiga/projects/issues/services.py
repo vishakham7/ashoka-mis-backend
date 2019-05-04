@@ -204,8 +204,7 @@ def issues_to_csv(project, queryset, type):
                 "Chainage_From" : issue.chainage_from,
                 "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
-                "description": 'siddeshware is my lead',
-                "Description_of_Issue" : 'siddeshware',
+                "Description_of_Issue" : issue.description,
                 "Photograph_During_Inspection" : issue.attachments.name,
                 "Asset_Type" : issue.issue_category,
                 "Performance_Parameter" : issue.issue_subcategory,
@@ -219,7 +218,6 @@ def issues_to_csv(project, queryset, type):
 
 
         if issue.type.name == 'Compliance':
-            
     
             project_name = issue.project.name.split('(')[0]
             issue_data = {
