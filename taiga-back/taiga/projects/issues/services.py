@@ -168,9 +168,9 @@ def issues_to_csv(project, queryset, type):
         fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
                           "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
                           "Issue_Raised_On", "Issue_Raised_By",
-                          "Issue_Raised_To , Timeline",
+                          "Issue_Raised_To" , "Timeline",
                           "Target_Date", "Status",
-                          "Issue_Closed_On_Date", "Complianced", "Issue_Closed_By"
+                          "Issue_Closed_On_Date", "Complianced", "Issue_Closed_By",
                           "Photograph_Post_Compliance", "Remark", "Current_Status" ]
     if type == 'Investigation':
         fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
@@ -222,7 +222,7 @@ def issues_to_csv(project, queryset, type):
             # project_name = issue.project.name.split('(')[0]
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" : project_name,
+                "Project_Name" : str(issue.project.name),
                 "Chainage_From" : issue.chainage_from,
                 "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
@@ -231,7 +231,7 @@ def issues_to_csv(project, queryset, type):
                 "Asset_Type" : issue.issue_category,
                 "Performance_Parameter" : issue.issue_subcategory,
                 "Issue_Raised_On" : issue.created_date,
-                "Issue_Raised By" : issue.owner.full_name if issue.owner else None,
+                "Issue_Raised_By" : issue.owner.full_name if issue.owner else None,
                 "Issue_Raised_To" : issue.assigned_to.full_name if issue.assigned_to else None,
                 "Timeline" : issue,
                 "Target_Date" : issue.target_date,
@@ -241,7 +241,7 @@ def issues_to_csv(project, queryset, type):
                 "Issue_Closed_By" : "",
                 "Photograph_Post_Compliance" : issue.attachments,
                 "Remark":"",
-                "Current_Status" : "Closed" if issue.status.is_closed else "Open",
+                # "Current_Status" : "Closed" if issue.status.is_closed==True else "Open",
             }
             
 
