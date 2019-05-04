@@ -248,42 +248,6 @@ def issues_to_csv(project, queryset):
             writer.writerow(issue_data)
 
 
-
-            issue_data = {
-                "id": issue.id,
-                "ref": issue.ref,
-                "subject": issue.subject,
-                "description": issue.description,
-                "sprint_id": issue.milestone.id if issue.milestone else None,
-                "sprint": issue.milestone.name if issue.milestone else None,
-                "sprint_estimated_start": issue.milestone.estimated_start if issue.milestone else None,
-                "sprint_estimated_finish": issue.milestone.estimated_finish if issue.milestone else None,
-                "owner": issue.owner.username if issue.owner else None,
-                "owner_full_name": issue.owner.get_full_name() if issue.owner else None,
-                "assigned_to": issue.assigned_to.username if issue.assigned_to else None,
-                "assigned_to_full_name": issue.assigned_to.get_full_name() if issue.assigned_to else None,
-                "status": issue.status.name if issue.status else None,
-                "severity": issue.severity.name if issue.severity else None,
-                "priority": issue.priority.name if issue.priority else None,
-                "type": issue.type.name,
-                "is_closed": issue.is_closed,
-                "attachments": issue.attachments.count(),
-                "external_reference": issue.external_reference,
-                "tags": ",".join(issue.tags or []),
-                "watchers": issue.watchers,
-                "voters": issue.total_voters,
-                "created_date": issue.created_date,
-                "modified_date": issue.modified_date,
-                "finished_date": issue.finished_date,
-                "due_date": issue.due_date,
-                "due_date_reason": issue.due_date_reason,
-            }
-
-            for custom_attr in custom_attrs:
-                value = issue.custom_attributes_values.attributes_values.get(str(custom_attr.id), None)
-                issue_data[custom_attr.name] = value
-
-            writer.writerow(issue_data)
             print(issue_data)
     return csv_data
 
