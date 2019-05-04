@@ -76,7 +76,7 @@ def create_issues_in_bulk(bulk_data, callback=None, precall=None, **additional_f
 # CSV
 #####################################################
 
-def issues_to_csv(project, queryset, type):
+def issues_to_csv(project, queryset, type, project_name):
     """ 
     csv_data = io.StringIO()
     fieldnames = ["id", "ref", "subject", "description", "sprint_id", "sprint",
@@ -195,12 +195,12 @@ def issues_to_csv(project, queryset, type):
 
 
         if issue.type.name == 'Issue':
-            project_name = issue.project.name.split('(')[0]
-
-
+            # project_name = issue.project.name.split('(')[0]
+            print('=======================================')
+            print(project_name)
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" : issue.project.name,
+                "Project_Name" : project_name,
                 "Chainage_From" : issue.chainage_from,
                 "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
@@ -213,9 +213,6 @@ def issues_to_csv(project, queryset, type):
                 "Issue_Raised_To" : issue.assigned_to.full_name if issue.assigned_to else None,
 
             }
-
-            print(issue_data)
-
 
         if issue.type.name == 'Compliance':
     
