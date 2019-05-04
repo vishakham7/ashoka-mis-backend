@@ -101,14 +101,14 @@ def issues_to_csv(project, queryset, type):
     queryset = attach_total_voters_to_queryset(queryset)
     queryset = attach_watchers_to_queryset(queryset)
 
-    writer = csv.DictWriter(csv_data, fieldnames=fieldnames, delimiter=',', lineterminator='\n')
+    writer = csv.DictWriter(csv_data, fieldnames=fieldnames)
     writer.writeheader()
     for issue in queryset:
         issue_data = {
             "id": issue.id,
             "ref": issue.ref,
             "subject": "norepy",
-            "description": "this is my awesome",
+            "description": [1,2,3,4,5],
             "sprint_id": issue.milestone.id if issue.milestone else None,
             "sprint": issue.milestone.name if issue.milestone else None,
             "sprint_estimated_start": issue.milestone.estimated_start if issue.milestone else None,
