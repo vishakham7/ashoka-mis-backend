@@ -89,21 +89,21 @@ def issues_to_csv(project, queryset):
                                        "project")
     queryset = attach_total_voters_to_queryset(queryset)
     queryset = attach_watchers_to_queryset(queryset)
-    for issue in queryset:
-        
-        if issue.type.name == 'Issue':
-            print("in issue==================")
-            fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
+    fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
                           "Photograph During Inspection", "Asset Type", "Performance Parameter",
                           "Issue Raised On (Date)", "Issue Raised By (Name of Concessionaire)",
                           "Issue Raised To (Assignee Name Max Upto 3 Persons)"]
 
-            custom_attrs = project.issuecustomattributes.all()
-            for custom_attr in custom_attrs:
-                fieldnames.append(custom_attr.name)
-            
-            writer = csv.DictWriter(csv_data, fieldnames=fieldnames)
-            writer.writeheader()
+    custom_attrs = project.issuecustomattributes.all()
+    for custom_attr in custom_attrs:
+        fieldnames.append(custom_attr.name)
+    
+    writer = csv.DictWriter(csv_data, fieldnames=fieldnames)
+    writer.writeheader()
+    for issue in queryset:
+        
+        if issue.type.name == 'Issue':
+            print("in issue=====================")
             issue_data = {
                 "Sr.No" : issue.ref,
                 "Project Name" : issue.project.name,
@@ -119,6 +119,11 @@ def issues_to_csv(project, queryset):
                 "Issue Raised To (Assignee Name Max Upto 3 Persons)" : issue.assigned_to.full_name if issue.assigned_to else None,
 
             }
+            for custom_attr in custom_attrs:
+                value = issue.custom_attributes_values.attributes_values.get(str(custom_attr.id), None)
+                issue_data[custom_attr.name] = value
+
+            writer.writerow(issue_data)
 
         if issue.type.name == 'Compliance':
             fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
@@ -202,11 +207,7 @@ def issues_to_csv(project, queryset):
 
             } 
 
-        for custom_attr in custom_attrs:
-            value = issue.custom_attributes_values.attributes_values.get(str(custom_attr.id), None)
-            issue_data[custom_attr.name] = value
-
-        writer.writerow(issue_data)
+       
 
 
         print(issue_data)
