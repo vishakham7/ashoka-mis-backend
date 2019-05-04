@@ -76,7 +76,7 @@ def create_issues_in_bulk(bulk_data, callback=None, precall=None, **additional_f
 # CSV
 #####################################################
 
-def issues_to_csv(project, queryset):
+def issues_to_csv(project, queryset, type):
     csv_data = io.StringIO()
     
 
@@ -86,13 +86,35 @@ def issues_to_csv(project, queryset):
     queryset = queryset.select_related("owner",
                                        "assigned_to",
                                        "status",
-                                       "project")
+                                       "project",
+                                       "type")
     queryset = attach_total_voters_to_queryset(queryset)
     queryset = attach_watchers_to_queryset(queryset)
-    fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
-                          "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
-                          "Issue_Raised_On", "Issue_Raised_By",
-                          "Issue_Raised_To"]
+    print(type)
+
+    if type == 'Issue':
+        fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
+                              "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
+                              "Issue_Raised_On", "Issue_Raised_By",
+                              "Issue_Raised_To"]
+
+    if type == 'Compliance':
+        fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
+                          "Photograph During Inspection", "Asset Type", "Performance Parameter",
+                          "Issue Raised On", "Issue Raised By",
+                          "Issue Raised To , Timeline (As per  Schedule F)",
+                          "Target Date (As per  Schedule F)", "Status (Open/Closed/Under Rectification)",
+                          "Issue Closed On Date", "Complianced (Yes/No)", "Issue Closed By"
+                          "Photograph Post Compliance", "Remark (If Any)", "Current Status" ]
+    if type == 'Investigation':
+        fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
+                          "Photograph During Inspection", "Asset Type", "Performance Parameter",
+                          "Issue Raised On (Date)", "Issue Raised By (Name of Concessionaire)",
+                          "Issue Raised To (Assignee Name Max Upto 3 Persons)"]
+
+    if type == 'Accident':
+        fieldnames = ["Sr.No", "Description","No. of Accidents","No. of Peoples affected","No. of Accidents",
+                        "No. of Peoples affected", "No. of Accidents", "No. of Peoples affected"]
 
     custom_attrs = project.issuecustomattributes.all()
     for custom_attr in custom_attrs:
@@ -100,10 +122,10 @@ def issues_to_csv(project, queryset):
     
     writer = csv.DictWriter(csv_data, fieldnames=fieldnames)
     writer.writeheader()
+
     for issue in queryset:
         
         if issue.type.name == 'Issue':
-            print('------------------------------')
             project_name = issue.project.name.split('(')
             issue_data = {
                 "Sr.No" : issue.ref,
@@ -127,18 +149,12 @@ def issues_to_csv(project, queryset):
             writer.writerow(issue_data)
 
         if issue.type.name == 'Compliance':
-            fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
-                          "Photograph During Inspection", "Asset Type", "Performance Parameter",
-                          "Issue Raised On", "Issue Raised By",
-                          "Issue Raised To , Timeline (As per  Schedule F)",
-                          "Target Date (As per  Schedule F)", "Status (Open/Closed/Under Rectification)",
-                          "Issue Closed On Date", "Complianced (Yes/No)", "Issue Closed By"
-                          "Photograph Post Compliance", "Remark (If Any)", "Current Status" ]
+            
     
-        
+            project_name = issue.project.name.split('(')
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project Name" : issue.project.name,
+                "Project Name" : ' '.join(project_name[0].split(' ')),
                 "Chainage From" : issue.chainage_from,
                 "Chainage To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
@@ -162,21 +178,11 @@ def issues_to_csv(project, queryset):
 
           
         if issue.type.name == 'Investigation':
-            fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
-                          "Photograph During Inspection", "Asset Type", "Performance Parameter",
-                          "Issue Raised On (Date)", "Issue Raised By (Name of Concessionaire)",
-                          "Issue Raised To (Assignee Name Max Upto 3 Persons)"]
-
-            custom_attrs = project.issuecustomattributes.all()
-            for custom_attr in custom_attrs:
-                fieldnames.append(custom_attr.name)
             
-            writer = csv.DictWriter(csv_data, fieldnames=fieldnames)
-            writer.writeheader()
-                    
+            project_name = issue.project.name.split('(')
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project Name" : issue.project.name,
+                "Project Name" : ' '.join(project_name[0].split(' ')),
                 "Chainage From" : issue.investigation_chainage_from,
                 "Chainage To" : issue.investigation_chainage_to,
                 "Direction" : issue.investigation_chainage_side,
@@ -197,8 +203,8 @@ def issues_to_csv(project, queryset):
             
 
         if issue.type.name == 'Accident':
-            fieldnames = ["Sr.No", "Description","No. of Accidents","No. of Peoples affected","No. of Accidents",
-            "No. of Peoples affected", "No. of Accidents", "No. of Peoples affected"]
+            project_name = issue.project.name.split('(')
+            
 
             
             issue_data = {
