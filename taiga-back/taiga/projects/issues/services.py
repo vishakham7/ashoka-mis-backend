@@ -127,9 +127,10 @@ def issues_to_csv(project, queryset, type):
         
         if issue.type.name == 'Issue':
             project_name = issue.project.name.split('(')
+            # print(project_name)
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" : '\n'.join(project_name[0].split(' ')),
+                "Project_Name" : project_name[0],
                 "Chainage_From" : issue.chainage_from,
                 "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
