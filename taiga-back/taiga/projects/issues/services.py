@@ -135,10 +135,10 @@ def issues_to_csv(project, queryset, type):
             issue_data = {
                 "Sr.No" : issue.ref,
                 "Project_Name" : 'vishaka',
-                "Chainage_From" : 'rahul rahul rahul',
+                "Chainage_From" : 'rahul',
                 "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
-                "Description_of_Issue" : issue.description,
+                "Description_of_Issue" : 'siddeshware is my lead',
                 "Photograph_During_Inspection" : issue.attachments.name,
                 "Asset_Type" : issue.issue_category,
                 "Performance_Parameter" : issue.issue_subcategory,
