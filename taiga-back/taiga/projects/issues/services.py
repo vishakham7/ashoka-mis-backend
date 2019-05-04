@@ -200,7 +200,7 @@ def issues_to_csv(project, queryset, type):
 
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" : [issue.project.name],
+                "Project_Name" : "project_name",
                 "Chainage_From" : issue.chainage_from,
                 "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
@@ -224,7 +224,7 @@ def issues_to_csv(project, queryset, type):
             project_name = issue.project.name.split('(')[0]
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" : project_name,
+                "Project_Name" : "project_name",
                 "Chainage_From" : issue.chainage_from,
                 "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
@@ -252,7 +252,7 @@ def issues_to_csv(project, queryset, type):
             project_name = issue.project.name.split('(')[0]
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" : project_name,
+                "Project_Name" : "project_name",
                 "Chainage_From" : issue.investigation_chainage_from,
                 "Chainage_To" : issue.investigation_chainage_to,
                 "Direction" : issue.investigation_chainage_side,
@@ -276,16 +276,18 @@ def issues_to_csv(project, queryset, type):
         if issue.type.name == 'Accident':
             last_day_of_prev_month = date.today().replace(day=1) - timedelta(days=1)
             previous_month = date.today().replace(day=1) - timedelta(days=last_day_of_prev_month.day)
-            
+            first_date = date.today().replace(day=1)
+            current_date = date.today()
+            print(current_date)
             issue_data = {
                 "Sr.No" : issue.ref,
                 "Description" : issue.accident_classification,
-                "No_of_Accidents_previous_month":project.issues.filter(accident_date=previous_month).count(),
-                "No_of_Peoples_affected_previous_month":issue.animals_killed.count(),
-                "No_of_Accidents":"",
-                "No_of_Peoples_affected":"",
-                "No_of_Accidents":"",
-                "No_of_Peoples_affected":"",
+                "No_of_Accidents_previous_month":project.issues.filter(accident_date__range=[previous_month,last_day_of_prev_month]).count(),
+                "No_of_Peoples_affected_previous_month":issue.animals_killed,
+                "No_of_Accidents":project.issues.filter(accident_date__range=[first_date,'2019-05-19']).count(),
+                "No_of_Peoples_affected":issue.animals_killed,
+                "No_of_Accidents":project.issues.filter(accident_date__range=[first_date,current_date]).count(),
+                "No_of_Peoples_affected":issue.animals_killed,
 
             }
         for custom_attr in custom_attrs:
