@@ -77,7 +77,7 @@ def create_issues_in_bulk(bulk_data, callback=None, precall=None, **additional_f
 #####################################################
 
 def issues_to_csv(project, queryset, type):
-    
+    """ 
     csv_data = io.StringIO()
     fieldnames = ["id", "ref", "subject", "description", "sprint_id", "sprint",
                   "sprint_estimated_start", "sprint_estimated_finish", "owner",
@@ -200,8 +200,8 @@ def issues_to_csv(project, queryset, type):
 
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" : 'vishaka',
-                "Chainage_From" : 'rahul',
+                "Project_Name" : [project_name],
+                "Chainage_From" : issue.chainage_from,
                 "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
                 "description": 'siddeshware is my lead',
@@ -297,7 +297,7 @@ def issues_to_csv(project, queryset, type):
     print(csv_data)
     return csv_data
 
-    """
+    
 
 
 #####################################################
