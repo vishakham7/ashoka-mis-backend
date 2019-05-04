@@ -91,7 +91,8 @@ def issues_to_csv(project, queryset):
     queryset = attach_watchers_to_queryset(queryset)
     for issue in queryset:
         
-        if issue.type.name == 'Issues':
+        if issue.type.name == 'Issue':
+            print("in issue==================")
             fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
                           "Photograph During Inspection", "Asset Type", "Performance Parameter",
                           "Issue Raised On (Date)", "Issue Raised By (Name of Concessionaire)",
@@ -103,8 +104,6 @@ def issues_to_csv(project, queryset):
             
             writer = csv.DictWriter(csv_data, fieldnames=fieldnames)
             writer.writeheader()
-            
-        
             issue_data = {
                 "Sr.No" : issue.ref,
                 "Project Name" : issue.project.name,
@@ -116,30 +115,19 @@ def issues_to_csv(project, queryset):
                 "Asset Type" : issue.issue_category,
                 "Performance Parameter" : issue.issue_subcategory,
                 "Issue Raised On (Date)" : issue.created_date,
-                "Issue Raised By (Name of Concessionaire)" : issue.owner.username if issue.owner else None,
-                "Issue Raised To (Assignee Name Max Upto 3 Persons)" : issue.assigned_to.username if issue.assigned_to else None,
+                "Issue Raised By (Name of Concessionaire)" : issue.owner.full_name if issue.owner else None,
+                "Issue Raised To (Assignee Name Max Upto 3 Persons)" : issue.assigned_to.full_name if issue.assigned_to else None,
 
-            } 
+            }
 
-            for custom_attr in custom_attrs:
-                value = issue.custom_attributes_values.attributes_values.get(str(custom_attr.id), None)
-                issue_data[custom_attr.name] = value
-
-            writer.writerow(issue_data)
-
-
-        if issue.type.name == 'Compliances':
+        if issue.type.name == 'Compliance':
             fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
                           "Photograph During Inspection", "Asset Type", "Performance Parameter",
-                          "Issue Raised On (Date)", "Issue Raised By (Name of Concessionaire)",
-                          "Issue Raised To (Assignee Name Max Upto 3 Persons), Timeline (As per  Schedule F)"]
-
-            custom_attrs = project.issuecustomattributes.all()
-            for custom_attr in custom_attrs:
-                fieldnames.append(custom_attr.name)
-            
-            writer = csv.DictWriter(csv_data, fieldnames=fieldnames)
-            writer.writeheader()
+                          "Issue Raised On", "Issue Raised By",
+                          "Issue Raised To , Timeline (As per  Schedule F)",
+                          "Target Date (As per  Schedule F)", "Status (Open/Closed/Under Rectification)",
+                          "Issue Closed On Date", "Complianced (Yes/No)", "Issue Closed By"
+                          "Photograph Post Compliance", "Remark (If Any)", "Current Status" ]
     
         
             issue_data = {
@@ -152,26 +140,21 @@ def issues_to_csv(project, queryset):
                 "Photograph During Inspection" : issue.attachments,
                 "Asset Type" : issue.issue_category,
                 "Performance Parameter" : issue.issue_subcategory,
-                "Issue Raised On (Date)" : issue.created_date,
-                "Issue Raised By (Name of Concessionaire)" : issue.owner.username if issue.owner else None,
-                "Issue Raised To (Assignee Name Max Upto 3 Persons)" : issue.assigned_to.username if issue.assigned_to else None,
+                "Issue Raised On" : issue.created_date,
+                "Issue Raised By" : issue.owner.full_name if issue.owner else None,
+                "Issue Raised To" : issue.assigned_to.full_name if issue.assigned_to else None,
                 "Timeline (As per  Schedule F)" : issue,
                 "Target Date (As per  Schedule F)" : issue.target_date,
                 "Status (Open/Closed/Under Rectification)" : issue.status.name if issue.status else None,
-                "Issue Closed On Date (If Closed)" : issue.finished_date if issue.status=='close' else None,
+                "Issue Closed On Date" : issue.finished_date if issue.status=='close' else None,
                 "Complianced (Yes/No)" : 'Yes' if issue.compliance_is_update==False else 'No',
-                "Issue Closed By (If Closed only)" : "",
+                "Issue Closed By" : "",
                 "Photograph Post Compliance" : issue.attachments,
                 "Remark (If Any)":"",
                 "Current Status" : "Closed" if issue.status.is_closed else "Open",
             } 
 
-            for custom_attr in custom_attrs:
-                value = issue.custom_attributes_values.attributes_values.get(str(custom_attr.id), None)
-                issue_data[custom_attr.name] = value
-
-            writer.writerow(issue_data)
-
+          
         if issue.type.name == 'Investigation':
             fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
                           "Photograph During Inspection", "Asset Type", "Performance Parameter",
@@ -184,71 +167,49 @@ def issues_to_csv(project, queryset):
             
             writer = csv.DictWriter(csv_data, fieldnames=fieldnames)
             writer.writeheader()
-    
-        
+                    
             issue_data = {
                 "Sr.No" : issue.ref,
                 "Project Name" : issue.project.name,
-                "Chainage From" : issue.chainage_from,
-                "Chainage To" : issue.chainage_to,
-                "Direction" : issue.chainage_side,
-                "Description of Issue" : issue.description,
+                "Chainage From" : issue.investigation_chainage_from,
+                "Chainage To" : issue.investigation_chainage_to,
+                "Direction" : issue.investigation_chainage_side,
+                "Description of Issue" : issue.investigation_description,
                 "Photograph During Inspection" : issue.attachments.name,
-                "Asset Type" : issue.issue_category,
-                "Performance Parameter" : issue.issue_subcategory,
+                "Asset Type" : issue.asset_name,
+                "Performance Parameter" : issue.test_name,
                 "Issue Raised On (Date)" : issue.created_date,
-                "Issue Raised By (Name of Concessionaire)" : issue.owner.username if issue.owner else None,
-                "Issue Raised To (Assignee Name Max Upto 3 Persons)" : issue.assigned_to.username if issue.assigned_to else None,
-
+                "Name of Test" : "",
+                "Testing Method" : "",
+                "Standard References for testing" : "",
+                "Test Carried Out Date" :"",
+                "Testing Carried Out By (Name)" :issue.assigned_to.username if issue.assigned_to else None,
+                "Outcome Report" : "",
+                "Remark (If Any)" :"",
             } 
 
-            for custom_attr in custom_attrs:
-                value = issue.custom_attributes_values.attributes_values.get(str(custom_attr.id), None)
-                issue_data[custom_attr.name] = value
-
-            writer.writerow(issue_data)
+            
 
         if issue.type.name == 'Accident':
-            fieldnames = ["id", "ref", "subject", "description", "sprint_id", "sprint",
-                          "sprint_estimated_start", "sprint_estimated_finish", "owner",
-                          "owner_full_name", "assigned_to", "assigned_to_full_name",
-                          "status", "severity", "priority", "type", "is_closed",
-                          "attachments", "external_reference", "tags",  "watchers",
-                          "voters", "created_date", "modified_date", "finished_date",
-                          "due_date", "due_date_reason"]
+            fieldnames = ["Sr.No", "Description","No. of Accidents","No. of Peoples affected","No. of Accidents",
+            "No. of Peoples affected", "No. of Accidents", "No. of Peoples affected"]
 
-            custom_attrs = project.issuecustomattributes.all()
-            for custom_attr in custom_attrs:
-                fieldnames.append(custom_attr.name)
             
-            writer = csv.DictWriter(csv_data, fieldnames=fieldnames)
-            writer.writeheader()
-    
-        
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project Name" : issue.project.name,
-                "Chainage From" : issue.chainage_from,
-                "Chainage To" : issue.chainage_to,
-                "Direction" : issue.chainage_side,
-                "Description of Issue" : issue.description,
-                "Photograph During Inspection" : issue.attachments,
-                "Asset Type" : issue.issue_category,
-                "Performance Parameter" : issue.issue_subcategory,
-                "Issue Raised On (Date)" : issue.created_date,
-                "Issue Raised By (Name of Concessionaire)" : issue.owner.username if issue.owner else None,
-                "Issue Raised To (Assignee Name Max Upto 3 Persons)" : issue.assigned_to.username if issue.assigned_to else None,
+                "Description" : issue.accident_classification,
+
 
             } 
 
-            for custom_attr in custom_attrs:
-                value = issue.custom_attributes_values.attributes_values.get(str(custom_attr.id), None)
-                issue_data[custom_attr.name] = value
+        for custom_attr in custom_attrs:
+            value = issue.custom_attributes_values.attributes_values.get(str(custom_attr.id), None)
+            issue_data[custom_attr.name] = value
 
-            writer.writerow(issue_data)
+        writer.writerow(issue_data)
 
 
-            print(issue_data)
+        print(issue_data)
     return csv_data
 
 
