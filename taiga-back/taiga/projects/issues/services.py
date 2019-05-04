@@ -89,10 +89,10 @@ def issues_to_csv(project, queryset):
                                        "project")
     queryset = attach_total_voters_to_queryset(queryset)
     queryset = attach_watchers_to_queryset(queryset)
-    fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
-                          "Photograph During Inspection", "Asset Type", "Performance Parameter",
-                          "Issue Raised On (Date)", "Issue Raised By (Name of Concessionaire)",
-                          "Issue Raised To (Assignee Name Max Upto 3 Persons)"]
+    fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
+                          "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
+                          "Issue_Raised_On", "Issue_Raised_By",
+                          "Issue_Raised_To"]
 
     custom_attrs = project.issuecustomattributes.all()
     for custom_attr in custom_attrs:
@@ -103,20 +103,19 @@ def issues_to_csv(project, queryset):
     for issue in queryset:
         
         if issue.type.name == 'Issue':
-            print("in issue=====================")
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project Name" : issue.project.name,
-                "Chainage From" : issue.chainage_from,
-                "Chainage To" : issue.chainage_to,
+                "Project_Name" : issue.project.name,
+                "Chainage_From" : issue.chainage_from,
+                "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
-                "Description of Issue" : issue.description,
-                "Photograph During Inspection" : issue.attachments.name,
-                "Asset Type" : issue.issue_category,
-                "Performance Parameter" : issue.issue_subcategory,
-                "Issue Raised On (Date)" : issue.created_date,
-                "Issue Raised By (Name of Concessionaire)" : issue.owner.full_name if issue.owner else None,
-                "Issue Raised To (Assignee Name Max Upto 3 Persons)" : issue.assigned_to.full_name if issue.assigned_to else None,
+                "Description_of_Issue" : issue.description,
+                "Photograph_During_Inspection" : issue.attachments.name,
+                "Asset_Type" : issue.issue_category,
+                "Performance_Parameter" : issue.issue_subcategory,
+                "Issue_Raised_On" : issue.created_date,
+                "Issue_Raised_By" : issue.owner.full_name if issue.owner else None,
+                "Issue_Raised_To" : issue.assigned_to.full_name if issue.assigned_to else None,
 
             }
             for custom_attr in custom_attrs:
