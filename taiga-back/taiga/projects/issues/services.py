@@ -101,7 +101,7 @@ def issues_to_csv(project, queryset, type):
     queryset = attach_total_voters_to_queryset(queryset)
     queryset = attach_watchers_to_queryset(queryset)
 
-    writer = csv.DictWriter(csv_data, fieldnames=fieldnames)
+    writer = csv.DictWriter(csv_data, fieldnames=fieldnames, delimiter=',', lineterminator='\n')
     writer.writeheader()
     for issue in queryset:
         issue_data = {
