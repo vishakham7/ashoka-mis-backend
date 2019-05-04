@@ -77,20 +77,8 @@ def create_issues_in_bulk(bulk_data, callback=None, precall=None, **additional_f
 #####################################################
 
 def issues_to_csv(project, queryset, type):
-
-
     csv_data = io.StringIO()
-    fieldnames = ["id", "ref", "subject", "description", "sprint_id", "sprint",
-                  "sprint_estimated_start", "sprint_estimated_finish", "owner",
-                  "owner_full_name", "assigned_to", "assigned_to_full_name",
-                  "status", "severity", "priority", "type", "is_closed",
-                  "attachments", "external_reference", "tags",  "watchers",
-                  "voters", "created_date", "modified_date", "finished_date",
-                  "due_date", "due_date_reason"]
-
-    custom_attrs = project.issuecustomattributes.all()
-    for custom_attr in custom_attrs:
-        fieldnames.append(custom_attr.name)
+    
 
     queryset = queryset.prefetch_related("attachments",
                                          "generated_user_stories",
@@ -98,204 +86,149 @@ def issues_to_csv(project, queryset, type):
     queryset = queryset.select_related("owner",
                                        "assigned_to",
                                        "status",
-                                       "project")
+                                       "project",
+                                       "type")
     queryset = attach_total_voters_to_queryset(queryset)
     queryset = attach_watchers_to_queryset(queryset)
+    print(type)
 
+    if type == 'Issue':
+        fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
+                              "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
+                              "Issue_Raised_On", "Issue_Raised_By",
+                              "Issue_Raised_To"]
+
+    if type == 'Compliance':
+        fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
+                          "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
+                          "Issue_Raised_On", "Issue_Raised_By",
+                          "Issue_Raised_To , Timeline",
+                          "Target_Date", "Status",
+                          "Issue_Closed_On_Date", "Complianced", "Issue_Closed_By"
+                          "Photograph_Post_Compliance", "Remark", "Current_Status" ]
+    if type == 'Investigation':
+        fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
+                          "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
+                          "Issue_Raised_On", "Name_of_Test", "Testing_Method", "Standard_References_for_testing",
+                          "Test_Carried_Out_Date", "Testing_Carried_Out_By", "Remark", "Outcome_Report"]
+        
+
+    if type == 'Accident':
+        fieldnames = ["Sr.No", "Description","No_of_Accidents_previous_month","No_of_Peoples_affected_previous_month","No_of_Accidents",
+                        "No_of_Peoples_affected", "No_of_Accidents", "No_of_Peoples_affected"]
+
+    custom_attrs = project.issuecustomattributes.all()
+    for custom_attr in custom_attrs:
+        fieldnames.append(custom_attr.name)
+    
     writer = csv.DictWriter(csv_data, fieldnames=fieldnames)
     writer.writeheader()
-    for issue in queryset:
-        issue_data = {
-            "id": issue.id,
-            "ref": issue.ref,
-            "subject": issue.subject,
-            "description": issue.description,
-            "sprint_id": issue.milestone.id if issue.milestone else None,
-            "sprint": issue.milestone.name if issue.milestone else None,
-            "sprint_estimated_start": issue.milestone.estimated_start if issue.milestone else None,
-            "sprint_estimated_finish": issue.milestone.estimated_finish if issue.milestone else None,
-            "owner": issue.owner.username if issue.owner else None,
-            "owner_full_name": issue.owner.get_full_name() if issue.owner else None,
-            "assigned_to": issue.assigned_to.username if issue.assigned_to else None,
-            "assigned_to_full_name": issue.assigned_to.get_full_name() if issue.assigned_to else None,
-            "status": issue.status.name if issue.status else None,
-            "severity": issue.severity.name if issue.severity else None,
-            "priority": issue.priority.name if issue.priority else None,
-            "type": issue.type.name,
-            "is_closed": issue.is_closed,
-            "attachments": issue.attachments.count(),
-            "external_reference": issue.external_reference,
-            "tags": ",".join(issue.tags or []),
-            "watchers": issue.watchers,
-            "voters": issue.total_voters,
-            "created_date": issue.created_date,
-            "modified_date": issue.modified_date,
-            "finished_date": issue.finished_date,
-            "due_date": issue.due_date,
-            "due_date_reason": issue.due_date_reason,
-        }
 
+    for issue in queryset:
+        
+
+
+        if issue.type.name == 'Issue':
+            project_name = issue.project.name.split('(')[0]
+
+
+            issue_data = {
+                "Sr.No" : issue.ref,
+                "Project_Name" : 'vishaka',
+                "Chainage_From" : 'rahul rahul rahul',
+                "Chainage_To" : issue.chainage_to,
+                "Direction" : issue.chainage_side,
+                "Description_of_Issue" : issue.description,
+                "Photograph_During_Inspection" : issue.attachments.name,
+                "Asset_Type" : issue.issue_category,
+                "Performance_Parameter" : issue.issue_subcategory,
+                "Issue_Raised_On" : issue.created_date,
+                "Issue_Raised_By" : issue.owner.full_name if issue.owner else None,
+                "Issue_Raised_To" : issue.assigned_to.full_name if issue.assigned_to else None,
+
+            }
+
+            print(issue_data)
+
+
+        if issue.type.name == 'Compliance':
+            
+    
+            project_name = issue.project.name.split('(')[0]
+            issue_data = {
+                "Sr.No" : issue.ref,
+                "Project_Name" : project_name,
+                "Chainage_From" : issue.chainage_from,
+                "Chainage_To" : issue.chainage_to,
+                "Direction" : issue.chainage_side,
+                "Description_of_Issue" : issue.description,
+                "Photograph_During_Inspection" : issue.attachments,
+                "Asset_Type" : issue.issue_category,
+                "Performance_Parameter" : issue.issue_subcategory,
+                "Issue_Raised_On" : issue.created_date,
+                "Issue_Raised By" : issue.owner.full_name if issue.owner else None,
+                "Issue_Raised_To" : issue.assigned_to.full_name if issue.assigned_to else None,
+                "Timeline" : issue,
+                "Target_Date" : issue.target_date,
+                "Status" : issue.status.name if issue.status else None,
+                "Issue_Closed_On_Date" : issue.finished_date if issue.status=='close' else None,
+                "Complianced" : 'Yes' if issue.compliance_is_update==False else 'No',
+                "Issue_Closed_By" : "",
+                "Photograph_Post_Compliance" : issue.attachments,
+                "Remark":"",
+                "Current_Status" : "Closed" if issue.status.is_closed else "Open",
+            }
+            
+
+          
+        if issue.type.name == 'Investigation':
+            project_name = issue.project.name.split('(')[0]
+            issue_data = {
+                "Sr.No" : issue.ref,
+                "Project_Name" : project_name,
+                "Chainage_From" : issue.investigation_chainage_from,
+                "Chainage_To" : issue.investigation_chainage_to,
+                "Direction" : issue.investigation_chainage_side,
+                "Description_of_Issue" : issue.investigation_description,
+                "Photograph_During_Inspection" : issue.attachments.name,
+                "Asset_Type" : issue.asset_name,
+                "Performance_Parameter" : issue.test_name,
+                "Issue_Raised_On" : issue.created_date,
+                "Name_of_Test" : "",
+                "Testing_Method" : "",
+                "Standard_References_for_testing" : "",
+                "Test_Carried_Out_Date" :"",
+                "Testing_Carried_Out_By" :issue.assigned_to.username if issue.assigned_to else None,
+                "Outcome_Report" : "",
+                "Remark" :"",
+            }
+
+
+            
+
+        if issue.type.name == 'Accident':
+            last_day_of_prev_month = date.today().replace(day=1) - timedelta(days=1)
+            previous_month = date.today().replace(day=1) - timedelta(days=last_day_of_prev_month.day)
+            
+            issue_data = {
+                "Sr.No" : issue.ref,
+                "Description" : issue.accident_classification,
+                "No_of_Accidents_previous_month":project.issues.filter(accident_date=previous_month).count(),
+                "No_of_Peoples_affected_previous_month":issue.animals_killed.count(),
+                "No_of_Accidents":"",
+                "No_of_Peoples_affected":"",
+                "No_of_Accidents":"",
+                "No_of_Peoples_affected":"",
+
+            }
         for custom_attr in custom_attrs:
             value = issue.custom_attributes_values.attributes_values.get(str(custom_attr.id), None)
             issue_data[custom_attr.name] = value
 
-        writer.writerow(issue_data)
+        writer.writerow(issue_data) 
 
+    print(csv_data)
     return csv_data
-
-    # csv_data = io.StringIO()
-    
-
-    # queryset = queryset.prefetch_related("attachments",
-    #                                      "generated_user_stories",
-    #                                      "custom_attributes_values")
-    # queryset = queryset.select_related("owner",
-    #                                    "assigned_to",
-    #                                    "status",
-    #                                    "project",
-    #                                    "type")
-    # queryset = attach_total_voters_to_queryset(queryset)
-    # queryset = attach_watchers_to_queryset(queryset)
-    # print(type)
-
-    # if type == 'Issue':
-    #     fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
-    #                           "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
-    #                           "Issue_Raised_On", "Issue_Raised_By",
-    #                           "Issue_Raised_To"]
-
-    # if type == 'Compliance':
-    #     fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
-    #                       "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
-    #                       "Issue_Raised_On", "Issue_Raised_By",
-    #                       "Issue_Raised_To , Timeline",
-    #                       "Target_Date", "Status",
-    #                       "Issue_Closed_On_Date", "Complianced", "Issue_Closed_By"
-    #                       "Photograph_Post_Compliance", "Remark", "Current_Status" ]
-    # if type == 'Investigation':
-    #     fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
-    #                       "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
-    #                       "Issue_Raised_On", "Name_of_Test", "Testing_Method", "Standard_References_for_testing",
-    #                       "Test_Carried_Out_Date", "Testing_Carried_Out_By", "Remark", "Outcome_Report"]
-        
-
-    # if type == 'Accident':
-    #     fieldnames = ["Sr.No", "Description","No_of_Accidents_previous_month","No_of_Peoples_affected_previous_month","No_of_Accidents",
-    #                     "No_of_Peoples_affected", "No_of_Accidents", "No_of_Peoples_affected"]
-
-    # custom_attrs = project.issuecustomattributes.all()
-    # for custom_attr in custom_attrs:
-    #     fieldnames.append(custom_attr.name)
-    
-    # writer = csv.DictWriter(csv_data, fieldnames=fieldnames)
-    # writer.writeheader()
-
-    # for issue in queryset:
-        
-
-
-    #     if issue.type.name == 'Issue':
-    #         project_name = issue.project.name.split('(')[0]
-    #         print('@@@@@@@@@@@@@@@@@@@@@@@@@@ 129 @@@@@@@@@@@@@@@@@@@@')
-    #         print(project_name)
-    #         print('@@@@@@@@@@@@@@@@@@@@@@@@@@ 129 @@@@@@@@@@@@@@@@@@@@')
-    #         issue_data = {
-    #             "Sr.No" : issue.ref,
-    #             "Project_Name" : 'rahul',
-    #             "Chainage_From" : issue.chainage_from,
-    #             "Chainage_To" : issue.chainage_to,
-    #             "Direction" : issue.chainage_side,
-    #             "Description_of_Issue" : issue.description,
-    #             "Photograph_During_Inspection" : issue.attachments.name,
-    #             "Asset_Type" : issue.issue_category,
-    #             "Performance_Parameter" : issue.issue_subcategory,
-    #             "Issue_Raised_On" : issue.created_date,
-    #             "Issue_Raised_By" : issue.owner.full_name if issue.owner else None,
-    #             "Issue_Raised_To" : issue.assigned_to.full_name if issue.assigned_to else None,
-
-    #         }
-
-    #         print(issue_data)
-
-
-    #     if issue.type.name == 'Compliance':
-            
-    
-    #         project_name = issue.project.name.split('(')[0]
-    #         issue_data = {
-    #             "Sr.No" : issue.ref,
-    #             "Project_Name" : project_name,
-    #             "Chainage_From" : issue.chainage_from,
-    #             "Chainage_To" : issue.chainage_to,
-    #             "Direction" : issue.chainage_side,
-    #             "Description_of_Issue" : issue.description,
-    #             "Photograph_During_Inspection" : issue.attachments,
-    #             "Asset_Type" : issue.issue_category,
-    #             "Performance_Parameter" : issue.issue_subcategory,
-    #             "Issue_Raised_On" : issue.created_date,
-    #             "Issue_Raised By" : issue.owner.full_name if issue.owner else None,
-    #             "Issue_Raised_To" : issue.assigned_to.full_name if issue.assigned_to else None,
-    #             "Timeline" : issue,
-    #             "Target_Date" : issue.target_date,
-    #             "Status" : issue.status.name if issue.status else None,
-    #             "Issue_Closed_On_Date" : issue.finished_date if issue.status=='close' else None,
-    #             "Complianced" : 'Yes' if issue.compliance_is_update==False else 'No',
-    #             "Issue_Closed_By" : "",
-    #             "Photograph_Post_Compliance" : issue.attachments,
-    #             "Remark":"",
-    #             "Current_Status" : "Closed" if issue.status.is_closed else "Open",
-    #         }
-            
-
-          
-    #     if issue.type.name == 'Investigation':
-    #         project_name = issue.project.name.split('(')[0]
-    #         issue_data = {
-    #             "Sr.No" : issue.ref,
-    #             "Project_Name" : project_name,
-    #             "Chainage_From" : issue.investigation_chainage_from,
-    #             "Chainage_To" : issue.investigation_chainage_to,
-    #             "Direction" : issue.investigation_chainage_side,
-    #             "Description_of_Issue" : issue.investigation_description,
-    #             "Photograph_During_Inspection" : issue.attachments.name,
-    #             "Asset_Type" : issue.asset_name,
-    #             "Performance_Parameter" : issue.test_name,
-    #             "Issue_Raised_On" : issue.created_date,
-    #             "Name_of_Test" : "",
-    #             "Testing_Method" : "",
-    #             "Standard_References_for_testing" : "",
-    #             "Test_Carried_Out_Date" :"",
-    #             "Testing_Carried_Out_By" :issue.assigned_to.username if issue.assigned_to else None,
-    #             "Outcome_Report" : "",
-    #             "Remark" :"",
-    #         }
-
-
-            
-
-    #     if issue.type.name == 'Accident':
-    #         last_day_of_prev_month = date.today().replace(day=1) - timedelta(days=1)
-    #         previous_month = date.today().replace(day=1) - timedelta(days=last_day_of_prev_month.day)
-            
-    #         issue_data = {
-    #             "Sr.No" : issue.ref,
-    #             "Description" : issue.accident_classification,
-    #             "No_of_Accidents_previous_month":project.issues.filter(accident_date=previous_month).count(),
-    #             "No_of_Peoples_affected_previous_month":issue.animals_killed.count(),
-    #             "No_of_Accidents":"",
-    #             "No_of_Peoples_affected":"",
-    #             "No_of_Accidents":"",
-    #             "No_of_Peoples_affected":"",
-
-    #         }
-    #     for custom_attr in custom_attrs:
-    #         value = issue.custom_attributes_values.attributes_values.get(str(custom_attr.id), None)
-    #         issue_data[custom_attr.name] = value
-
-    #     writer.writerow(issue_data) 
-
-    # print(csv_data)
-    # return csv_data
 
 
 #####################################################
