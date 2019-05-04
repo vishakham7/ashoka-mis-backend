@@ -95,7 +95,7 @@ def issues_to_csv(project, queryset, type):
     if type == 'Issue':
         fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
                               "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
-                              "Issue_Raised_On", "Issue_Raised_By",
+                              "Issue_Raised_On", "Issue_Raised_By", "description",
                               "Issue_Raised_To"]
 
     if type == 'Compliance':
@@ -138,7 +138,8 @@ def issues_to_csv(project, queryset, type):
                 "Chainage_From" : 'rahul',
                 "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
-                "Description_of_Issue" : 'siddeshware is my lead',
+                "description": 'siddeshware is my lead',
+                "Description_of_Issue" : 'siddeshware',
                 "Photograph_During_Inspection" : issue.attachments.name,
                 "Asset_Type" : issue.issue_category,
                 "Performance_Parameter" : issue.issue_subcategory,
