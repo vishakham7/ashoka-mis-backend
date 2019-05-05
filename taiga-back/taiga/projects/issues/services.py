@@ -303,9 +303,9 @@ def issues_to_csv(project, queryset, type, project_name):
             issue_data = {
                 "Sr.No" : issue.ref,
                 "Description" : issue.accident_classification,
-                "No_of_Accidents_previous_month":project.issues.filter(created_date__date__range=[previous_month,Previous_last_date]).count(),
+                "No_of_Accidents_previous_month":project.issues.filter(type__name='Accident',created_date__date__range=[previous_month,Previous_last_date]).count(),
                 "No_of_Peoples_affected_previous_month": sum(new_list_last),
-                "No_of_Accidents_during_this_month":project.issues.filter(created_date__date__range=[first_date,current_date]).count(),
+                "No_of_Accidents_during_this_month":project.issues.filter(type__name='Accident',created_date__date__range=[first_date,current_date]).count(),
                 "No_of_Peoples_affected_during_this_month": sum(new_list_current),
                 "No_of_Accidents_upto_this_month":project.issues.filter(type__name='Accident').count(),
                 "No_of_Peoples_affected_upto_this_month": sum(new_list_upto),
