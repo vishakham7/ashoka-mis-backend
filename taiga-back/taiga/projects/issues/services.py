@@ -76,73 +76,7 @@ def create_issues_in_bulk(bulk_data, callback=None, precall=None, **additional_f
 # CSV
 #####################################################
 
-def issues_to_csv(project, queryset, type, project_name):
-    """ 
-    csv_data = io.StringIO()
-    fieldnames = ["id", "ref", "subject", "description", "sprint_id", "sprint",
-                  "sprint_estimated_start", "sprint_estimated_finish", "owner",
-                  "owner_full_name", "assigned_to", "assigned_to_full_name",
-                  "status", "severity", "priority", "type", "is_closed",
-                  "attachments", "external_reference", "tags",  "watchers",
-                  "voters", "created_date", "modified_date", "finished_date",
-                  "due_date", "due_date_reason"]
-
-    custom_attrs = project.issuecustomattributes.all()
-    for custom_attr in custom_attrs:
-        fieldnames.append(custom_attr.name)
-
-    queryset = queryset.prefetch_related("attachments",
-                                         "generated_user_stories",
-                                         "custom_attributes_values")
-    queryset = queryset.select_related("owner",
-                                       "assigned_to",
-                                       "status",
-                                       "project")
-    queryset = attach_total_voters_to_queryset(queryset)
-    queryset = attach_watchers_to_queryset(queryset)
-
-    writer = csv.DictWriter(csv_data, fieldnames=fieldnames)
-    writer.writeheader()
-    for issue in queryset:
-        issue_data = {
-            "id": issue.id,
-            "ref": issue.ref,
-            "subject": "norepy",
-            "description": [1,2,3,4,5],
-            "sprint_id": issue.milestone.id if issue.milestone else None,
-            "sprint": issue.milestone.name if issue.milestone else None,
-            "sprint_estimated_start": issue.milestone.estimated_start if issue.milestone else None,
-            "sprint_estimated_finish": issue.milestone.estimated_finish if issue.milestone else None,
-            "owner": issue.owner.username if issue.owner else None,
-            "owner_full_name": issue.owner.get_full_name() if issue.owner else None,
-            "assigned_to": issue.assigned_to.username if issue.assigned_to else None,
-            "assigned_to_full_name": issue.assigned_to.get_full_name() if issue.assigned_to else None,
-            "status": issue.status.name if issue.status else None,
-            #"severity": issue.severity.name,
-            #"priority": issue.priority.name,
-            "type": issue.type.name,
-            "is_closed": issue.is_closed,
-            "attachments": issue.attachments.count(),
-            "external_reference": issue.external_reference,
-            "tags": ",".join(issue.tags or []),
-            "watchers": issue.watchers,
-            "voters": issue.total_voters,
-            "created_date": issue.created_date,
-            "modified_date": issue.modified_date,
-            "finished_date": issue.finished_date,
-            "due_date": issue.due_date,
-            "due_date_reason": issue.due_date_reason,
-        }
-
-        for custom_attr in custom_attrs:
-            value = issue.custom_attributes_values.attributes_values.get(str(custom_attr.id), None)
-            issue_data[custom_attr.name] = value
-
-        writer.writerow(issue_data)
-
-    return csv_data
-
-    """
+def issues_to_csv(project, queryset, type, status):
     csv_data = io.StringIO()
     
 
@@ -164,7 +98,7 @@ def issues_to_csv(project, queryset, type, project_name):
                               "Issue_Raised_On", "Issue_Raised_By", "description",
                               "Issue_Raised_To"]
 
-    if type == 'Compliance':
+    if type == 'Issue' and status== 'Closed':
         fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
                           "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
                           "Issue_Raised_On", "Issue_Raised_By",
@@ -211,10 +145,8 @@ def issues_to_csv(project, queryset, type, project_name):
 
             }
 
-        if issue.type.name == 'Compliance':
-    
-            # project_name = issue.project.name.split('(')[0]
-            issue_data = {
+        if issue.type.name == 'Issue' and issue.status.name == 'Closed':
+                issue_data = {
                 "Sr.No" : issue.ref,
                 "Project_Name" : issue.project.name,
                 "Chainage_From" : issue.chainage_from,
