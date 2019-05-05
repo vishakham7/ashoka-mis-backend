@@ -271,29 +271,40 @@ def issues_to_csv(project, queryset, type, project_name):
             current_date = date.today().strftime('%d-%m-%Y')
             previous_month = first_date_of_previos_month.strftime('%d-%m-%Y')
             Previous_last_date = last_day_of_prev_month.strftime('%d-%m-%Y')
-            
+            print(previous_month)
             animals_killed_last_month = project.issues.filter(accident_date__range=[previous_month,Previous_last_date]).values_list('animals_killed', flat=True)
+            print(animals_killed_last_month)
             animal_list_last_month = list(animals_killed_last_month)
             new_list_last = []
-            for i in animals_killed_last_month:
-                new_list_last.append(int(i))
-                animals_killed_count = sum(new_list_last)
+            
+            if animals_killed_last_month:
+                print("-------animals_killed_last_month---")
+                for i in animals_killed_last_month:
+                    if i:
+                        new_list_last.append(int(i))
+                        animals_killed_count = sum(new_list_last)
 
 
             animals_killed_cuurent_month = project.issues.filter(accident_date__range=[first_date,current_date]).values_list('animals_killed', flat=True)
             animal_list_current_month = list(animals_killed_cuurent_month)
             new_list_current = []
-            for i in animal_list_current_month:
-                new_list_current.append(int(i))
-                animals_killed_count = sum(new_list_current)
+            if animals_killed_cuurent_month:
+                print('------animals_killed_cuurent_month------')
+                for i in animal_list_current_month:
+                    if i:
+                        new_list_current.append(int(i))
+                        animals_killed_count = sum(new_list_current)
 
 
             animals_killed_upto_month = project.issues.filter(type__name='Accident').values_list('animals_killed', flat=True)
             animal_list_upto_month = list(animals_killed_upto_month)
             new_list_upto = []
-            for i in animals_killed_last_month:
-                new_list_upto.append(int(i))
-                animals_killed_count = sum(new_list_upto)
+            if animals_killed_upto_month:
+                print('-------animals_killed_upto_month------')
+                for i in animals_killed_last_month:
+                    if i:
+                        new_list_upto.append(int(i))
+                        animals_killed_count = sum(new_list_upto)
             
             issue_data = {
                 "Sr.No" : issue.ref,
