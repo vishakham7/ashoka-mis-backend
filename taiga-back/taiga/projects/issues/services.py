@@ -180,27 +180,27 @@ def issues_to_csv(project, queryset, type, project_name):
         
 
     if type == 'Accident':
-        fieldnames = ["Sr.No", "Description","No_of_Accidents_previous_month","No_of_Peoples_affected_previous_month","No_of_Accidents",
-                        "No_of_Peoples_affected", "No_of_Accidents", "No_of_Peoples_affected"]
+        fieldnames = ["Sr.No", "Description","No_of_Accidents_previous_month","No_of_Peoples_affected_previous_month","No_of_Accidents_during_this_month",
+                        "No_of_Peoples_affected_during_this_month", "No_of_Accidents_upto_this_month", "No_of_Peoples_affected_upto_this_month"]
 
     custom_attrs = project.issuecustomattributes.all()
+        
     for custom_attr in custom_attrs:
         fieldnames.append(custom_attr.name)
     
     writer = csv.DictWriter(csv_data, fieldnames=fieldnames)
     writer.writeheader()
 
+    animals_killed_count = 0
+
     for issue in queryset:
         
 
 
         if issue.type.name == 'Issue':
-            # project_name = issue.project.name.split('(')[0]
-            print('=======================================')
-            print(project_name)
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" : project_name,
+                "Project_Name" : issue.project.name,
                 "Chainage_From" : issue.chainage_from,
                 "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
@@ -219,7 +219,7 @@ def issues_to_csv(project, queryset, type, project_name):
             # project_name = issue.project.name.split('(')[0]
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" : str(issue.project.name),
+                "Project_Name" : issue.project.name,
                 "Chainage_From" : issue.chainage_from,
                 "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
@@ -244,10 +244,9 @@ def issues_to_csv(project, queryset, type, project_name):
 
           
         if issue.type.name == 'Investigation':
-            project_name = issue.project.name.split('(')[0]
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" :   project_name,
+                "Project_Name" :   issue.project.name,
                 "Chainage_From" : issue.investigation_chainage_from,
                 "Chainage_To" : issue.investigation_chainage_to,
                 "Direction" : issue.investigation_chainage_side,
@@ -270,19 +269,42 @@ def issues_to_csv(project, queryset, type, project_name):
 
         if issue.type.name == 'Accident':
             last_day_of_prev_month = date.today().replace(day=1) - timedelta(days=1)
-            previous_month = date.today().replace(day=1) - timedelta(days=last_day_of_prev_month.day)
-            first_date = date.today().replace(day=1)
-            current_date = date.today()
-            print(current_date)
+            first_date_of_previos_month = date.today().replace(day=1) - timedelta(days=last_day_of_prev_month.day)
+            first_date = date.today().replace(day=1).strftime('%d-%m-%Y')
+            current_date = date.today().strftime('%d-%m-%Y')
+            previous_month = first_date_of_previos_month.strftime('%d-%m-%Y')
+            Previous_last_date = last_day_of_prev_month.strftime('%d-%m-%Y')
+            
+            animals_killed_last_month = project.issues.filter(accident_date__range=[previous_month,Previous_last_date]).values_list('animals_killed', flat=True)
+            animal_list_last_month = list(animals_killed_last_month)
+            new_list_last = []
+            for i in animals_killed_last_month:
+                new_list_last.append(int(i))
+
+
+
+            animals_killed_cuurent_month = project.issues.filter(accident_date__range=[first_date,current_date]).values_list('animals_killed', flat=True)
+            animal_list_current_month = list(animals_killed_cuurent_month)
+            new_list_current = []
+            for i in animal_list_current_month:
+                new_list_current.append(int(i))
+
+
+            animals_killed_upto_month = project.issues.filter(type__name='Accident').values_list('animals_killed', flat=True)
+            animal_list_upto_month = list(animals_killed_upto_month)
+            new_list_upto = []
+            for i in animals_killed_last_month:
+                new_list_upto.append(int(i))
+
             issue_data = {
                 "Sr.No" : issue.ref,
                 "Description" : issue.accident_classification,
-                "No_of_Accidents_previous_month":project.issues.filter(accident_date__range=[previous_month,last_day_of_prev_month]).count(),
-                "No_of_Peoples_affected_previous_month":issue.animals_killed,
-                "No_of_Accidents":project.issues.filter(accident_date__range=[first_date,'2019-05-19']).count(),
-                "No_of_Peoples_affected":issue.animals_killed,
-                "No_of_Accidents":project.issues.filter(accident_date__range=[first_date,current_date]).count(),
-                "No_of_Peoples_affected":issue.animals_killed,
+                "No_of_Accidents_previous_month":project.issues.filter(accident_date__range=[previous_month,Previous_last_date]).count(),
+                "No_of_Peoples_affected_previous_month": sum(new_list_last),
+                "No_of_Accidents_during_this_month":project.issues.filter(accident_date__range=[first_date,current_date]).count(),
+                "No_of_Peoples_affected_during_this_month":  sum(new_list_current),
+                "No_of_Accidents_upto_this_month":project.issues.filter(type__name='Accident').count(),
+                "No_of_Peoples_affected_upto_this_month": sum(new_list_upto),
 
             }
         for custom_attr in custom_attrs:
