@@ -93,10 +93,10 @@ def issues_to_csv(project, queryset, type, status):
     print(type)
 
     if type == 'Issue':
-        fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
-                              "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
-                              "Issue_Raised_On", "Issue_Raised_By", "description",
-                              "Issue_Raised_To"]
+        fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
+                              "Photograph During Inspection", "Asset Type", "Performance Parameter",
+                              "Issue Raised On", "Issue Raised By", "description",
+                              "Issue Raised To"]
 
     if type == 'Issue' and status== 'Closed':
         fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
@@ -132,45 +132,47 @@ def issues_to_csv(project, queryset, type, status):
             if issue.type.name == type:
                 issue_data = {
                     "Sr.No" : issue.ref,
-                    "Project_Name" : issue.project.name,
-                    "Chainage_From" : issue.chainage_from,
-                    "Chainage_To" : issue.chainage_to,
+                    "Project Name" : issue.project.name,
+                    "Chainage From" : issue.chainage_from,
+                    "Chainage To" : issue.chainage_to,
                     "Direction" : issue.chainage_side,
-                    "Description_of_Issue" : issue.description,
-                    "Photograph_During_Inspection" : issue.attachments.name,
-                    "Asset_Type" : issue.issue_category,
-                    "Performance_Parameter" : issue.issue_subcategory,
-                    "Issue_Raised_On" : issue.created_date,
-                    "Issue_Raised_By" : issue.owner.full_name if issue.owner else None,
-                    "Issue_Raised_To" : issue.assigned_to.full_name if issue.assigned_to else None,
+                    "Description of Issue" : issue.description,
+                    "Photograph During Inspection" : issue.attachments.name,
+                    "Asset Type" : issue.issue_category,
+                    "Performance Parameter" : issue.issue_subcategory,
+                    "Issue Raised On" : issue.created_date,
+                    "Issue Raised By" : issue.owner.full_name if issue.owner else None,
+                    # "Issue Raised To" : issue.assigned_to.full_name if issue.assigned_to else None,
+                    "Issue Raised To" : issue.watchers
 
                 }
     
         if status:
             if issue.type.name == type and issue.status.name == status:
-                    issue_data = {
-                    "Sr.No" : issue.ref,
-                    "Project_Name" : issue.project.name,
-                    "Chainage_From" : issue.chainage_from,
-                    "Chainage_To" : issue.chainage_to,
-                    "Direction" : issue.chainage_side,
-                    "Description_of_Issue" : issue.description,
-                    "Photograph_During_Inspection" : issue.attachments.name,
-                    "Asset_Type" : issue.issue_category,
-                    "Performance_Parameter" : issue.issue_subcategory,
-                    "Issue_Raised_On" : issue.created_date,
-                    "Issue_Raised_By" : issue.owner.full_name if issue.owner else None,
-                    "Issue_Raised_To" : issue.assigned_to.full_name if issue.assigned_to else None,
-                    "Timeline" : issue,
-                    "Target_Date" : issue.target_date,
-                    "Status" : issue.status.name if issue.status else None,
-                    "Issue_Closed_On_Date" : issue.finished_date if issue.status=='close' else None,
-                    "Complianced" : 'Yes' if issue.compliance_is_update==False else 'No',
-                    "Issue_Closed_By" : "",
-                    "Photograph_Post_Compliance" : issue.attachments.name,
-                    "Remark":"",
-                    # "Current_Status" : "Closed" if issue.status.is_closed==True else "Open",
-                }
+                timeline = issue.target_date.date()
+                issue_data = {
+                "Sr.No" : issue.ref,
+                "Project_Name" : issue.project.name,
+                "Chainage_From" : issue.chainage_from,
+                "Chainage_To" : issue.chainage_to,
+                "Direction" : issue.chainage_side,
+                "Description_of_Issue" : issue.description,
+                "Photograph_During_Inspection" : issue.attachments.name,
+                "Asset_Type" : issue.issue_category,
+                "Performance_Parameter" : issue.issue_subcategory,
+                "Issue_Raised_On" : issue.created_date,
+                "Issue_Raised_By" : issue.owner.full_name if issue.owner else None,
+                "Issue_Raised_To" : issue.assigned_to.full_name if issue.assigned_to else None,
+                "Timeline" : "",
+                "Target_Date" : issue.target_date,
+                "Status" : issue.status.name if issue.status else None,
+                "Issue_Closed_On_Date" : issue.finished_date if issue.status=='close' else None,
+                "Complianced" : 'Yes' if issue.compliance_is_update==False else 'No',
+                "Issue_Closed_By" : "",
+                "Photograph_Post_Compliance" : issue.attachments.name,
+                "Remark":"",
+                # "Current_Status" : "Closed" if issue.status.is_closed==True else "Open",
+            }
 
           
         if issue.type.name == 'Investigation':
@@ -181,10 +183,8 @@ def issues_to_csv(project, queryset, type, status):
                 "Chainage_To" : issue.investigation_chainage_to,
                 "Direction" : issue.investigation_chainage_side,
                 "Description_of_Issue" : issue.investigation_description,
-                "Photograph_During_Inspection" : issue.attachments.name,
                 "Asset_Type" : issue.asset_name,
                 "Performance_Parameter" : issue.test_name,
-                "Issue_Raised_On" : issue.created_date,
                 "Name_of_Test" : "",
                 "Testing_Method" : "",
                 "Standard_References_for_testing" : "",
