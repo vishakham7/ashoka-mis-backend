@@ -192,11 +192,8 @@ def issues_to_csv(project, queryset, type, project_name):
     writer.writeheader()
 
     animals_killed_count = 0
-
+    
     for issue in queryset:
-        
-
-
         if issue.type.name == 'Issue':
             issue_data = {
                 "Sr.No" : issue.ref,
@@ -313,7 +310,6 @@ def issues_to_csv(project, queryset, type, project_name):
 
         writer.writerow(issue_data) 
 
-    print(csv_data)
     return csv_data
 
     

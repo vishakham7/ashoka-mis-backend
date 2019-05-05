@@ -623,7 +623,7 @@ class IssueTypeIssue(IssueViewSet):
 
         return super().create(request, *args, **kwargs)
 
-    def post_save(self, object, created=False):
+    def post_save(self, object, created=False, updated=False):
         super().post_save(object, created=created)
 
         if created:
@@ -636,6 +636,28 @@ class IssueTypeIssue(IssueViewSet):
 
             if issue_status_id:
                 Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
+
+        elif updated:
+            status_name = self.request.DATA['status_name']
+            project = self.request.DATA['project']
+            project_id = object.project_id
+
+            try:
+                issue_status_id = IssueStatus.objects.get(project_id = project_id, name = "Closed")
+            except:
+                issue_status_id = None
+
+            if issue_status_id:
+                Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
+
+            try:
+                type_value_id = IssueType.objects.get(name='Compliance', project_id = project)
+            except:
+                type_value_id = None
+
+            if type_value_id:
+                Issue.objects.filter(id = object.id).update(type_id = type_value_id.id)
+
         else:
             status_name = self.request.DATA['status_name']
             project = self.request.DATA['project']
