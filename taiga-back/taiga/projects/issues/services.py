@@ -34,7 +34,7 @@ from taiga.projects.notifications.utils import attach_watchers_to_queryset
 
 from . import models
 
-from datetime import date, timedelta
+from datetime import datetime
 #####################################################
 # Bulk actions
 #####################################################
@@ -99,23 +99,23 @@ def issues_to_csv(project, queryset, type, status):
                               "Issue Raised To"]
 
     if type == 'Issue' and status== 'Closed':
-        fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
-                          "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
-                          "Issue_Raised_On", "Issue_Raised_By",
-                          "Issue_Raised_To" , "Timeline",
-                          "Target_Date", "Status",
-                          "Issue_Closed_On_Date", "Complianced", "Issue_Closed_By",
-                          "Photograph_Post_Compliance", "Remark", "Current_Status" ]
+        fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
+                          "Photograph During Inspection", "Asset Type", "Performance Parameter",
+                          "Issue Raised On", "Issue Raised By",
+                          "Issue Raised To" , "Timeline",
+                          "Target Date", "Status",
+                          "Issue Closed On Date", "Complianced", "Issue Closed By",
+                          "Photograph Post Compliance", "Remark", "Current Status","Description Of Compliance" ]
     if type == 'Investigation':
-        fieldnames = ["Sr.No", "Project_Name", "Chainage_From", "Chainage_To", "Direction", "Description_of_Issue",
-                          "Photograph_During_Inspection", "Asset_Type", "Performance_Parameter",
-                          "Issue_Raised_On", "Name_of_Test", "Testing_Method", "Standard_References_for_testing",
-                          "Test_Carried_Out_Date", "Testing_Carried_Out_By", "Remark", "Outcome_Report"]
+        fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
+                          "Photograph During Inspection", "Asset Type", "Performance Parameter",
+                          "Issue Raised On", "Name of Test", "Testing Method", "Standard References for testing",
+                          "Test Carried Out Date", "Testing Carried Out By", "Remark", "Outcome Report"]
         
 
     if type == 'Accident':
-        fieldnames = ["Sr.No", "Description","No_of_Accidents_previous_month","No_of_Peoples_affected_previous_month","No_of_Accidents_during_this_month",
-                        "No_of_Peoples_affected_during_this_month", "No_of_Accidents_upto_this_month", "No_of_Peoples_affected_upto_this_month"]
+        fieldnames = ["Sr.No", "Description","No of Accidents previous month","No of Peoples affected previous month","No of Accidents during this month",
+                        "No of Peoples affected during this month", "No of Accidents upto this month", "No of Peoples affected upto this month"]
 
     custom_attrs = project.issuecustomattributes.all()
         
@@ -142,34 +142,37 @@ def issues_to_csv(project, queryset, type, status):
                     "Performance Parameter" : issue.issue_subcategory,
                     "Issue Raised On" : issue.created_date,
                     "Issue Raised By" : issue.owner.full_name if issue.owner else None,
-                    # "Issue Raised To" : issue.assigned_to.full_name if issue.assigned_to else None,
-                    "Issue Raised To" : issue.watchers
+                    "Issue Raised To" : issue.assigned_to.full_name if issue.assigned_to else None,
+                    # "Issue Raised To" : issue.watchers
 
                 }
     
         if status:
             if issue.type.name == type and issue.status.name == status:
-                timeline = issue.target_date.date()
+                a = issue.created_date.date()
+                b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
+                timeline = b-a
                 issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" : issue.project.name,
-                "Chainage_From" : issue.chainage_from,
-                "Chainage_To" : issue.chainage_to,
+                "Project Name" : issue.project.name,
+                "Chainage From" : issue.chainage_from,
+                "Chainage To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
-                "Description_of_Issue" : issue.description,
-                "Photograph_During_Inspection" : issue.attachments.name,
-                "Asset_Type" : issue.issue_category,
-                "Performance_Parameter" : issue.issue_subcategory,
-                "Issue_Raised_On" : issue.created_date,
-                "Issue_Raised_By" : issue.owner.full_name if issue.owner else None,
-                "Issue_Raised_To" : issue.assigned_to.full_name if issue.assigned_to else None,
-                "Timeline" : "",
-                "Target_Date" : issue.target_date,
+                "Description of Issue" : issue.description,
+                "Photograph During Inspection" : issue.attachments.name,
+                "Asset Type" : issue.issue_category,
+                "Performance Parameter" : issue.issue_subcategory,
+                "Issue Raised On" : issue.created_date,
+                "Issue Raised By" : issue.owner.full_name if issue.owner else None,
+                "Issue Raised To" : issue.assigned_to.full_name if issue.assigned_to else None,
+                "Timeline" : timeline,
+                "Target Date" : issue.target_date,
                 "Status" : issue.status.name if issue.status else None,
-                "Issue_Closed_On_Date" : issue.finished_date if issue.status=='close' else None,
+                "Issue Closed On Date" : issue.finished_date if status=='Closed' else None,
                 "Complianced" : 'Yes' if issue.compliance_is_update==False else 'No',
-                "Issue_Closed_By" : "",
-                "Photograph_Post_Compliance" : issue.attachments.name,
+                "Issue Closed By" : "",
+                "Description Of Compliance": issue.compliance_description,
+                "Photograph Post Compliance" : issue.attachments.name,
                 "Remark":"",
                 # "Current_Status" : "Closed" if issue.status.is_closed==True else "Open",
             }
@@ -178,19 +181,19 @@ def issues_to_csv(project, queryset, type, status):
         if issue.type.name == 'Investigation':
             issue_data = {
                 "Sr.No" : issue.ref,
-                "Project_Name" :   issue.project.name,
-                "Chainage_From" : issue.investigation_chainage_from,
-                "Chainage_To" : issue.investigation_chainage_to,
+                "Project Name" :   issue.project.name,
+                "Chainage From" : issue.investigation_chainage_from,
+                "Chainage To" : issue.investigation_chainage_to,
                 "Direction" : issue.investigation_chainage_side,
-                "Description_of_Issue" : issue.investigation_description,
+                "Description of Issue" : issue.investigation_description,
                 "Asset_Type" : issue.asset_name,
-                "Performance_Parameter" : issue.test_name,
-                "Name_of_Test" : "",
-                "Testing_Method" : "",
-                "Standard_References_for_testing" : "",
-                "Test_Carried_Out_Date" :"",
-                "Testing_Carried_Out_By" :issue.assigned_to.username if issue.assigned_to else None,
-                "Outcome_Report" : "",
+                "Performance Parameter" : issue.test_name,
+                "Name of Test" : "",
+                "TestingMethod" : "",
+                "Standard References for testing" : "",
+                "Test Carried Out Date" :"",
+                "Testing Carried Out By" :issue.assigned_to.username if issue.assigned_to else None,
+                "Outcome Report" : "",
                 "Remark" :"",
             }
 
