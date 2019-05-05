@@ -145,7 +145,7 @@ def issues_to_csv(project, queryset, type, status):
 
             }
 
-        if issue.type.name == 'Issue' and issue.status.name == 'Closed':
+        if issue.type.name == type and issue.status.name == status:
                 issue_data = {
                 "Sr.No" : issue.ref,
                 "Project_Name" : issue.project.name,
