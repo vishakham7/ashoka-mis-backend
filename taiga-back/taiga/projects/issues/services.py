@@ -128,8 +128,6 @@ def issues_to_csv(project, queryset, type, status):
     animals_killed_count = 0
     
     for issue in queryset:
-        print("=======================================")
-        print(issue.type.name)
         if issue:
             if issue.type.name == type:
                 issue_data = {
@@ -169,7 +167,7 @@ def issues_to_csv(project, queryset, type, status):
                     "Issue_Closed_On_Date" : issue.finished_date if issue.status=='close' else None,
                     "Complianced" : 'Yes' if issue.compliance_is_update==False else 'No',
                     "Issue_Closed_By" : "",
-                    "Photograph_Post_Compliance" : issue.attachments,
+                    "Photograph_Post_Compliance" : issue.attachments.name,
                     "Remark":"",
                     # "Current_Status" : "Closed" if issue.status.is_closed==True else "Open",
                 }
