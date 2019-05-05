@@ -267,54 +267,48 @@ def issues_to_csv(project, queryset, type, project_name):
         if issue.type.name == 'Accident':
             last_day_of_prev_month = date.today().replace(day=1) - timedelta(days=1)
             first_date_of_previos_month = date.today().replace(day=1) - timedelta(days=last_day_of_prev_month.day)
-            first_date = date.today().replace(day=1).strftime('%d-%m-%Y')
-            current_date = date.today().strftime('%d-%m-%Y')
-            previous_month = first_date_of_previos_month.strftime('%d-%m-%Y')
-            Previous_last_date = last_day_of_prev_month.strftime('%d-%m-%Y')
-            print(previous_month)
-            animals_killed_last_month = project.issues.filter(accident_date__range=[previous_month,Previous_last_date]).values_list('animals_killed', flat=True)
-            print(animals_killed_last_month)
+            first_date = date.today().replace(day=1)
+            current_date = date.today()
+            previous_month = first_date_of_previos_month
+            Previous_last_date = last_day_of_prev_month
+            animals_killed_last_month = project.issues.filter(created_date__date__range=[previous_month,Previous_last_date],type__name='Accident').values_list('animals_killed', flat=True)
+            
             animal_list_last_month = list(animals_killed_last_month)
             new_list_last = []
             
             if animals_killed_last_month:
-                print("-------animals_killed_last_month---")
                 for i in animals_killed_last_month:
                     if i:
                         new_list_last.append(int(i))
-                        animals_killed_count = sum(new_list_last)
 
 
-            animals_killed_cuurent_month = project.issues.filter(accident_date__range=[first_date,current_date]).values_list('animals_killed', flat=True)
+            animals_killed_cuurent_month = project.issues.filter(created_date__date__range=[first_date,current_date],type__name='Accident').values_list('animals_killed', flat=True)
             animal_list_current_month = list(animals_killed_cuurent_month)
             new_list_current = []
             if animals_killed_cuurent_month:
-                print('------animals_killed_cuurent_month------')
                 for i in animal_list_current_month:
                     if i:
                         new_list_current.append(int(i))
-                        animals_killed_count = sum(new_list_current)
 
 
             animals_killed_upto_month = project.issues.filter(type__name='Accident').values_list('animals_killed', flat=True)
+
             animal_list_upto_month = list(animals_killed_upto_month)
             new_list_upto = []
             if animals_killed_upto_month:
-                print('-------animals_killed_upto_month------')
-                for i in animals_killed_last_month:
+                for i in animal_list_upto_month:
                     if i:
                         new_list_upto.append(int(i))
-                        animals_killed_count = sum(new_list_upto)
             
             issue_data = {
                 "Sr.No" : issue.ref,
                 "Description" : issue.accident_classification,
-                "No_of_Accidents_previous_month":project.issues.filter(accident_date__range=[previous_month,Previous_last_date]).count(),
-                "No_of_Peoples_affected_previous_month": animals_killed_count,
-                "No_of_Accidents_during_this_month":project.issues.filter(accident_date__range=[first_date,current_date]).count(),
-                "No_of_Peoples_affected_during_this_month":  animals_killed_count,
+                "No_of_Accidents_previous_month":project.issues.filter(created_date__date__range=[previous_month,Previous_last_date]).count(),
+                "No_of_Peoples_affected_previous_month": sum(new_list_last),
+                "No_of_Accidents_during_this_month":project.issues.filter(created_date__date__range=[first_date,current_date]).count(),
+                "No_of_Peoples_affected_during_this_month": sum(new_list_current),
                 "No_of_Accidents_upto_this_month":project.issues.filter(type__name='Accident').count(),
-                "No_of_Peoples_affected_upto_this_month": animals_killed_count,
+                "No_of_Peoples_affected_upto_this_month": sum(new_list_upto),
 
             }
         for custom_attr in custom_attrs:
