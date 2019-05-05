@@ -277,7 +277,7 @@ def issues_to_csv(project, queryset, type, project_name):
             new_list_last = []
             for i in animals_killed_last_month:
                 new_list_last.append(int(i))
-
+                animals_killed_count = sum(new_list_last)
 
 
             animals_killed_cuurent_month = project.issues.filter(accident_date__range=[first_date,current_date]).values_list('animals_killed', flat=True)
@@ -285,6 +285,7 @@ def issues_to_csv(project, queryset, type, project_name):
             new_list_current = []
             for i in animal_list_current_month:
                 new_list_current.append(int(i))
+                animals_killed_count = sum(new_list_current)
 
 
             animals_killed_upto_month = project.issues.filter(type__name='Accident').values_list('animals_killed', flat=True)
@@ -292,16 +293,17 @@ def issues_to_csv(project, queryset, type, project_name):
             new_list_upto = []
             for i in animals_killed_last_month:
                 new_list_upto.append(int(i))
-
+                animals_killed_count = sum(new_list_upto)
+            
             issue_data = {
                 "Sr.No" : issue.ref,
                 "Description" : issue.accident_classification,
                 "No_of_Accidents_previous_month":project.issues.filter(accident_date__range=[previous_month,Previous_last_date]).count(),
-                "No_of_Peoples_affected_previous_month": sum(new_list_last),
+                "No_of_Peoples_affected_previous_month": animals_killed_count,
                 "No_of_Accidents_during_this_month":project.issues.filter(accident_date__range=[first_date,current_date]).count(),
-                "No_of_Peoples_affected_during_this_month":  sum(new_list_current),
+                "No_of_Peoples_affected_during_this_month":  animals_killed_count,
                 "No_of_Accidents_upto_this_month":project.issues.filter(type__name='Accident').count(),
-                "No_of_Peoples_affected_upto_this_month": sum(new_list_upto),
+                "No_of_Peoples_affected_upto_this_month": animals_killed_count,
 
             }
         for custom_attr in custom_attrs:
