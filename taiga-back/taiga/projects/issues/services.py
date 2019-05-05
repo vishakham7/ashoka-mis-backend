@@ -128,7 +128,7 @@ def issues_to_csv(project, queryset, type, status):
     animals_killed_count = 0
     
     for issue in queryset:
-        if issue.type.name == 'Issue':
+        if issue.type.name == 'Issue' and (issue.status.name=='open' or issue.status.name=='pending' or issue.status.name=='Closed'):
             issue_data = {
                 "Sr.No" : issue.ref,
                 "Project_Name" : issue.project.name,
