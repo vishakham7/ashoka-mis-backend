@@ -153,7 +153,7 @@ def issues_to_csv(project, queryset, type, status):
                 "Chainage_To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
                 "Description_of_Issue" : issue.description,
-                "Photograph_During_Inspection" : issue.attachments,
+                "Photograph_During_Inspection" : issue.attachments.name,
                 "Asset_Type" : issue.issue_category,
                 "Performance_Parameter" : issue.issue_subcategory,
                 "Issue_Raised_On" : issue.created_date,
