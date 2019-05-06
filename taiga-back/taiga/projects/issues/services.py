@@ -150,8 +150,7 @@ def issues_to_csv(project, queryset, type, status):
                     "Performance Parameter" : issue.issue_subcategory,
                     "Issue Raised On" : issue.created_date,
                     "Issue Raised By" : issue.owner.full_name if issue.owner else None,
-                    "Issue Raised To" : issue.assigned_to.full_name if issue.assigned_to else None,
-                    "Issue Raised To 2" : wathcer_username
+                    "Issue Raised To" : issue.assigned_to.full_name if issue.assigned_to else None +'\n'+wathcer_username,
 
                 }
     
