@@ -163,6 +163,16 @@ def issues_to_csv(project, queryset, type, status):
     
         if status:
             if issue.type.name == type and issue.status.name == status:
+                qqq = issue.watchers
+                print('--------------------------------')
+                watchers = []
+                wathcer_username = issue.assigned_to.full_name + '\n'
+                for i in qqq:
+                    sql = User.objects.get(id=int(i))
+                    watchers.append(sql.full_name)
+                print(watchers)
+                for j in watchers:
+                    wathcer_username = j +'\n'+ wathcer_username 
                 a = issue.created_date.date()
                 b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
                 timeline = b-a
@@ -178,7 +188,7 @@ def issues_to_csv(project, queryset, type, status):
                 "Performance Parameter" : issue.issue_subcategory,
                 "Issue Raised On" : issue.created_date,
                 "Issue Raised By" : issue.owner.full_name if issue.owner else None,
-                "Issue Raised To" : issue.assigned_to.full_name if issue.assigned_to else None,
+                "Issue Raised To" : wathcer_username,
                 "Timeline" : timeline,
                 "Target Date" : issue.target_date,
                 "Status" : issue.status.name if issue.status else None,
@@ -193,7 +203,6 @@ def issues_to_csv(project, queryset, type, status):
 
           
         if issue.type.name == 'Investigation':
-            print(issue.id)
             issue_data = {
                 "Sr.No" : issue.ref,
                 "Project Name" :   issue.project.name,
