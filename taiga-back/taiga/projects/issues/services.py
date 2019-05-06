@@ -133,7 +133,7 @@ def issues_to_csv(project, queryset, type, status):
             watchers = []
             wathcer_username = ""
             for i in issue.watchers:
-                sql = User.objects.filter(id=int(i))
+                sql = User.objects.get(id=int(i))
                 watchers.append(sql.full_name)
             for watcher in watchers:
                 wathcer_username = watcher
