@@ -146,17 +146,18 @@ def issues_to_csv(project, queryset, type, status):
 
             if issue.type.name == type:
                 if issue.attachments:
-                    file_name = ""
-                    file = issue.attachments.values_list('attached_file')
+                    file_name = "" 
+                    files = []
+                    file = issue.attachments.filter(project__id=issue.project.id).values_list('attached_file')
                     for i in file:
-                        print(';;;;;;;;;;;;;;;;;;;')
-                        print(i)
-                        
-                        file_name = os.path.join(settings.MEDIA_URL, str(i[0]))
-                        print(file_name)
-                        print('-------------------------------------------------')
+                        files.extend(i)
+                    #     for j in len(file):
+                    #         files.append(file[j])
+                    for j in files:
+                        file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
                 else:
                     file_name=""
+                print(file_name)
                 issue_data = {
                     "Sr.No" : issue.ref,
                     "Project Name" : issue.project.name,
@@ -164,7 +165,6 @@ def issues_to_csv(project, queryset, type, status):
                     "Chainage To" : issue.chainage_to,
                     "Direction" : issue.chainage_side,
                     "Description of Issue" : issue.description,
-                    "attached_file" : "<a href="+str(file)+">Link</a>" if issue.attachments else None,
                     "Photograph During Inspection" : file_name if issue.attachments else None,
                    
                     "Asset Type" : issue.issue_category,
@@ -173,12 +173,10 @@ def issues_to_csv(project, queryset, type, status):
                     "Issue Raised By" : issue.owner.full_name if issue.owner else None,
                     "Issue Raised To" : wathcer_username,
                 }
-                print(issue_data['Photograph During Inspection'])
     
         if status:
             if issue.type.name == type and issue.status.name == status:
                 qqq = issue.watchers
-                print('--------------------------------')
                 watchers = []
                 wathcer_username = issue.assigned_to.full_name + '\n'
                 for i in qqq:
@@ -190,6 +188,20 @@ def issues_to_csv(project, queryset, type, status):
                 a = issue.created_date.date()
                 b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
                 timeline = b-a
+
+                if issue.attachments:
+                    file_name = "" 
+                    files = []
+                    file = issue.attachments.filter(project_id=issue.project.id).values_list('attached_file')
+                    for i in file:
+                        files.extend(i)
+                    #     for j in len(file):
+                    #         files.append(file[j])
+                    for j in files:
+                        file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
+                else:
+                    file_name=""
+                print(file_name)
                 issue_data = {
                 "Sr.No" : issue.ref,
                 "Project Name" : issue.project.name,
@@ -197,7 +209,7 @@ def issues_to_csv(project, queryset, type, status):
                 "Chainage To" : issue.chainage_to,
                 "Direction" : issue.chainage_side,
                 "Description of Issue" : issue.description,
-                "Photograph During Inspection" : issue.attachments.name,
+                "Photograph During Inspection" : file_name,
                 "Asset Type" : issue.issue_category,
                 "Performance Parameter" : issue.issue_subcategory,
                 "Issue Raised On" : issue.created_date,
