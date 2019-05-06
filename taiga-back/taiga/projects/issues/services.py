@@ -130,15 +130,13 @@ def issues_to_csv(project, queryset, type, status):
     
     for issue in queryset:
         if issue:
-            print('----------------------------')
-            print(issue.watchers)
             watchers = []
             wathcer_username = ""
             for i in issue.watchers:
                 sql = User.objects.filter(id=int(i))
-                watchers.append(sql)
+                watchers.append(sql.full_name)
             for watcher in watchers:
-                wathcer_username = watcher.username
+                wathcer_username = watcher
             if issue.type.name == type:
                 issue_data = {
                     "Sr.No" : issue.ref,
