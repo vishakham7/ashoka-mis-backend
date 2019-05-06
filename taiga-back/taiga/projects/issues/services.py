@@ -96,7 +96,7 @@ def issues_to_csv(project, queryset, type, status):
         fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
                               "Photograph During Inspection", "Asset Type", "Performance Parameter",
                               "Issue Raised On", "Issue Raised By", "description",
-                              "Issue Raised To"]
+                              "Issue Raised To","Issue Raised To 2"]
 
     if type == 'Issue' and status== 'Closed':
         fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
@@ -129,6 +129,8 @@ def issues_to_csv(project, queryset, type, status):
     
     for issue in queryset:
         if issue:
+            print('----------------------------')
+            print(issue.watchers)
             if issue.type.name == type:
                 issue_data = {
                     "Sr.No" : issue.ref,
@@ -143,7 +145,7 @@ def issues_to_csv(project, queryset, type, status):
                     "Issue Raised On" : issue.created_date,
                     "Issue Raised By" : issue.owner.full_name if issue.owner else None,
                     "Issue Raised To" : issue.assigned_to.full_name if issue.assigned_to else None,
-                    # "Issue Raised To" : issue.watchers
+                    "Issue Raised To 2" : issue.watchers
 
                 }
     
