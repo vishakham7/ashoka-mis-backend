@@ -136,16 +136,21 @@ def issues_to_csv(project, queryset, type, status):
         if issue:
 
             qqq = issue.watchers
-            print('--------------------------------')
             watchers = []
             wathcer_username = issue.assigned_to.full_name + '\n'
             for i in qqq:
                 sql = User.objects.get(id=int(i))
                 watchers.append(sql.full_name)
-            print(watchers)
             for j in watchers:
                 wathcer_username = j +'\n'+ wathcer_username 
+
             if issue.type.name == type:
+                if issue.attachments:
+                    file = issue.attachments.values_list('attached_file')
+                    for i in file:
+                        print(i)
+                        print('-------------------------------------------------')
+                        file = os.path.join(settings.MEDIA_URL, str(i[0]))
                 issue_data = {
                     "Sr.No" : issue.ref,
                     "Project Name" : issue.project.name,
@@ -153,13 +158,14 @@ def issues_to_csv(project, queryset, type, status):
                     "Chainage To" : issue.chainage_to,
                     "Direction" : issue.chainage_side,
                     "Description of Issue" : issue.description,
-                    "Photograph During Inspection" : "file",
+                    "Photograph During Inspection" : file,
                     "Asset Type" : issue.issue_category,
                     "Performance Parameter" : issue.issue_subcategory,
                     "Issue Raised On" : issue.created_date,
                     "Issue Raised By" : issue.owner.full_name if issue.owner else None,
                     "Issue Raised To" : wathcer_username,
                 }
+                print(issue_data['Photograph During Inspection'])
     
         if status:
             if issue.type.name == type and issue.status.name == status:
