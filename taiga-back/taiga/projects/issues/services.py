@@ -100,7 +100,7 @@ def issues_to_csv(project, queryset, type, status):
         fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
                               "Photograph During Inspection", "Asset Type", "Performance Parameter",
                               "Issue Raised On", "Issue Raised By", "description",
-                              "Issue Raised To"]
+                              "Issue Raised To","watcher"]
 
     if type == 'Issue' and status== 'Closed':
         fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
@@ -134,24 +134,32 @@ def issues_to_csv(project, queryset, type, status):
     for issue in queryset:
        
         if issue:
-            watchers = []
-            wathcer_username = issue.assigned_to.full_name + '\n'
-            for i in issue.watchers:
-                sql = User.objects.get(id=int(i))
-                watchers.append(sql.full_name)
-            for watcher in watchers:
-                wathcer_username = watcher +'\n'
-            print(wathcer_username)
+            # watchers = []
+            # wathcer_username = issue.assigned_to.full_name + '\n'
+            # for i in issue.watchers:
+            #     sql = User.objects.get(id=int(i))
+            #     watchers.append(sql.full_name)
+            # for watcher in watchers:
+            #     wathcer_username = watcher +'\n'
+            # print(wathcer_username)
             # # name = Attachment.objects.filter(project__id=issue.project.id)
             # # file = ""
             # print('-------------------------------')
             # # for i in name:
             # #     print(i.attached_file)
             # #     file = os.path.join(settings.MEDIA_ROOT, str(i.attached_file))
+
+
+            qqq = issue.watchers
             print('--------------------------------')
-            print(issue.attachments.name)
-
-
+            watchers = []
+            wathcer_username = issue.assigned_to.full_name + '\n'
+            for i in qqq:
+                sql = User.objects.get(id=int(i))
+                watchers.append(sql.full_name)
+            print(watchers)
+            for j in watchers:
+                wathcer_username = j +'\n'+ wathcer_username 
             if issue.type.name == type:
                 issue_data = {
                     "Sr.No" : issue.ref,
@@ -165,8 +173,8 @@ def issues_to_csv(project, queryset, type, status):
                     "Performance Parameter" : issue.issue_subcategory,
                     "Issue Raised On" : issue.created_date,
                     "Issue Raised By" : issue.owner.full_name if issue.owner else None,
-                    "Issue Raised To" : wathcer_username
-
+                    "Issue Raised To" : wathcer_username,
+                    "watcher" : issue.watchers
 
                 }
     
