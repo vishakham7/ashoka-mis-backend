@@ -100,7 +100,7 @@ def issues_to_csv(project, queryset, type, status):
         fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
                               "Photograph During Inspection", "Asset Type", "Performance Parameter",
                               "Issue Raised On", "Issue Raised By", "description",
-                              "Issue Raised To"]
+                              "Issue Raised To","attached_file"]
 
     if type == 'Issue' and status== 'Closed':
         fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
@@ -164,7 +164,9 @@ def issues_to_csv(project, queryset, type, status):
                     "Chainage To" : issue.chainage_to,
                     "Direction" : issue.chainage_side,
                     "Description of Issue" : issue.description,
+                    "attached_file" : "<a href="+file+">Link</a>",
                     "Photograph During Inspection" : file_name if issue.attachments else None,
+                   
                     "Asset Type" : issue.issue_category,
                     "Performance Parameter" : issue.issue_subcategory,
                     "Issue Raised On" : issue.created_date,
