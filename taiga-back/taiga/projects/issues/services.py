@@ -33,6 +33,7 @@ from taiga.projects.votes.utils import attach_total_voters_to_queryset
 from taiga.projects.notifications.utils import attach_watchers_to_queryset
 
 from . import models
+from taiga.users.models import User
 
 from datetime import datetime
 #####################################################
