@@ -164,7 +164,7 @@ def issues_to_csv(project, queryset, type, status):
                     "Chainage To" : issue.chainage_to,
                     "Direction" : issue.chainage_side,
                     "Description of Issue" : issue.description,
-                    "attached_file" : "<a href="+file+">Link</a>",
+                    "attached_file" : "<a href="+str(file)+">Link</a>" if issue.attachments else None,
                     "Photograph During Inspection" : file_name if issue.attachments else None,
                    
                     "Asset Type" : issue.issue_category,
