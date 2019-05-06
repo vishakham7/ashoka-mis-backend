@@ -18,6 +18,7 @@
 
 import io
 import csv
+import os
 from collections import OrderedDict
 from operator import itemgetter
 from contextlib import closing
@@ -31,9 +32,11 @@ from taiga.projects.issues.apps import (
     disconnect_issues_signals)
 from taiga.projects.votes.utils import attach_total_voters_to_queryset
 from taiga.projects.notifications.utils import attach_watchers_to_queryset
+from django.conf import settings
 
 from . import models
 from taiga.users.models import User
+from taiga.projects.attachments.models import Attachment
 
 from datetime import datetime
 #####################################################
@@ -97,7 +100,7 @@ def issues_to_csv(project, queryset, type, status):
         fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
                               "Photograph During Inspection", "Asset Type", "Performance Parameter",
                               "Issue Raised On", "Issue Raised By", "description",
-                              "Issue Raised To","Issue Raised To 2"]
+                              "Issue Raised To"]
 
     if type == 'Issue' and status== 'Closed':
         fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
@@ -129,14 +132,26 @@ def issues_to_csv(project, queryset, type, status):
     animals_killed_count = 0
     
     for issue in queryset:
+       
         if issue:
             watchers = []
-            wathcer_username = ""
+            wathcer_username = issue.assigned_to.full_name + '\n'
             for i in issue.watchers:
                 sql = User.objects.get(id=int(i))
                 watchers.append(sql.full_name)
             for watcher in watchers:
-                wathcer_username = watcher
+                wathcer_username = watcher +'\n'
+            print(wathcer_username)
+            # # name = Attachment.objects.filter(project__id=issue.project.id)
+            # # file = ""
+            # print('-------------------------------')
+            # # for i in name:
+            # #     print(i.attached_file)
+            # #     file = os.path.join(settings.MEDIA_ROOT, str(i.attached_file))
+            print('--------------------------------')
+            print(issue.attachments.name)
+
+
             if issue.type.name == type:
                 issue_data = {
                     "Sr.No" : issue.ref,
@@ -145,12 +160,13 @@ def issues_to_csv(project, queryset, type, status):
                     "Chainage To" : issue.chainage_to,
                     "Direction" : issue.chainage_side,
                     "Description of Issue" : issue.description,
-                    "Photograph During Inspection" : issue.attachments.name,
+                    "Photograph During Inspection" : "file",
                     "Asset Type" : issue.issue_category,
                     "Performance Parameter" : issue.issue_subcategory,
                     "Issue Raised On" : issue.created_date,
                     "Issue Raised By" : issue.owner.full_name if issue.owner else None,
-                    "Issue Raised To" : issue.assigned_to.full_name if issue.assigned_to else None +'\n'+wathcer_username,
+                    "Issue Raised To" : wathcer_username
+
 
                 }
     
@@ -186,6 +202,7 @@ def issues_to_csv(project, queryset, type, status):
 
           
         if issue.type.name == 'Investigation':
+            print(issue.id)
             issue_data = {
                 "Sr.No" : issue.ref,
                 "Project Name" :   issue.project.name,
@@ -193,10 +210,10 @@ def issues_to_csv(project, queryset, type, status):
                 "Chainage To" : issue.investigation_chainage_to,
                 "Direction" : issue.investigation_chainage_side,
                 "Description of Issue" : issue.investigation_description,
-                "Asset_Type" : issue.asset_name,
+                "Asset Type" : issue.asset_name,
                 "Performance Parameter" : issue.test_name,
                 "Name of Test" : "",
-                "TestingMethod" : "",
+                "Testing Method" : "",
                 "Standard References for testing" : "",
                 "Test Carried Out Date" :"",
                 "Testing Carried Out By" :issue.assigned_to.username if issue.assigned_to else None,
