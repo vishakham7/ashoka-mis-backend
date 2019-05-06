@@ -100,7 +100,7 @@ def issues_to_csv(project, queryset, type, status):
         fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
                               "Photograph During Inspection", "Asset Type", "Performance Parameter",
                               "Issue Raised On", "Issue Raised By", "description",
-                              "Issue Raised To","watcher"]
+                              "Issue Raised To"]
 
     if type == 'Issue' and status== 'Closed':
         fieldnames = ["Sr.No", "Project Name", "Chainage From", "Chainage To", "Direction", "Description of Issue",
@@ -134,21 +134,6 @@ def issues_to_csv(project, queryset, type, status):
     for issue in queryset:
        
         if issue:
-            # watchers = []
-            # wathcer_username = issue.assigned_to.full_name + '\n'
-            # for i in issue.watchers:
-            #     sql = User.objects.get(id=int(i))
-            #     watchers.append(sql.full_name)
-            # for watcher in watchers:
-            #     wathcer_username = watcher +'\n'
-            # print(wathcer_username)
-            # # name = Attachment.objects.filter(project__id=issue.project.id)
-            # # file = ""
-            # print('-------------------------------')
-            # # for i in name:
-            # #     print(i.attached_file)
-            # #     file = os.path.join(settings.MEDIA_ROOT, str(i.attached_file))
-
 
             qqq = issue.watchers
             print('--------------------------------')
@@ -174,8 +159,6 @@ def issues_to_csv(project, queryset, type, status):
                     "Issue Raised On" : issue.created_date,
                     "Issue Raised By" : issue.owner.full_name if issue.owner else None,
                     "Issue Raised To" : wathcer_username,
-                    "watcher" : issue.watchers
-
                 }
     
         if status:
