@@ -146,13 +146,17 @@ def issues_to_csv(project, queryset, type, status):
 
             if issue.type.name == type:
                 if issue.attachments:
+                    file_name = ""
                     file = issue.attachments.values_list('attached_file')
                     for i in file:
+                        print(';;;;;;;;;;;;;;;;;;;')
                         print(i)
+                        
+                        file_name = os.path.join(settings.MEDIA_URL, str(i[0]))
+                        print(file_name)
                         print('-------------------------------------------------')
-                        file = os.path.join(settings.MEDIA_URL, str(i[0]))
                 else:
-                    file=""
+                    file_name=""
                 issue_data = {
                     "Sr.No" : issue.ref,
                     "Project Name" : issue.project.name,
@@ -160,7 +164,7 @@ def issues_to_csv(project, queryset, type, status):
                     "Chainage To" : issue.chainage_to,
                     "Direction" : issue.chainage_side,
                     "Description of Issue" : issue.description,
-                    "Photograph During Inspection" : "<html><a href="+str(file)+">attached_file</a></html>" if issue.attachments else None,
+                    "Photograph During Inspection" : file_name if issue.attachments else None,
                     "Asset Type" : issue.issue_category,
                     "Performance Parameter" : issue.issue_subcategory,
                     "Issue Raised On" : issue.created_date,
