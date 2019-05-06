@@ -151,6 +151,8 @@ def issues_to_csv(project, queryset, type, status):
                         print(i)
                         print('-------------------------------------------------')
                         file = os.path.join(settings.MEDIA_URL, str(i[0]))
+                else:
+                    file=""
                 issue_data = {
                     "Sr.No" : issue.ref,
                     "Project Name" : issue.project.name,
