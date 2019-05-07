@@ -220,7 +220,7 @@ def issues_to_csv(project, queryset, type, status):
                 "Status" : issue.status.name if issue.status else None,
                 "Issue Closed On Date" : issue.finished_date if status=='Closed' else None,
                 "Complianced" : 'Yes' if issue.compliance_is_update==False else 'No',
-                "Issue Closed By" : issue.assigned_to.full_name,
+                "Issue Closed By" : issue.assigned_to.full_name if issue.assigned_to else None,
                 "Description Of Compliance": issue.compliance_description,
                 "Photograph Post Compliance" : issue.attachments.name,
                 "Remark":"",
