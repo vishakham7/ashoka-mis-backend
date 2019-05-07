@@ -83,7 +83,7 @@ def create_issues_in_bulk(bulk_data, callback=None, precall=None, **additional_f
 def issues_to_csv(project, queryset, type, status):
     csv_data = io.StringIO()
     
-
+""
     queryset = queryset.prefetch_related("attachments",
                                          "generated_user_stories",
                                          "custom_attributes_values")
@@ -224,7 +224,7 @@ def issues_to_csv(project, queryset, type, status):
                 "Description Of Compliance": issue.compliance_description,
                 "Photograph Post Compliance" : issue.attachments.name,
                 "Remark":"",
-                # "Current_Status" : "Closed" if issue.status.is_closed==True else "Open",
+                "Current_Status" : issue.status.name if issue.status else None,
             }
 
           
