@@ -37,6 +37,7 @@ from django.conf import settings
 from . import models
 from taiga.users.models import User
 from taiga.projects.attachments.models import Attachment
+from taiga.projects.models import IssueStatus
 
 from datetime import datetime
 #####################################################
@@ -81,8 +82,6 @@ def create_issues_in_bulk(bulk_data, callback=None, precall=None, **additional_f
 #####################################################
 
 def issues_to_csv(project, queryset, type, status):
-    print('=========================')
-    print(type)
     csv_data = io.StringIO()
     
 
@@ -97,13 +96,13 @@ def issues_to_csv(project, queryset, type, status):
     queryset = attach_total_voters_to_queryset(queryset)
     queryset = attach_watchers_to_queryset(queryset)
 
-    if type == 'Issue':
+    if type == 'Issue' and not status:
         fieldnames = ["Sr.No", "Project Name", "Chainage From (In Km)", "Chainage To (In Km)", "Direction", "Description of Issue",
                               "Photograph During Inspection", "Asset Type", "Performance Parameter (Type of Issue)",
                               "Issue Raised On (Date)", "Issue Raised By (Name of Concessionaire)", "description",
                               "Issue Raised To (Assignee Name Max Upto 3 Persons)"]
 
-    if type == 'Compliance':
+    if type == 'Issue' and status:
         fieldnames = ["Sr.No", "Project Name", "Chainage From (In Km)", "Chainage To (In Km)", "Direction", "Description of Issue",
                           "Photograph During Inspection", "Asset Type", "Performance Parameter (Type of Issue)",
                           "Issue Raised On (Date)", "Issue Raised By (Name of Concessionaire)",
@@ -133,8 +132,6 @@ def issues_to_csv(project, queryset, type, status):
     animals_killed_count = 0
     
     for issue in queryset:
-        print('-------------------------')
-        print(issue.type.name)
         if issue:
 
             qqq = issue.watchers
@@ -175,9 +172,7 @@ def issues_to_csv(project, queryset, type, status):
                     "Issue Raised To (Assignee Name Max Upto 3 Persons)" : wathcer_username,
                 }
         
-        if issue.type.name==type:
-            print('------------------------')
-            print(type)
+        if issue.type.name==type and status:
             qqq = issue.watchers
             watchers = []
             wathcer_username = issue.assigned_to.full_name + '\n'
@@ -202,18 +197,25 @@ def issues_to_csv(project, queryset, type, status):
                     file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
             else:
                 file_name=""
-            
-            status_name = ""
-
-            if issue.status:
-                if issue.status.name == 'Closed':
-                    status_name = 'Open'
-                elif issue.status.name == 'Maintenance Closed':
-                    status_name = 'Closed'
-                elif issue.status.name == 'Maintenance Pending':
-                    status_name = 'Pending'
-                else:
-                    status_name =""
+            print(len(status))
+            status_name = ''
+            for i in status:
+                status_names_1 = IssueStatus.objects.filter(id=str(i))
+                if status_names_1:
+                    status_names = IssueStatus.objects.get(id=str(i))
+                    print("--------------------------")
+                    print(status_names)
+                    status_name = status_names.name
+            print(status_name)
+            new_status_name= ""
+            if status_name == 'Closed':
+                new_status_name = 'Open'
+            elif status_name == 'Maintenance Closed':
+                new_status_name = 'Closed'
+            elif status_name == 'Maintenance Pending':
+                new_status_name = 'Pending'
+            else:
+                new_status_name =""
 
             issue_data = {
             "Sr.No" : issue.ref,
@@ -230,14 +232,14 @@ def issues_to_csv(project, queryset, type, status):
             "Issue Raised To (Assignee Name Max Upto 3 Persons)" : wathcer_username,
             "Timeline" : timeline,
             "Target Date" : issue.target_date,
-            "Status" : status_name if issue.status else None,
+            "Status" : new_status_name if issue.status else None,
             "Issue Closed On Date" : issue.finished_date if status_name=='Closed' else None,
             "Complianced" : 'Yes' if issue.compliance_is_update==True else 'No',
             "Issue Closed By" : issue.assigned_to.full_name if issue.assigned_to else None,
             "Description Of Compliance": issue.compliance_description,
             "Photograph Post Compliance" : issue.attachments.name,
             "Remark":"",
-            "Current Status" : status_name if issue.status else None,
+            "Current Status" : new_status_name if issue.status else None,
         }
 
           

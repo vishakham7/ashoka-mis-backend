@@ -63,9 +63,7 @@ def dashboard(request, project_id=None):
     result['issue_pending'] = Issue.objects.filter(project_id = project_id, status__name = 'Pending', type__name = 'Issue').count()
     result['accidents_report'] = Issue.objects.filter(project_id = project_id, type__name = 'Accident').count()
     result['test_and_investigation'] = Issue.objects.filter(project_id=project_id, type__name='Investigation').count()
-    print('----------------------------')
-    print(result)
-    print('------------------')
+
     return JsonResponse(result)
 
 
@@ -396,17 +394,24 @@ class IssueViewSet(
 
     @list_route(methods=["GET"])
     def csv(self, request):
+        status_id = []
         uuid = request.QUERY_PARAMS.get("uuid", None)
         start_date = request.QUERY_PARAMS.get('start_date')
         end_date = request.QUERY_PARAMS.get('end_date')
         type = request.QUERY_PARAMS.get('type')
         status = request.QUERY_PARAMS.get('status')
+        status = status.split(',')
+        print("-------ss---------")
+        print(status)
         if uuid is None:
             return response.NotFound()
 
         project = get_object_or_404(Project, issues_csv_uuid=uuid)
-        
-        queryset = project.issues.filter(type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
+        if status:
+            queryset = project.issues.filter(type__name=type,status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
+
+        else:
+            queryset = project.issues.filter(type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
         print(queryset)
         data = services.issues_to_csv(project, queryset, type, status)
         csv_response = HttpResponse(data.getvalue(), content_type='application/csv; charset=utf-8')
@@ -638,45 +643,23 @@ class IssueTypeIssue(IssueViewSet):
             if issue_status_id:
                 Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
 
-
-        else:
-            status_name = self.request.DATA['status_name']
-            project = self.request.DATA['project']
-
-            if status_name=='Closed':
-
-                try:
-                    issue_status_id = IssueStatus.objects.get(project_id = project, name = status_name)
-                except:
-                    issue_status_id = None
-
-                if issue_status_id:
-                    Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
-
-                try:
-                    type_value_id = IssueType.objects.get(name='Compliance', project_id = project)
-                except:
-                    type_value_id = None
-
-                if type_value_id:
-                    Issue.objects.filter(id = object.id).update(type_id = type_value_id.id)
             
-            else:
-                try:
-                    issue_status_id = IssueStatus.objects.get(project_id = project, name = status_name)
-                except:
-                    issue_status_id = None
+        else:
+            try:
+                issue_status_id = IssueStatus.objects.get(project_id = project, name = status_name)
+            except:
+                issue_status_id = None
 
-                if issue_status_id:
-                    Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
+            if issue_status_id:
+                Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
 
-                try:
-                    type_value_id = IssueType.objects.get(name='Issue', project_id = project)
-                except:
-                    type_value_id = None
+            try:
+                type_value_id = IssueType.objects.get(name='Issue', project_id = project)
+            except:
+                type_value_id = None
 
-                if type_value_id:
-                    Issue.objects.filter(id = object.id).update(type_id = type_value_id.id)
+            if type_value_id:
+                Issue.objects.filter(id = object.id).update(type_id = type_value_id.id)
 
 
 class ComplianceTypeIssue(IssueViewSet):
