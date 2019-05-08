@@ -575,7 +575,7 @@ class ProjectViewSet(LikedResourceMixin, HistoryResourceMixin,
 
             models.IssueType.objects.filter(project_id=object.pk).delete()
 
-            issue_type_list = ["Issue","Accident","Investigation"]
+            issue_type_list = ["Issue","Accident","Investigation","Compliance"]
 
             for issue_type in issue_type_list:
                 models.IssueType.objects.create(name=issue_type, project_id=object.pk)

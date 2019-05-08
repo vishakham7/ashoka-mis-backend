@@ -57,16 +57,15 @@ def dashboard(request, project_id=None):
     project = Project.objects.get(pk = project_id)
 
     result['user_count'] = project.members.count()
-
+    status = ['Closed', 'Maintenance Closed','Maintenance Pending']
     result['issues_identified'] = Issue.objects.filter(project_id = project_id, type__name = 'Issue').count()
-    result['issue_closed'] = Issue.objects.filter(project_id = project_id, status__name = 'Closed', type__name = 'Issue').count()
+    result['issue_closed'] = Issue.objects.filter(project_id = project_id, status__name__in = status, type__name = 'Issue').count()
     result['issue_pending'] = Issue.objects.filter(project_id = project_id, status__name = 'Pending', type__name = 'Issue').count()
     result['accidents_report'] = Issue.objects.filter(project_id = project_id, type__name = 'Accident').count()
-
-    print('#')
-
     result['test_and_investigation'] = Issue.objects.filter(project_id=project_id, type__name='Investigation').count()
-
+    print('----------------------------')
+    print(result)
+    print('------------------')
     return JsonResponse(result)
 
 
