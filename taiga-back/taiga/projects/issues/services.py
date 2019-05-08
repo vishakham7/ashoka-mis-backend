@@ -94,7 +94,6 @@ def issues_to_csv(project, queryset, type, status):
                                        "type")
     queryset = attach_total_voters_to_queryset(queryset)
     queryset = attach_watchers_to_queryset(queryset)
-    print(type)
 
     if type == 'Issue':
         fieldnames = ["Sr.No", "Project Name", "Chainage From (In Km)", "Chainage To (In Km)", "Direction", "Description of Issue",
@@ -102,7 +101,7 @@ def issues_to_csv(project, queryset, type, status):
                               "Issue Raised On (Date)", "Issue Raised By (Name of Concessionaire)", "description",
                               "Issue Raised To (Assignee Name Max Upto 3 Persons)"]
 
-    if type == 'Issue' and status== 'Closed':
+    if type == 'Issue' and status:
         fieldnames = ["Sr.No", "Project Name", "Chainage From (In Km)", "Chainage To (In Km)", "Direction", "Description of Issue",
                           "Photograph During Inspection", "Asset Type", "Performance Parameter (Type of Issue)",
                           "Issue Raised On (Date)", "Issue Raised By (Name of Concessionaire)",
@@ -157,7 +156,7 @@ def issues_to_csv(project, queryset, type, status):
                         file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
                 else:
                     file_name=""
-                print(file_name)
+
                 issue_data = {
                     "Sr.No" : issue.ref,
                     "Project Name" : issue.project.name,
@@ -166,7 +165,6 @@ def issues_to_csv(project, queryset, type, status):
                     "Direction" : issue.chainage_side,
                     "Description of Issue" : issue.description,
                     "Photograph During Inspection" : file_name if issue.attachments else None,
-                   
                     "Asset Type" : issue.issue_category,
                     "Performance Parameter (Type of Issue)" : issue.issue_subcategory,
                     "Issue Raised On (Date)" : issue.created_date,
@@ -182,7 +180,6 @@ def issues_to_csv(project, queryset, type, status):
                 for i in qqq:
                     sql = User.objects.get(id=int(i))
                     watchers.append(sql.full_name)
-                print(watchers)
                 for j in watchers:
                     wathcer_username = j +'\n'+ wathcer_username 
                 a = issue.created_date.date()
@@ -201,7 +198,19 @@ def issues_to_csv(project, queryset, type, status):
                         file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
                 else:
                     file_name=""
-                print(file_name)
+                
+                status_name = ""
+ 
+                if issue.status:
+                    if issue.status.name == 'Closed':
+                        status_name = 'Open'
+                    elif issue.status.name == 'Maintenance Closed':
+                        status_name = 'Closed'
+                    elif issue.status.name == 'Maintenance Pending':
+                        status_name = 'Pending'
+                    else:
+                        status_name =""
+
                 issue_data = {
                 "Sr.No" : issue.ref,
                 "Project Name" : issue.project.name,
@@ -214,17 +223,17 @@ def issues_to_csv(project, queryset, type, status):
                 "Performance Parameter (Type of Issue)" : issue.issue_subcategory,
                 "Issue Raised On (Date)" : issue.created_date,
                 "Issue Raised By (Name of Concessionaire)" : issue.owner.full_name if issue.owner else None,
-                "Issue Raised To" : wathcer_username,
+                "Issue Raised To (Assignee Name Max Upto 3 Persons)" : wathcer_username,
                 "Timeline" : timeline,
                 "Target Date" : issue.target_date,
-                "Status" : issue.status.name if issue.status else None,
-                "Issue Closed On Date" : issue.finished_date if status=='Closed' else None,
-                "Complianced" : 'Yes' if issue.compliance_is_update==False else 'No',
+                "Status" : status_name if issue.status else None,
+                "Issue Closed On Date" : issue.finished_date if status_name=='Closed' else None,
+                "Complianced" : 'Yes' if issue.compliance_is_update==True else 'No',
                 "Issue Closed By" : issue.assigned_to.full_name if issue.assigned_to else None,
                 "Description Of Compliance": issue.compliance_description,
                 "Photograph Post Compliance" : issue.attachments.name,
                 "Remark":"",
-                "Current Status" : issue.status.name if issue.status else None,
+                "Current Status" : status_name if issue.status else None,
             }
 
           

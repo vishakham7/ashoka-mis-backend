@@ -402,7 +402,6 @@ class IssueViewSet(
         end_date = request.QUERY_PARAMS.get('end_date')
         type = request.QUERY_PARAMS.get('type')
         status = request.QUERY_PARAMS.get('status')
-        print(status)
         if uuid is None:
             return response.NotFound()
 
