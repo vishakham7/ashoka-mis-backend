@@ -406,10 +406,9 @@ class IssueViewSet(
             return response.NotFound()
 
         project = get_object_or_404(Project, issues_csv_uuid=uuid)
-        if status:
-            queryset = project.issues.filter(type__name=type, created_date__date__range=[start_date, end_date],status__name=status).order_by('ref')
-        else:
-            queryset = project.issues.filter(type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
+        
+        queryset = project.issues.filter(type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
+        print(queryset)
         data = services.issues_to_csv(project, queryset, type, status)
         csv_response = HttpResponse(data.getvalue(), content_type='application/csv; charset=utf-8')
         csv_response['Content-Disposition'] = 'attachment; filename="issues.csv"'
@@ -640,26 +639,6 @@ class IssueTypeIssue(IssueViewSet):
             if issue_status_id:
                 Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
 
-        elif updated:
-            status_name = self.request.DATA['status_name']
-            project = self.request.DATA['project']
-            project_id = object.project_id
-
-            try:
-                issue_status_id = IssueStatus.objects.get(project_id = project_id, name = "Closed")
-            except:
-                issue_status_id = None
-
-            if issue_status_id:
-                Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
-
-            try:
-                type_value_id = IssueType.objects.get(name='Compliance', project_id = project)
-            except:
-                type_value_id = None
-
-            if type_value_id:
-                Issue.objects.filter(id = object.id).update(type_id = type_value_id.id)
 
         else:
             status_name = self.request.DATA['status_name']
