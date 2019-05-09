@@ -136,13 +136,12 @@ def issues_to_csv(project, queryset, type, status):
 
             qqq = issue.watchers
             watchers = []
-            wathcer_username = issue.assigned_to.full_name + '\n'
+            wathcer_username = '1. '+issue.assigned_to.full_name + '\n'
             for i in qqq:
                 sql = User.objects.get(id=int(i))
                 watchers.append(sql.full_name)
-            for j in watchers:
-                wathcer_username = j +'\n'+ wathcer_username 
-
+            for j in range(len(watchers)):
+                wathcer_username = str(j+2)+'. '+watchers[j] +"(watcher " +str(j+1)+")" +'\n'+ wathcer_username 
             if issue.type.name == type:
                 if issue.attachments:
                     file_name = "" 
@@ -156,7 +155,7 @@ def issues_to_csv(project, queryset, type, status):
                         file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
                 else:
                     file_name=""
-
+                
                 issue_data = {
                     "Sr.No" : issue.ref,
                     "Project Name" : issue.project.name,
@@ -167,7 +166,7 @@ def issues_to_csv(project, queryset, type, status):
                     "Photograph During Inspection" : file_name if issue.attachments else None,
                     "Asset Type" : issue.issue_category,
                     "Performance Parameter (Type of Issue)" : issue.issue_subcategory,
-                    "Issue Raised On (Date)" : issue.created_date,
+                    "Issue Raised On (Date)" : issue.created_date.date(),
                     "Issue Raised By (Name of Concessionaire)" : issue.owner.full_name if issue.owner else None,
                     "Issue Raised To (Assignee Name Max Upto 3 Persons)" : wathcer_username,
                 }
@@ -228,7 +227,7 @@ def issues_to_csv(project, queryset, type, status):
             "Photograph During Inspection" : file_name,
             "Asset Type" : issue.issue_category,
             "Performance Parameter (Type of Issue)" : issue.issue_subcategory,
-            "Issue Raised On (Date)" : issue.created_date,
+            "Issue Raised On (Date)" : issue.created_date.date(),
             "Issue Raised By (Name of Concessionaire)" : issue.owner.full_name if issue.owner else None,
             "Issue Raised To (Assignee Name Max Upto 3 Persons)" : wathcer_username,
             "Timeline" : timeline,
