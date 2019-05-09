@@ -197,15 +197,14 @@ def issues_to_csv(project, queryset, type, status):
                     file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
             else:
                 file_name=""
-            print(len(status))
             status_name = ''
             for i in status:
                 status_names_1 = IssueStatus.objects.filter(id=str(i))
                 if status_names_1:
                     status_names = IssueStatus.objects.get(id=str(i))
-                    print("--------------------------")
-                    print(status_names)
+                    
                     status_name = status_names.name
+            print("------------old status--------------")
             print(status_name)
             new_status_name= ""
             if status_name == 'Closed':
@@ -216,7 +215,8 @@ def issues_to_csv(project, queryset, type, status):
                 new_status_name = 'Pending'
             else:
                 new_status_name =""
-
+            print('--------------new Status-----------------')
+            print(new_status_name)
             issue_data = {
             "Sr.No" : issue.ref,
             "Project Name" : issue.project.name,
