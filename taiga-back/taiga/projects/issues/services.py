@@ -214,11 +214,10 @@ def issues_to_csv(project, queryset, type, status):
                     # new_status_name += 'Pending'
                     new_status_name.append('Pending')
             if new_status_name:
-                new = ""
-                print(len(new_status_name))
-                for i in range(len(new_status_name)):
-                    new = str(new_status_name[i])
-
+                new =""
+                print(new_status_name)
+                for i in new_status_name:
+                    new = i
             issue_data = {
             "Sr.No" : issue.ref,
             "Project Name" : issue.project.name,
@@ -234,7 +233,7 @@ def issues_to_csv(project, queryset, type, status):
             "Issue Raised To (Assignee Name Max Upto 3 Persons)" : wathcer_username,
             "Timeline" : timeline,
             "Target Date" : issue.target_date,
-            "Status" : new if issue.status else None,
+            "Status" :new if issue.status else None,
             "Issue Closed On Date" : issue.finished_date if status_name=='Closed' else None,
             "Complianced" : 'Yes' if issue.compliance_is_update==True else 'No',
             "Issue Closed By" : issue.assigned_to.full_name if issue.assigned_to else None,
