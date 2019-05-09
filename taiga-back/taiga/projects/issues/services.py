@@ -198,18 +198,27 @@ def issues_to_csv(project, queryset, type, status):
             else:
                 file_name=""
             status_name = []
-            status_names =  project.issues.filter(status__id__in=status)               
-            new_status_name =""
+            status_names =  project.issues.filter(status__id__in=status)
+            new_status_name =[]
             for name in status_names:
                 
                 if str(name.status) == 'Closed':
-                    new_status_name = 'Open'
-
+                    new_status_name.append('Open')
+                    # new_status_name += 'Open'
+                     
                 elif str(name.status) == 'Maintenance Closed':
-                    new_status_name = 'Closed'
-
+                    # new_status_name += 'Closed'
+                    new_status_name.append('Closed')
+                    
                 elif str(name.status) == 'Maintenance Pending':
-                    new_status_name = 'Pending'
+                    # new_status_name += 'Pending'
+                    new_status_name.append('Pending')
+            if new_status_name:
+                new = ""
+                print(len(new_status_name))
+                for i in range(len(new_status_name)):
+                    new = str(new_status_name[i])
+
             issue_data = {
             "Sr.No" : issue.ref,
             "Project Name" : issue.project.name,
@@ -225,14 +234,14 @@ def issues_to_csv(project, queryset, type, status):
             "Issue Raised To (Assignee Name Max Upto 3 Persons)" : wathcer_username,
             "Timeline" : timeline,
             "Target Date" : issue.target_date,
-            "Status" : new_status_name if issue.status else None,
+            "Status" : new if issue.status else None,
             "Issue Closed On Date" : issue.finished_date if status_name=='Closed' else None,
             "Complianced" : 'Yes' if issue.compliance_is_update==True else 'No',
             "Issue Closed By" : issue.assigned_to.full_name if issue.assigned_to else None,
             "Description Of Compliance": issue.compliance_description,
             "Photograph Post Compliance" : issue.attachments.name,
             "Remark":"",
-            "Current Status" : new_status_name if issue.status else None,
+            "Current Status" : new if issue.status else None,
         }
 
           
