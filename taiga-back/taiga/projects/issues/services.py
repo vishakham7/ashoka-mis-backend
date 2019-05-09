@@ -39,7 +39,7 @@ from taiga.users.models import User
 from taiga.projects.attachments.models import Attachment
 from taiga.projects.models import IssueStatus
 from .models import Issue
-from datetime import datetime
+from datetime import date, datetime, timedelta
 #####################################################
 # Bulk actions
 #####################################################
@@ -163,8 +163,8 @@ def issues_to_csv(project, queryset, type, status):
                         file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
                 else:
                     file_name=""
-                date = datetime.strftime(issue.created_date.date(),"%d-%m-%Y")
-                
+                Raised_date = datetime.strftime(issue.created_date.date(),"%d-%m-%Y")
+
                 issue_data = {
                     "Sr.No" : issue.ref,
                     "Project Name" : issue.project.name,
@@ -175,7 +175,7 @@ def issues_to_csv(project, queryset, type, status):
                     "Photograph During Inspection" : file_name if issue.attachments else None,
                     "Asset Type" : issue.issue_category,
                     "Performance Parameter (Type of Issue)" : issue.issue_subcategory,
-                    "Issue Raised On (Date)" : date,
+                    "Issue Raised On (Date)" : Raised_date,
                     "Issue Raised By (Name of Concessionaire)" : issue.owner.full_name if issue.owner else None,
                     "Issue Raised To (Assignee Name Max Upto 3 Persons)" : new_watcher_list,
                 }
@@ -320,12 +320,12 @@ def issues_to_csv(project, queryset, type, status):
             issue_data = {
                 "Sr.No" : issue.ref,
                 "Description" : issue.accident_classification,
-                "No_of_Accidents_previous_month":project.issues.filter(type__name='Accident',created_date__date__range=[previous_month,Previous_last_date]).count(),
-                "No_of_Peoples_affected_previous_month": sum(new_list_last),
-                "No_of_Accidents_during_this_month":project.issues.filter(type__name='Accident',created_date__date__range=[first_date,current_date]).count(),
-                "No_of_Peoples_affected_during_this_month": sum(new_list_current),
-                "No_of_Accidents_upto_this_month":project.issues.filter(type__name='Accident').count(),
-                "No_of_Peoples_affected_upto_this_month": sum(new_list_upto),
+                "No of Accidents previous month":project.issues.filter(type__name='Accident',created_date__date__range=[previous_month,Previous_last_date]).count(),
+                "No of Peoples affected previous month": sum(new_list_last),
+                "No of Accidents during this month":project.issues.filter(type__name='Accident',created_date__date__range=[first_date,current_date]).count(),
+                "No of Peoples affected during this month": sum(new_list_current),
+                "No of Accidents upto this month":project.issues.filter(type__name='Accident').count(),
+                "No of Peoples affected upto this month": sum(new_list_upto),
 
             }
         for custom_attr in custom_attrs:
