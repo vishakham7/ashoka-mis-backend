@@ -135,14 +135,21 @@ def issues_to_csv(project, queryset, type, status):
         if issue:
             qqq = issue.watchers
             watchers = []
+            new_watcher_list =  ""
             watcher_username =""
             if issue.assigned_to:
-                watcher_username = '1. '+issue.assigned_to.full_name + '\n'
+                watcher_username = '1. '+issue.assigned_to.full_name
             for i in qqq:
                 sql = User.objects.get(id=int(i))
                 watchers.append(sql.full_name)
             for j in range(len(watchers)):
-                watcher_username = str(j+2)+'. '+watchers[j] +"(watcher " +str(j+1)+")" +'\n'+ watcher_username 
+                watcher_username = str(j+2)+'. '+watchers[j] +','+ watcher_username
+            
+            split = watcher_username.split(',')
+
+            for i in range(len(split)):
+                new_watcher_list = split[i] +'\n'+ new_watcher_list 
+
             if issue.type.name == type:
                 if issue.attachments:
                     file_name = "" 
@@ -168,19 +175,26 @@ def issues_to_csv(project, queryset, type, status):
                     "Performance Parameter (Type of Issue)" : issue.issue_subcategory,
                     "Issue Raised On (Date)" : issue.created_date.date(),
                     "Issue Raised By (Name of Concessionaire)" : issue.owner.full_name if issue.owner else None,
-                    "Issue Raised To (Assignee Name Max Upto 3 Persons)" : watcher_username,
+                    "Issue Raised To (Assignee Name Max Upto 3 Persons)" : new_watcher_list,
                 }
                 
         if issue.type.name==type and status:
-            qqq = issue.watchers
+            qqqq = issue.watchers
             watchers = []
+            new_watcher_list =  ""
+            watcher_username =""
             if issue.assigned_to:
-                watcher_username = issue.assigned_to.full_name + '\n'
+                watcher_username = '1. '+issue.assigned_to.full_name
             for i in qqq:
                 sql = User.objects.get(id=int(i))
                 watchers.append(sql.full_name)
-            for j in watchers:
-                watcher_username = j +'\n'+ watcher_username 
+            for j in range(len(watchers)):
+                watcher_username = str(j+2)+'. '+watchers[j] +','+ watcher_username
+            
+            split = watcher_username.split(',')
+
+            for i in range(len(split)):
+                new_watcher_list = split[i] +'\n'+ new_watcher_list 
             a = issue.created_date.date()
             b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
             timeline = b-a
@@ -215,7 +229,6 @@ def issues_to_csv(project, queryset, type, status):
                     new_status_name.append('Pending')
             if new_status_name:
                 new =""
-                print(new_status_name)
                 for i in new_status_name:
                     new = i
             issue_data = {
@@ -230,9 +243,9 @@ def issues_to_csv(project, queryset, type, status):
             "Performance Parameter (Type of Issue)" : issue.issue_subcategory,
             "Issue Raised On (Date)" : issue.created_date.date(),
             "Issue Raised By (Name of Concessionaire)" : issue.owner.full_name if issue.owner else None,
-            "Issue Raised To (Assignee Name Max Upto 3 Persons)" : watcher_username,
+            "Issue Raised To (Assignee Name Max Upto 3 Persons)" : new_watcher_list,
             "Timeline" : timeline,
-            "Target Date" : issue.target_date,
+            "Target Date" : issue.target_date.date(),
             "Status" :new if issue.status else None,
             "Issue Closed On Date" : issue.finished_date if status_name=='Closed' else None,
             "Complianced" : 'Yes' if issue.compliance_is_update==True else 'No',
