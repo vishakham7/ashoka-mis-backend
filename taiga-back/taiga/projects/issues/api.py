@@ -401,8 +401,6 @@ class IssueViewSet(
         type = request.QUERY_PARAMS.get('type')
         status = request.QUERY_PARAMS.get('status')
         status = status.split(',')
-        print("-------ss---------")
-        print(status)
         if uuid is None:
             return response.NotFound()
 
@@ -412,7 +410,6 @@ class IssueViewSet(
 
         else:
             queryset = project.issues.filter(type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
-        print(queryset)
         data = services.issues_to_csv(project, queryset, type, status)
         csv_response = HttpResponse(data.getvalue(), content_type='application/csv; charset=utf-8')
         csv_response['Content-Disposition'] = 'attachment; filename="issues.csv"'

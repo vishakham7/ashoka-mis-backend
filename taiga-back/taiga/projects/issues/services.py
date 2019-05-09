@@ -38,7 +38,7 @@ from . import models
 from taiga.users.models import User
 from taiga.projects.attachments.models import Attachment
 from taiga.projects.models import IssueStatus
-
+from .models import Issue
 from datetime import datetime
 #####################################################
 # Bulk actions
@@ -197,26 +197,19 @@ def issues_to_csv(project, queryset, type, status):
                     file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
             else:
                 file_name=""
-            status_name = ''
-            for i in status:
-                status_names_1 = IssueStatus.objects.filter(id=str(i))
-                if status_names_1:
-                    status_names = IssueStatus.objects.get(id=str(i))
-                    
-                    status_name = status_names.name
-            print("------------old status--------------")
-            print(status_name)
-            new_status_name= ""
-            if status_name == 'Closed':
-                new_status_name = 'Open'
-            elif status_name == 'Maintenance Closed':
-                new_status_name = 'Closed'
-            elif status_name == 'Maintenance Pending':
-                new_status_name = 'Pending'
-            else:
-                new_status_name =""
-            print('--------------new Status-----------------')
-            print(new_status_name)
+            status_name = []
+            status_names =  project.issues.filter(status__id__in=status)               
+            new_status_name =""
+            for name in status_names:
+                
+                if str(name.status) == 'Closed':
+                    new_status_name = 'Open'
+
+                elif str(name.status) == 'Maintenance Closed':
+                    new_status_name = 'Closed'
+
+                elif str(name.status) == 'Maintenance Pending':
+                    new_status_name = 'Pending'
             issue_data = {
             "Sr.No" : issue.ref,
             "Project Name" : issue.project.name,
