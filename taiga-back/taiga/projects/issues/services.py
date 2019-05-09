@@ -96,7 +96,7 @@ def issues_to_csv(project, queryset, type, status):
     queryset = attach_total_voters_to_queryset(queryset)
     queryset = attach_watchers_to_queryset(queryset)
 
-    if type == 'Issue' and not status:
+    if type == 'Issue':
         fieldnames = ["Sr.No", "Project Name", "Chainage From (In Km)", "Chainage To (In Km)", "Direction", "Description of Issue",
                               "Photograph During Inspection", "Asset Type", "Performance Parameter (Type of Issue)",
                               "Issue Raised On (Date)", "Issue Raised By (Name of Concessionaire)", "description",
