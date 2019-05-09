@@ -163,6 +163,8 @@ def issues_to_csv(project, queryset, type, status):
                         file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
                 else:
                     file_name=""
+                date = datetime.strftime(issue.created_date.date(),"%d-%m-%Y")
+                
                 issue_data = {
                     "Sr.No" : issue.ref,
                     "Project Name" : issue.project.name,
@@ -173,7 +175,7 @@ def issues_to_csv(project, queryset, type, status):
                     "Photograph During Inspection" : file_name if issue.attachments else None,
                     "Asset Type" : issue.issue_category,
                     "Performance Parameter (Type of Issue)" : issue.issue_subcategory,
-                    "Issue Raised On (Date)" : issue.created_date.date(),
+                    "Issue Raised On (Date)" : date,
                     "Issue Raised By (Name of Concessionaire)" : issue.owner.full_name if issue.owner else None,
                     "Issue Raised To (Assignee Name Max Upto 3 Persons)" : new_watcher_list,
                 }
@@ -198,7 +200,7 @@ def issues_to_csv(project, queryset, type, status):
             a = issue.created_date.date()
             b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
             timeline = b-a
-
+            target_date = datetime.strftime(b,"%d-%m-%Y")
             if issue.attachments:
                 file_name = "" 
                 files = []
@@ -245,7 +247,7 @@ def issues_to_csv(project, queryset, type, status):
             "Issue Raised By (Name of Concessionaire)" : issue.owner.full_name if issue.owner else None,
             "Issue Raised To (Assignee Name Max Upto 3 Persons)" : new_watcher_list,
             "Timeline" : timeline,
-            "Target Date" : issue.target_date.date(),
+            "Target Date" : target_date,
             "Status" :new if issue.status else None,
             "Issue Closed On Date" : issue.finished_date if status_name=='Closed' else None,
             "Complianced" : 'Yes' if issue.compliance_is_update==True else 'No',
