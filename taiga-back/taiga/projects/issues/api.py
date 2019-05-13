@@ -628,12 +628,9 @@ class IssueTypeIssue(IssueViewSet):
 
         return super().create(request, *args, **kwargs)
 
-    def post_save(self, object, created=False, updated=False):
+    def post_save(self, object, created=False):
         super().post_save(object, created=created)
-        print("---------------------------------")
-        print(object.id)
-        project = Issue.objects.get(id = object.id)
-        print(project.project.id)
+
         if created:
             project_id = object.project_id
 
@@ -644,11 +641,12 @@ class IssueTypeIssue(IssueViewSet):
 
             if issue_status_id:
                 Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
-
-            
         else:
+            status_name = self.request.DATA['status_name']
+            project = self.request.DATA['project']
+
             try:
-                issue_status_id = IssueStatus.objects.get(project_id = project.project.id, name = status_name)
+                issue_status_id = IssueStatus.objects.get(project_id = project, name = status_name)
             except:
                 issue_status_id = None
 
@@ -656,9 +654,8 @@ class IssueTypeIssue(IssueViewSet):
                 Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
 
             try:
-                type_value_id = IssueType.objects.get(name='Issue', project_id = project.project.id)
-            except Exception as e:
-                print(e)
+                type_value_id = IssueType.objects.get(name='Issue', project_id = project)
+            except:
                 type_value_id = None
 
             if type_value_id:
