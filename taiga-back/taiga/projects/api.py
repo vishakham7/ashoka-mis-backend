@@ -575,7 +575,7 @@ class ProjectViewSet(LikedResourceMixin, HistoryResourceMixin,
 
             models.IssueType.objects.filter(project_id=object.pk).delete()
 
-            issue_type_list = ["Issue","Accident","Investigation","Compliance"]
+            issue_type_list = ["Issue","Accident","Investigation"]
 
             for issue_type in issue_type_list:
                 models.IssueType.objects.create(name=issue_type, project_id=object.pk)
@@ -583,7 +583,7 @@ class ProjectViewSet(LikedResourceMixin, HistoryResourceMixin,
 
             issue_status_delete = models.IssueStatus.objects.filter(project_id = object.pk).delete()
 
-            issue_statuses = ["Open","Closed","Pending","Maintenance Closed","Maintenance Pending"]
+            issue_statuses = ["Open","Closed","Pending"]
 
             for status in issue_statuses:
                 models.IssueStatus.objects.create(name=status,project_id = object.pk)
