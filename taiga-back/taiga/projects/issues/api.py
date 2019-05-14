@@ -57,9 +57,10 @@ def dashboard(request, project_id=None):
     result = {}
     project = Project.objects.get(pk = project_id)
 
+
     result['user_count'] = project.members.count()
     status = ['Closed', 'Open','Pending']
-    result['issues_identified'] = Issue.objects.filter(project_id = project_id, type__name = 'Issue',status__name='Open').count()
+    result['issues_identified'] = Issue.objects.filter(project_id = project_id, type__name = 'Issue',status__name__in=status).count()
     result['issue_closed'] = Issue.objects.filter(project_id = project_id, status__name__in = status, type__name = 'Issue').count()
     result['issue_pending'] = Issue.objects.filter(project_id = project_id, status__name = 'Pending', type__name = 'Issue').count()
     result['accidents_report'] = Issue.objects.filter(project_id = project_id, type__name = 'Accident').count()
@@ -413,6 +414,7 @@ class IssueViewSet(
         else:
             queryset = project.issues.filter(type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
         data = services.issues_to_csv(project, queryset, type, status)
+
         csv_response = HttpResponse(data.getvalue(), content_type='application/csv; charset=utf-8')
         csv_response['Content-Disposition'] = 'attachment; filename="issues.csv"'
         return csv_response
