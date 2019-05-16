@@ -335,11 +335,13 @@ class ProjectSerializer(serializers.LightSerializer):
             return ''
 
     def get_issue_identified(self, obj):
-        issues_identified = Issue.objects.filter(project_id = obj.id, type__name = 'Issue').count()
+        status = ['Open', 'Closed','Pending']
+        issues_identified = Issue.objects.filter(project_id = obj.id, type__name = 'Issue',status__name__in=status).count()
         return issues_identified
 
     def get_issue_closed(self, obj):
-        issue_closed = Issue.objects.filter(project_id = obj.id, status__name = 'Closed', type__name = 'Issue').count()
+        status = ['Open', 'Closed','Pending']
+        issue_closed = Issue.objects.filter(project_id = obj.id, status__name__in = status, type__name = 'Issue').count()
         return issue_closed
 
     def get_issue_pending(self, obj):
