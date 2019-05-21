@@ -15,9 +15,13 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import pdfkit
+from django.conf import settings
 
+from django.core.files.storage import FileSystemStorage
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse
+from weasyprint import HTML, CSS
 
 from taiga.base import filters
 from taiga.base import exceptions as exc
@@ -42,6 +46,7 @@ from .utils import attach_extra_info
 
 from . import models
 from . import services
+from . import write_excel
 from . import permissions
 from . import serializers
 from . import validators
@@ -49,17 +54,20 @@ import datetime
 from ..custom_attributes.models import IssueCustomAttribute, IssueCustomAttributesValues
 from django.http import JsonResponse
 from django.db.models import Count
-# from . import excel
+from openpyxl.writer.excel import save_virtual_workbook
+from openpyxl import load_workbook
+import pandas as pd
+# from .export.pdf import html_to_pdf_view
+# from .export.excel import WriteToExcel
 
 
 def dashboard(request, project_id=None):
 
     result = {}
     project = Project.objects.get(pk = project_id)
-
-
+    status = ['Closed', 'Maintenance Closed','Maintenance Pending']
+    
     result['user_count'] = project.members.count()
-    status = ['Closed', 'Open','Pending']
     result['issues_identified'] = Issue.objects.filter(project_id = project_id, type__name = 'Issue',status__name__in=status).count()
     result['issue_closed'] = Issue.objects.filter(project_id = project_id, status__name__in = status, type__name = 'Issue').count()
     result['issue_pending'] = Issue.objects.filter(project_id = project_id, status__name = 'Pending', type__name = 'Issue').count()
@@ -258,6 +266,7 @@ class IssueViewSet(
     def update(self, request, *args, **kwargs):
         self.object = self.get_object_or_none()
         project_id = request.DATA.get('project', None)
+
         if project_id and self.object and self.object.project.id != project_id:
             try:
                 new_project = Project.objects.get(pk=project_id)
@@ -310,8 +319,13 @@ class IssueViewSet(
         return super().update(request, *args, **kwargs)
 
     def get_queryset(self):
-
+        q1 = self.request.QUERY_PARAMS.get('issue_cat', None)
+        q2 = self.request.QUERY_PARAMS.get('issue_sub', None)
+        start_date = self.request.QUERY_PARAMS.get('start_date', None)
+        end_date = self.request.QUERY_PARAMS.get('end_date', None)
         qs = super().get_queryset()
+        qs = qs.filter(issue_category=q1, issue_subcategory=q2,created_date__date__range=[start_date, end_date])
+        print(qs)
         qs = qs.select_related("owner", "assigned_to", "status", "project")
         include_attachments = "include_attachments" in self.request.QUERY_PARAMS
         qs = attach_extra_info(qs, user=self.request.user,
@@ -396,12 +410,19 @@ class IssueViewSet(
 
     @list_route(methods=["GET"])
     def csv(self, request):
+        get_data={}
         status_id = []
+        # PDF or Excel
+        doc_type = request.QUERY_PARAMS.get('doc_type', None)
         uuid = request.QUERY_PARAMS.get("uuid", None)
-        start_date = request.QUERY_PARAMS.get('start_date')
-        end_date = request.QUERY_PARAMS.get('end_date')
-        type = request.QUERY_PARAMS.get('type')
-        status = request.QUERY_PARAMS.get('status')
+        start_date = request.QUERY_PARAMS.get('start_date', None)
+        end_date = request.QUERY_PARAMS.get('end_date', None)
+        type = request.QUERY_PARAMS.get('type', None)
+        status = request.QUERY_PARAMS.get('status', None)
+        asset = request.QUERY_PARAMS.get('asset_cat', None)
+        performance = request.QUERY_PARAMS.get('performance_cat', None)
+        photo = request.QUERY_PARAMS.get('photo', None)
+        name = request.QUERY_PARAMS.get('name', None)
         if status:
             status = status.split(',')
         if uuid is None:
@@ -409,15 +430,53 @@ class IssueViewSet(
 
         project = get_object_or_404(Project, issues_csv_uuid=uuid)
         if status:
-            queryset = project.issues.filter(type__name=type,status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
-
+            queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type,status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
         else:
-            queryset = project.issues.filter(type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
-        data = services.issues_to_csv(project, queryset, type, status)
+            queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
+        data = write_excel.write_excel(project, queryset, type, status, start_date, end_date,asset,performance,photo,doc_type,name,request)
+        if doc_type=="excel":
+            csv_response = HttpResponse(save_virtual_workbook(data), content_type='application/vnd.ms-excel; charset=utf-8')
+            csv_response['Content-Disposition'] = 'attachment; filename="issues.xlsx"'
+            return csv_response
+            
+        if doc_type=="pdf":
+            html = HTML(string=data)
+            
+            
+            # html.write_pdf(target='/tmp/mypdf.pdf',stylesheets=[CSS(settings.STATIC_ROOT +  '/main.css')], presentational_hints=True);
+            # # print("=============================")
+            # # print(html)
+            # fs = FileSystemStorage('/tmp')
+            # with fs.open('mypdf.pdf') as pdf:
+            #     response = HttpResponse(pdf, content_type='application/pdf')
+            #     response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
+            #     return response
+            csv_response = HttpResponse(data, content_type='text/html; charset=utf-8')
+            csv_response['Content-Disposition'] = 'attachment; filename="issues.html"'
+            return csv_response
+           
 
-        csv_response = HttpResponse(data.getvalue(), content_type='application/csv; charset=utf-8')
-        csv_response['Content-Disposition'] = 'attachment; filename="issues.csv"'
-        return csv_response
+    @list_route(methods=["GET"])
+    def new(self, request):
+        get_data={}
+        status_id = []
+        uuid = request.QUERY_PARAMS.get("uuid", None)
+        start_date = request.QUERY_PARAMS.get('start_date')
+        end_date = request.QUERY_PARAMS.get('end_date')
+        type = request.QUERY_PARAMS.get('type')
+        status = request.QUERY_PARAMS.get('status')
+        asset = request.QUERY_PARAMS.get('asset_cat')
+        performance = request.QUERY_PARAMS.get('performance_cat')
+        photo = request.QUERY_PARAMS.get('photo')
+        get_data['start_date'] = start_date
+        get_data['end_date'] = end_date
+        get_data['status'] = status
+        get_data['type'] = type
+        get_data['asset'] = asset
+        get_data['performance'] = performance
+        get_data['photo'] = photo
+        return JsonResponse(get_data)
+        
 
     @list_route(methods=["POST"])
     def bulk_create(self, request, **kwargs):
@@ -630,7 +689,7 @@ class IssueTypeIssue(IssueViewSet):
 
         return super().create(request, *args, **kwargs)
 
-    def post_save(self, object, created=False):
+    def post_save(self, object, created=False, updated=False):
         super().post_save(object, created=created)
 
         if created:
@@ -643,10 +702,9 @@ class IssueTypeIssue(IssueViewSet):
 
             if issue_status_id:
                 Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
-        else:
-            status_name = self.request.DATA['status_name']
-            project = self.request.DATA['project']
 
+            
+        else:
             try:
                 issue_status_id = IssueStatus.objects.get(project_id = project, name = status_name)
             except:

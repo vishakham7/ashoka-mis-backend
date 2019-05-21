@@ -325,10 +325,21 @@ class ProjectViewSet(LikedResourceMixin, HistoryResourceMixin,
 
     @detail_route(methods=["POST"])
     def regenerate_issues_csv_uuid(self, request, pk=None):
+        type = request.DATA.get('type', None)
+        start_date = request.DATA.get('start_date', None)
+        end_date = request.DATA.get('end_date', None)
+        asset_cat = request.DATA.get('asset_cat', None)
+        performance_cat = request.DATA.get('performance_cat', None)
+        photo = request.DATA.get('photo', None)
         project = self.get_object()
         self.check_permissions(request, "regenerate_issues_csv_uuid", project)
         self.pre_conditions_on_save(project)
-        data = {"uuid": self._regenerate_csv_uuid(project, "issues_csv_uuid")}
+        data = {"uuid": self._regenerate_csv_uuid(project, "issues_csv_uuid"),
+                "start_date":start_date,
+                "end_date":end_date,
+                "asset_cat":asset_cat,
+                "performance_cat":performance_cat,
+                "photo":photo}
         return response.Ok(data)
 
     @detail_route(methods=["POST"])
