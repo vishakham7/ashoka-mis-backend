@@ -141,8 +141,8 @@ def style(ws,fieldnames, issue,file_name=None):
                             img.width =100
                             ws.add_image(img,'G'+str(new_row))
                             
-                            # ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j-(len(aa)-1)] + "'></img>"
-                            ws.cell(row=new_row, column=7).value = '<img src="' + aa[j-(len(aa)-1)] + '"/>'
+                            ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j-(len(aa)-1)] + "'></img>"
+                            
 
                             # ============================================================
                             # r1 = http.request('GET', aa[0])
