@@ -324,8 +324,8 @@ class IssueViewSet(
         start_date = self.request.QUERY_PARAMS.get('start_date', None)
         end_date = self.request.QUERY_PARAMS.get('end_date', None)
         qs = super().get_queryset()
-        qs = qs.filter(issue_category=q1, issue_subcategory=q2,created_date__date__range=[start_date, end_date])
-        print(qs)
+        # qs = qs.filter(issue_category=q1, issue_subcategory=q2,created_date__date__range=[start_date, end_date])
+        # print(qs)
         qs = qs.select_related("owner", "assigned_to", "status", "project")
         include_attachments = "include_attachments" in self.request.QUERY_PARAMS
         qs = attach_extra_info(qs, user=self.request.user,
