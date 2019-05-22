@@ -125,14 +125,27 @@ def style(ws,fieldnames, issue,file_name=None):
                     new = aa[j].split('.')
                     doc_name = new[-2].split('/')
                     file_name = doc_name[-1]+'.'+new[-1]
-                    if new[-1]=="xlsx":
-                        ws.cell(row=new_row, column=7).hyperlink = aa[0]
+                        
 
                     name = ws.cell(row=new_row, column=7).value
                     n += name
+                    print(aa[j])
+                    if new[-1]=="xlsx" or new[-1]=="docx" or new[-1]=="doc" or new[-1]=="pdf":
+                        ws.cell(row=new_row, column=7).hyperlink = aa[j]
+                    if new[-1]=="svg" or new[-1]=="jpeg" or new[-1]=="jpg":
+                        http = urllib3.PoolManager()
+                        # r = http.request('GET', aa[j-(len(aa)-1)])
+                        r = http.request('GET', aa[j])
+                        image_file = io.BytesIO(r.data)
+                    
+                        img = Image(image_file)
+                        img.height=100
+                        img.width =100
+                        ws.add_image(img,'G'+str(new_row))
+                        ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j] + "'></img>"
                     if len(n)>180:                
                         ws.row_dimensions[new_row].height = 120
-                        if new[-1]=="jpeg" or new[-1]=="svg":
+                        if new[-1]=="svg" or new[-1]=="jpeg" or new[-1]=="jpg":
                             
                             http = urllib3.PoolManager()
                             # r = http.request('GET', aa[j-(len(aa)-1)])
