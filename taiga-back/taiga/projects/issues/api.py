@@ -469,17 +469,17 @@ class IssueViewSet(
             html = HTML(string=data)
             
             
-            # html.write_pdf(target='/tmp/mypdf.pdf',stylesheets=[CSS(settings.STATIC_ROOT +  '/main.css')], presentational_hints=True);
-            # # print("=============================")
-            # # print(html)
-            # fs = FileSystemStorage('/tmp')
-            # with fs.open('mypdf.pdf') as pdf:
-            #     response = HttpResponse(pdf, content_type='application/pdf')
-            #     response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
-            #     return response
-            csv_response = HttpResponse(data, content_type='text/html; charset=utf-8')
-            csv_response['Content-Disposition'] = 'attachment; filename="issues.html"'
-            return csv_response
+            html.write_pdf(target='/tmp/mypdf.pdf',stylesheets=[CSS(settings.STATIC_ROOT +  '/main.css')], presentational_hints=True);
+            # print("=============================")
+            # print(html)
+            fs = FileSystemStorage('/tmp')
+            with fs.open('mypdf.pdf') as pdf:
+                response = HttpResponse(pdf, content_type='application/pdf')
+                response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
+                return response
+            # csv_response = HttpResponse(data, content_type='text/html; charset=utf-8')
+            # csv_response['Content-Disposition'] = 'attachment; filename="issues.html"'
+            # return csv_response
            
 
     @list_route(methods=["GET"])

@@ -58,7 +58,8 @@ def style(ws,fieldnames, issue,file_name=None):
     dd = Font(underline='single', color='000000FF')
     row_count = ws.max_row
     column_count = ws.max_column
-    
+    print("===========row===========")
+    print(row_count)
     for cell in ws['2:2']:
         cell.font = font
 
@@ -100,11 +101,12 @@ def style(ws,fieldnames, issue,file_name=None):
     file_row = []
     for row in range(5,row_count+1):
         file_row.append(row)
+    print(file_row)
     l=[]
     for i in range(len(file_row)):
-        if len(file_row)==7:
+        if len(file_row)==(row_count-4):
             l.append(file_row[i])
-
+    print(l)
     file_name = []
     split = []
     aaa=[]
@@ -130,19 +132,19 @@ def style(ws,fieldnames, issue,file_name=None):
                     n += name
                     if len(n)>180:                
                         ws.row_dimensions[new_row].height = 120
-                        if new[-1]=="jpeg":
+                        if new[-1]=="jpeg" or new[-1]=="svg":
                             
                             http = urllib3.PoolManager()
-                            r = http.request('GET', aa[j-(len(aa)-1)])
-                            # r = http.request('GET', aa[j])
+                            # r = http.request('GET', aa[j-(len(aa)-1)])
+                            r = http.request('GET', aa[j])
                             image_file = io.BytesIO(r.data)
                         
                             img = Image(image_file)
                             img.height=100
                             img.width =100
                             ws.add_image(img,'G'+str(new_row))
-                            
-                            ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j-(len(aa)-1)] + "'></img>"
+                            ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j] + "'></img>"
+                            # ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j-(len(aa)-1)] + "'></img>"
                             
 
                             # ============================================================
@@ -158,10 +160,10 @@ def style(ws,fieldnames, issue,file_name=None):
                             # # ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j-(len(aa)-1)] + "'></img>"
                             # ws.cell(row=new_row, column=7).value = '<img src="' + aa[0] + '"/>'
                             # ws.cell(row=new_row, column=7).alignment = Alignment(wrap_text=True, horizontal='right', vertical='center')
-                            ws.cell(row=new_row, column=7).hyperlink = aa[0]
-                            ws.cell(row=new_row, column=7).value ="Image"
-                            ws.cell(row=new_row, column=7).alignment = Alignment(wrap_text=True, horizontal='right', vertical='center')
-                            ws.cell(row=new_row, column=7).font = dd
+                            # ws.cell(row=new_row, column=7).hyperlink = aa[0]
+                            # ws.cell(row=new_row, column=7).value ="Image"
+                            # ws.cell(row=new_row, column=7).alignment = Alignment(wrap_text=True, horizontal='right', vertical='center')
+                            # ws.cell(row=new_row, column=7).font = dd
                             # ws.row_dimensions[new_row].height = 150
                         # else:
                         #     ws.cell(row=new_row, column=7).value = ""
@@ -545,7 +547,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                         # file_name.append(os.path.join(settings.MEDIA_URL,str(j)))
                 else:
                     file_name=""
-                print(file_name)
+
                 if file_name:
                     wwww.append(file_name.split('\n'))
                 Raised_date = datetime.strftime(issue.created_date.date(),"%d-%m-%Y")
@@ -775,8 +777,6 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                             new if issue.status else None,
                         ]]
                     for data in issue_data:
-                        print("===========data======")
-                        print(data)
                         ws4.append(data)
                 wb.save("table.xlsx")
                 wb.close()
@@ -805,7 +805,6 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                 "",
             ]]
             for data in issue_data:
-                print(data)
                 ws3.append(data)
 
 
@@ -854,7 +853,6 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                 for i in animal_list_upto_month:
                     if i:
                         new_list_upto.append(int(i))
-            print(new_list_upto, new_list_current, new_list_last)
             issue_data = [[
                 issue.ref,
                 issue.accident_classification,
