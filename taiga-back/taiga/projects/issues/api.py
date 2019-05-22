@@ -319,17 +319,23 @@ class IssueViewSet(
         return super().update(request, *args, **kwargs)
 
     def get_queryset(self):
+        type = self.request.QUERY_PARAMS.get('type_id', None)
         q1 = self.request.QUERY_PARAMS.get('issue_cat', None)
         q2 = self.request.QUERY_PARAMS.get('issue_sub', None)
         start_date = self.request.QUERY_PARAMS.get('start_date', None)
         end_date = self.request.QUERY_PARAMS.get('end_date', None)
         params = self.request.QUERY_PARAMS
+        type_name = IssueType.objects.get(id=type)
+        print(type_name.name)
         
         qs = super().get_queryset()
 
         if q1 and q2 and start_date and end_date:
-            qs = qs.filter(issue_category=q1, issue_subcategory=q2,created_date__date__range=[start_date, end_date])
-        
+            if type_name.name == "Investigation":
+                qs = qs.filter(asset_name=q1, test_name=q2,created_date__date__range=[start_date, end_date])
+            else:
+                qs = qs.filter(issue_category=q1, issue_subcategory=q2,created_date__date__range=[start_date, end_date])
+            
         elif start_date and end_date:
             try:
                 qs = qs.filter(created_date__date__range=[start_date, end_date])
@@ -438,10 +444,13 @@ class IssueViewSet(
             return response.NotFound()
 
         project = get_object_or_404(Project, issues_csv_uuid=uuid)
-        if status:
+        if asset and performance and start_date and end_date:
             queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type,status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
-        else:
-            queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
+        elif start_date and end_date:
+            queryset = project.issues.filter(status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
+
+        # else:
+        #     queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
         data = write_excel.write_excel(project, queryset, type, status, start_date, end_date,asset,performance,photo,doc_type,name,request)
         if doc_type=="excel":
             csv_response = HttpResponse(save_virtual_workbook(data), content_type='application/vnd.ms-excel; charset=utf-8')
