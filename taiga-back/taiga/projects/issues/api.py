@@ -319,19 +319,22 @@ class IssueViewSet(
         return super().update(request, *args, **kwargs)
 
     def get_queryset(self):
-        print("==============================")
-        print(self.request.QUERY_PARAMS)
         q1 = self.request.QUERY_PARAMS.get('issue_cat', None)
         q2 = self.request.QUERY_PARAMS.get('issue_sub', None)
         start_date = self.request.QUERY_PARAMS.get('start_date', None)
         end_date = self.request.QUERY_PARAMS.get('end_date', None)
-        
+        params = self.request.QUERY_PARAMS
         
         qs = super().get_queryset()
-        if q1 or q2 or start_date or end_date:
+
+        if q1 and q2 and start_date and end_date:
             qs = qs.filter(issue_category=q1, issue_subcategory=q2,created_date__date__range=[start_date, end_date])
-        else:
-            qs = super().get_queryset()
+        
+        elif start_date and end_date:
+            try:
+                qs = qs.filter(created_date__date__range=[start_date, end_date])
+            except qs.DoesNotExist as e:
+                print(e)
         qs = qs.select_related("owner", "assigned_to", "status", "project")
         include_attachments = "include_attachments" in self.request.QUERY_PARAMS
         qs = attach_extra_info(qs, user=self.request.user,
