@@ -26,6 +26,7 @@ from openpyxl.drawing.image import Image
 from openpyxl.drawing.spreadsheet_drawing import AbsoluteAnchor, OneCellAnchor, AnchorMarker
 from openpyxl.utils.units import pixels_to_EMU, cm_to_EMU
 from openpyxl.drawing.xdr import XDRPoint2D, XDRPositiveSize2D
+from taiga.users.models import User
 
 def style(ws,fieldnames, issue,file_name=None):
 
