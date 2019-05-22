@@ -439,7 +439,7 @@ class IssueViewSet(
         photo = request.QUERY_PARAMS.get('photo', None)
         name = request.QUERY_PARAMS.get('name', None)
         print("=====================================")
-        print(type)
+        print(type, asset, performance)
         if status:
             status = status.split(',')
         if uuid is None:
@@ -448,23 +448,24 @@ class IssueViewSet(
         project = get_object_or_404(Project, issues_csv_uuid=uuid)
 
         if asset and performance:
-            try:
-                if status:
-                    queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type,status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
+            if status:
+                queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type,status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
 
+            else:
+                if type=="Investigation":
+                    queryset = project.issues.filter(asset_name=asset,test_name=performance,type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
                 else:
                     queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
-            except Exception as e:
-                print(e)
         else:
             queryset = project.issues.filter(type__name=type,created_date__date__range=[start_date, end_date]).order_by('ref')
 
+        print(queryset)
         # if status:
             # queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type,status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
         # elif start_date and end_date:
             # queryset = project.issues.filter(status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
 
-        # else:
+        # else:s
         #     queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
         data = write_excel.write_excel(project, queryset, type, status, start_date, end_date,asset,performance,photo,doc_type,name,request)
         if doc_type=="excel":
