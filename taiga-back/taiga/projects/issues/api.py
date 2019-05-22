@@ -327,7 +327,7 @@ class IssueViewSet(
         params = self.request.QUERY_PARAMS
         type_name = IssueType.objects.get(id=type)
         print(type_name.name)
-        
+
         qs = super().get_queryset()
 
         if q1 and q2 and start_date and end_date:
@@ -438,16 +438,31 @@ class IssueViewSet(
         performance = request.QUERY_PARAMS.get('performance_cat', None)
         photo = request.QUERY_PARAMS.get('photo', None)
         name = request.QUERY_PARAMS.get('name', None)
+        print("=====================================")
+        print(type)
         if status:
             status = status.split(',')
         if uuid is None:
             return response.NotFound()
 
         project = get_object_or_404(Project, issues_csv_uuid=uuid)
-        if asset and performance and start_date and end_date:
-            queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type,status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
-        elif start_date and end_date:
-            queryset = project.issues.filter(status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
+
+        if asset and performance:
+            try:
+                if status:
+                    queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type,status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
+
+                else:
+                    queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
+            except Exception as e:
+                print(e)
+        else:
+            queryset = project.issues.filter(type__name=type,created_date__date__range=[start_date, end_date]).order_by('ref')
+
+        # if status:
+            # queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type,status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
+        # elif start_date and end_date:
+            # queryset = project.issues.filter(status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
 
         # else:
         #     queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')

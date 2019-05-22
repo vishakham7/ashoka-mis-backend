@@ -509,7 +509,6 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
     wwww = []  
         
     for issue in queryset:
-        
         if issue.type.name=='Issue'  and photo=="with photo" and status==None:
             qqq = issue.watchers
             watchers = []
@@ -888,7 +887,6 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
         html = new.to_html(escape=False).replace('&lt;','<').replace('&gt;', '>')
         pisa_context = pisa.CreatePDF(html)
         response = pisa_context.dest.getvalue()
-        print(html)
         return html
         # return response
 
