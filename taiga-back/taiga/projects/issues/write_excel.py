@@ -148,16 +148,20 @@ def style(ws,fieldnames, issue,file_name=None):
                         if new[-1]=="svg" or new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
                             
                             http = urllib3.PoolManager()
-                            # r = http.request('GET', aa[j-(len(aa)-1)])
-                            r = http.request('GET', aa[j])
+                            r = http.request('GET', aa[j-(len(aa)-1)])
+                            # r = http.request('GET', aa[j])
+                            print(aa[j])
                             image_file = io.BytesIO(r.data)
-                        
+                            print("0000---------------0000")
+                            print(image_file)
                             img = Image(image_file)
+                            print("000000000000000000000000")
+                            print(img)
                             img.height=100
                             img.width =100
                             ws.add_image(img,'G'+str(new_row))
-                            ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j] + "'></img>"
-                            # ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j-(len(aa)-1)] + "'></img>"
+                            # ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j] + "'></img>"
+                            ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j-(len(aa)-1)] + "'></img>"
                             
 
                             # ============================================================
@@ -170,14 +174,14 @@ def style(ws,fieldnames, issue,file_name=None):
                             # img1.width =100
                             # ws.add_image(img1,'G'+str(new_row))
                             
-                            # # ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j-(len(aa)-1)] + "'></img>"
+                            # ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j-(len(aa)-1)] + "'></img>"
                             # ws.cell(row=new_row, column=7).value = '<img src="' + aa[0] + '"/>'
-                            # ws.cell(row=new_row, column=7).alignment = Alignment(wrap_text=True, horizontal='right', vertical='center')
-                            # ws.cell(row=new_row, column=7).hyperlink = aa[0]
-                            # ws.cell(row=new_row, column=7).value ="Image"
-                            # ws.cell(row=new_row, column=7).alignment = Alignment(wrap_text=True, horizontal='right', vertical='center')
-                            # ws.cell(row=new_row, column=7).font = dd
-                            # ws.row_dimensions[new_row].height = 150
+                            ws.cell(row=new_row, column=7).alignment = Alignment(wrap_text=True, horizontal='right', vertical='center')
+                            ws.cell(row=new_row, column=7).hyperlink = aa[0]
+                            ws.cell(row=new_row, column=7).value ="Image"
+                            ws.cell(row=new_row, column=7).alignment = Alignment(wrap_text=True, horizontal='right', vertical='center')
+                            ws.cell(row=new_row, column=7).font = dd
+                            ws.row_dimensions[new_row].height = 150
                         # else:
                         #     ws.cell(row=new_row, column=7).value = ""
 
