@@ -98,96 +98,97 @@ def style(ws,fieldnames, issue,file_name=None):
 
 
     #////////////////////////// images
-    file_row = []
-    for row in range(5,row_count+1):
-        file_row.append(row)
-    print(file_row)
-    l=[]
-    for i in range(len(file_row)):
-        if len(file_row)==(row_count-4):
-            l.append(file_row[i])
-    print(l)
-    file_name = []
-    split = []
-    aaa=[]
-    val = []
-    n=""
-    hh=""
-    alignment = ['left', 'right','center']
-    for new_row in l:
-        file = ws.cell(row=new_row, column=7).value
-        if file:
-            split = file.split('\n')
-            if split:
-                aaa.append(split)
-            for aa in aaa:
-                for j in range(len(aa)-1):
-                    new = aa[j].split('.')
-                    doc_name = new[-2].split('/')
-                    file_name = doc_name[-1]+'.'+new[-1]
-                        
-
-                    name = ws.cell(row=new_row, column=7).value
-                    n += name
-                    print(aa[j])
-                    if new[-1]=="xlsx" or new[-1]=="docx" or new[-1]=="doc" or new[-1]=="pdf":
-                        ws.cell(row=new_row, column=7).hyperlink = aa[j]
-                    if new[-1]=="svg" or new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
-                        http = urllib3.PoolManager()
-                        # r = http.request('GET', aa[j-(len(aa)-1)])
-                        r = http.request('GET', aa[j])
-                        image_file = io.BytesIO(r.data)
-                    
-                        img = Image(image_file)
-                        img.height=100
-                        img.width =100
-                        ws.add_image(img,'G'+str(new_row))
-                        ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j] + "'></img>"
-                    if len(n)>180:                
-                        ws.row_dimensions[new_row].height = 120
-                        if new[-1]=="svg" or new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
+    if file_name:
+        file_row = []
+        for row in range(5,row_count+1):
+            file_row.append(row)
+        print(file_row)
+        l=[]
+        for i in range(len(file_row)):
+            if len(file_row)==(row_count-4):
+                l.append(file_row[i])
+        print(l)
+        file_name = []
+        split = []
+        aaa=[]
+        val = []
+        n=""
+        hh=""
+        alignment = ['left', 'right','center']
+        for new_row in l:
+            file = ws.cell(row=new_row, column=7).value
+            if file:
+                split = file.split('\n')
+                if split:
+                    aaa.append(split)
+                for aa in aaa:
+                    for j in range(len(aa)-1):
+                        new = aa[j].split('.')
+                        doc_name = new[-2].split('/')
+                        file_name = doc_name[-1]+'.'+new[-1]
                             
+
+                        name = ws.cell(row=new_row, column=7).value
+                        n += name
+                        print(aa[j])
+                        if new[-1]=="xlsx" or new[-1]=="docx" or new[-1]=="doc" or new[-1]=="pdf":
+                            ws.cell(row=new_row, column=7).hyperlink = aa[j]
+                        if new[-1]=="svg" or new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
                             http = urllib3.PoolManager()
-                            r = http.request('GET', aa[j-(len(aa)-1)])
-                            # r = http.request('GET', aa[j])
-                            print(aa[j])
+                            # r = http.request('GET', aa[j-(len(aa)-1)])
+                            r = http.request('GET', aa[j])
                             image_file = io.BytesIO(r.data)
-                            print("0000---------------0000")
-                            print(image_file)
+                        
                             img = Image(image_file)
-                            print("000000000000000000000000")
-                            print(img)
                             img.height=100
                             img.width =100
                             ws.add_image(img,'G'+str(new_row))
-                            # ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j] + "'></img>"
-                            ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j-(len(aa)-1)] + "'></img>"
+                            ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j] + "'></img>"
+                        if len(n)>180:                
+                            ws.row_dimensions[new_row].height = 120
+                            if new[-1]=="svg" or new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
+                                
+                                http = urllib3.PoolManager()
+                                r = http.request('GET', aa[j-(len(aa)-1)])
+                                # r = http.request('GET', aa[j])
+                                print(aa[j])
+                                image_file = io.BytesIO(r.data)
+                                print("0000---------------0000")
+                                print(image_file)
+                                img = Image(image_file)
+                                print("000000000000000000000000")
+                                print(img)
+                                img.height=100
+                                img.width =100
+                                ws.add_image(img,'G'+str(new_row))
+                                # ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j] + "'></img>"
+                                ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j-(len(aa)-1)] + "'></img>"
+                                
+
+                                # ============================================================
+                                # r1 = http.request('GET', aa[0])
+                                # # r = http.request('GET', aa[j])
+                                # image_file1 = io.BytesIO(r1.data)
                             
-
-                            # ============================================================
-                            # r1 = http.request('GET', aa[0])
-                            # # r = http.request('GET', aa[j])
-                            # image_file1 = io.BytesIO(r1.data)
-                        
-                            # img1 = Image(image_file1)
-                            # img1.height=100
-                            # img1.width =100
-                            # ws.add_image(img1,'G'+str(new_row))
-                            
-                            # ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j-(len(aa)-1)] + "'></img>"
-                            # ws.cell(row=new_row, column=7).value = '<img src="' + aa[0] + '"/>'
-                            ws.cell(row=new_row, column=7).alignment = Alignment(wrap_text=True, horizontal='right', vertical='center')
-                            ws.cell(row=new_row, column=7).hyperlink = aa[0]
-                            ws.cell(row=new_row, column=7).value ="Image"
-                            ws.cell(row=new_row, column=7).alignment = Alignment(wrap_text=True, horizontal='right', vertical='center')
-                            ws.cell(row=new_row, column=7).font = dd
-                            ws.row_dimensions[new_row].height = 150
-                        # else:
-                        #     ws.cell(row=new_row, column=7).value = ""
+                                # img1 = Image(image_file1)
+                                # img1.height=100
+                                # img1.width =100
+                                # ws.add_image(img1,'G'+str(new_row))
+                                
+                                # ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j-(len(aa)-1)] + "'></img>"
+                                # ws.cell(row=new_row, column=7).value = '<img src="' + aa[0] + '"/>'
+                                ws.cell(row=new_row, column=7).alignment = Alignment(wrap_text=True, horizontal='right', vertical='center')
+                                ws.cell(row=new_row, column=7).hyperlink = aa[0]
+                                ws.cell(row=new_row, column=7).value ="Image"
+                                ws.cell(row=new_row, column=7).alignment = Alignment(wrap_text=True, horizontal='right', vertical='center')
+                                ws.cell(row=new_row, column=7).font = dd
+                                ws.row_dimensions[new_row].height = 150
+                            # else:
+                            #     ws.cell(row=new_row, column=7).value = ""
 
 
-                        # ws.cell(row=new_row, column=7).hyperlink = nnn
-                    n =""
+                            # ws.cell(row=new_row, column=7).hyperlink = nnn
+                        n =""
         # /////////////////////////////////////////
                     # val.append(name)
                     # for i in range(len(val)-1):
