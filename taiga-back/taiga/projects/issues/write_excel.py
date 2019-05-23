@@ -350,7 +350,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
         ws5.merge_cells('J3:J4')
         ws5.merge_cells('K3:K4')
         # ws1.merge_cells('L3:L4')
-    if type == 'Issue' and name=="comp" and photo=="with photo" and status:
+    if type == 'Issue' and name=="Compliance" and photo=="with photo" and status:
 
         wb = Workbook()
         ws2 = wb.active
@@ -408,7 +408,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
         ws2.merge_cells('U3:U4')
         ws2.merge_cells('V3:V4')
 
-    if type=='Issue' and name=="comp" and photo=="without photo" and status:
+    if type=='Issue' and name=="Compliance" and photo=="without photo" and status:
     
         ws4.title = "Manitenance Report"
         ws4['A1'] = "For External Parties:  IE and NHAI-PD or RO"
@@ -677,7 +677,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
 
     
 
-        if issue.type.name=='Issue' and name=="comp" and photo=="with photo" and status:
+        if issue.type.name=='Issue' and name=="Compliance" and photo=="with photo" and status:
             for issue in queryset:
                 qqqq = issue.watchers
                 watchers = []
@@ -765,7 +765,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                 style(ws2,fieldnames, file_name, issue)
 
 
-        if issue.type.name=='Issue' and name=="comp" and photo=="without photo" and status:
+        if issue.type.name=='Issue' and name=="Compliance" and photo=="without photo" and status:
             for issue in queryset:
                 qqqq = issue.watchers
                 watchers = []

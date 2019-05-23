@@ -440,9 +440,9 @@ class IssueViewSet(
         asset = request.QUERY_PARAMS.get('asset_cat', None)
         performance = request.QUERY_PARAMS.get('performance_cat', None)
         photo = request.QUERY_PARAMS.get('photo', None)
-        name = request.QUERY_PARAMS.get('name', None)
-        print("=====================================")
-        print(type, asset, performance)
+        name = request.QUERY_PARAMS.get('type_name', None)
+        print(name)
+        print(status)
         if status:
             status = status.split(',')
         if uuid is None:
@@ -465,13 +465,11 @@ class IssueViewSet(
 
             else:
                 if type=="Investigation":
-                    print("-----------------------")
                     queryset = project.issues.filter(asset_name=asset,type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
                 else:
                     queryset = project.issues.filter(issue_category=asset,type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
         else:
             queryset = project.issues.filter(type__name=type,created_date__date__range=[start_date, end_date]).order_by('ref')
-        print(queryset)
         data = write_excel.write_excel(project, queryset, type, status, start_date, end_date,asset,performance,photo,doc_type,name,request)
         if doc_type=="excel":
             csv_response = HttpResponse(save_virtual_workbook(data), content_type='application/vnd.ms-excel; charset=utf-8')
