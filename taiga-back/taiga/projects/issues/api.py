@@ -326,7 +326,6 @@ class IssueViewSet(
         end_date = self.request.QUERY_PARAMS.get('end_date', None)
         params = self.request.QUERY_PARAMS
         type_name = IssueType.objects.get(id=type)
-        print(type_name.name)
 
         qs = super().get_queryset()
 
@@ -340,11 +339,10 @@ class IssueViewSet(
                 qs = qs.filter(asset_name=q1,created_date__date__range=[start_date, end_date])
             else:
                 qs = qs.filter(issue_category=q1,created_date__date__range=[start_date, end_date])
+        
         elif start_date and end_date:
-            try:
-                qs = qs.filter(created_date__date__range=[start_date, end_date])
-            except qs.DoesNotExist as e:
-                print(e)
+            qs = qs.filter(created_date__date__range=[start_date, end_date])
+        print(qs.count())
         qs = qs.select_related("owner", "assigned_to", "status", "project")
         include_attachments = "include_attachments" in self.request.QUERY_PARAMS
         qs = attach_extra_info(qs, user=self.request.user,
