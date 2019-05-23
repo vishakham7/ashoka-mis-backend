@@ -135,7 +135,7 @@ def style(ws,fieldnames, issue,file_name=None):
                                 r = http.request('GET', aa[j])
                                 image_file = io.BytesIO(r.data)
                                 if image_file:
-                                    img = Image(image_file,  format=new[-1])
+                                    img = Image(image_file)
                                     img.height=100
                                     img.width =100
 
