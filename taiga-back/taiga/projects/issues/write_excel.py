@@ -161,25 +161,25 @@ def style(ws,fieldnames, issue,file_name=None):
                             # # ws.cell(row=new_row, column=7).value = aa[j]
                             # # ws.cell(row=new_row, column=7).hyperlink = aa[j]
                             # ws.cell(row=new_row, column=7).value = "<img src='"+  aa[j] + "' height=100 width=70/>"
-                        # if len(n)>180:                
+                        if len(n)>180:                
                         #     # ws.row_dimensions[new_row].height = 120
-                        #     if new[-1]=="svg" or new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
+                            if new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
                         #         # print(aa[j])
-                        #         http = urllib3.PoolManager()
-                        #         # r = http.request('GET', aa[j-(len(aa)-1)])
-                        #         r = http.request('GET', aa[j])
+                                http = urllib3.PoolManager()
+                                # r = http.request('GET', aa[j-(len(aa)-1)])
+                                r = http.request('GET', aa[j])
                         # #         print(aa[j])
-                        #         image_file = io.BytesIO(r.data)
+                                image_file = io.BytesIO(r.data)
                         # #         print("0000---------------0000")
                         # #         print(image_file)
-                        #         img = Image(image_file)
+                                img = Image(image_file)
                         # #         print("000000000000000000000000")
                         # #         print(img)
-                        #         img.height=100
-                        #         img.width =100
-                        #         ws.add_image(img,'G'+str(new_row))
+                                img.height=100
+                                img.width =100
+                                ws.add_image(img,'G'+str(new_row))
                         #         # ws.cell(row=new_row, column=7).value = aa[j]
-                        #         ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j-(len(aa)-1)] + "'></img>"
+                                ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j] + "'></img>"
                                 
 
                         #         # ============================================================
