@@ -141,8 +141,12 @@ def style(ws,fieldnames, issue,file_name=None):
 
                                     ws.add_image(img,'G'+str(new_row))
                                     # ws.cell(row=new_row, column=7).value = aa[j]
-                                    # ws.cell(row=new_row, column=7).hyperlink = aa[j]
+                                    ws.cell(row=new_row, column=7).hyperlink = aa[j]
                                     ws.cell(row=new_row, column=7).value = "<img src='"+ aa[j] + "' height=100 width=70/>"
+                            # if new[-1]=="svg":
+                            #     ws.cell(row=new_row, column=7).value = "<img src='"+ aa[j] + "' height=100 width=70/>"
+
+
                             # print(aa[j])
                             # print(aa[j-(len(aa))])
                             # http = urllib3.PoolManager()
@@ -578,7 +582,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
     wwww = []  
         
     for issue in queryset:
-        if issue.type.name=='Issue'  and photo=="with photo":
+        if issue.type.name=='Issue'  and photo=="with photo" and status==None:
             qqq = issue.watchers
             watchers = []
             new_watcher_list =  ""
@@ -993,7 +997,6 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
         html = new.to_html(escape=False).replace('&lt;','<').replace('&gt;', '>')
         pisa_context = pisa.CreatePDF(html)
         response = pisa_context.dest.getvalue()
-        print(html)
         return html
         # return response
 
