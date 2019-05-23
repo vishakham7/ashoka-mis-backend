@@ -128,21 +128,21 @@ def style(ws,fieldnames, issue,file_name=None):
                             # ws.cell(row=new_row, column=7).hyperlink = aa[j]
                             ws.cell(row=new_row, column=7).hyperlink = aa[j]
                             ws.cell(row=new_row, column=7).value = aa[j]
-                        if new[-1]=="svg" or new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
+                        if new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
                             http = urllib3.PoolManager()
                             # r = http.request('GET', aa[j-(len(aa)-1)])
-                            if aa[0]:
-                                r = http.request('GET', aa[0])
+                            if aa[j]:
+                                r = http.request('GET', aa[j])
                                 image_file = io.BytesIO(r.data)
                                 if image_file:
-                                    img = Image(image_file)
+                                    img = Image(image_file,  format=new[-1])
                                     img.height=100
                                     img.width =100
 
                                     ws.add_image(img,'G'+str(new_row))
                                     # ws.cell(row=new_row, column=7).value = aa[j]
                                     # ws.cell(row=new_row, column=7).hyperlink = aa[j]
-                                    ws.cell(row=new_row, column=7).value = "<img src='"+  aa[0] + "' height=100 width=70/>"
+                                    ws.cell(row=new_row, column=7).value = "<img src='"+ aa[j] + "' height=100 width=70/>"
                             # print(aa[j])
                             # print(aa[j-(len(aa))])
                             # http = urllib3.PoolManager()
