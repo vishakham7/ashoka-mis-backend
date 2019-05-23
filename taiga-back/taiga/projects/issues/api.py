@@ -335,7 +335,11 @@ class IssueViewSet(
                 qs = qs.filter(asset_name=q1, test_name=q2,created_date__date__range=[start_date, end_date])
             else:
                 qs = qs.filter(issue_category=q1, issue_subcategory=q2,created_date__date__range=[start_date, end_date])
-            
+        elif q1 and start_date and end_date:
+            if type_name.name == "Investigation":
+                qs = qs.filter(asset_name=q1,created_date__date__range=[start_date, end_date])
+            else:
+                qs = qs.filter(issue_category=q1,created_date__date__range=[start_date, end_date])
         elif start_date and end_date:
             try:
                 qs = qs.filter(created_date__date__range=[start_date, end_date])
@@ -345,7 +349,6 @@ class IssueViewSet(
         include_attachments = "include_attachments" in self.request.QUERY_PARAMS
         qs = attach_extra_info(qs, user=self.request.user,
                                include_attachments=include_attachments,)
-
         return qs
 
     def pre_save(self, obj):
