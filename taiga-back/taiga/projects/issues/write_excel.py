@@ -279,6 +279,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
     ws3 = wb.active
     ws4 = wb.active
     ws5 = wb.active
+    ws6 = wb.active
     queryset = queryset.prefetch_related("attachments",
                                          "generated_user_stories",
                                          "custom_attributes_values")
@@ -460,7 +461,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
         ws4.merge_cells('U3:U4')
 
 
-    if type == 'Investigation':
+    if type == 'Investigation' and photo=="with photo":
         
         ws3.title = "Test Report"
         ws3['A1'] = ""
@@ -495,6 +496,42 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
         ws3.merge_cells('O3:O4')
         ws3.merge_cells('P3:P4')
         ws3.merge_cells('Q3:Q4')
+
+    if type == 'Investigation' and photo=="without photo":
+        
+        ws6.title = "Test Report"
+        ws6['A1'] = ""
+        ws6['A2'] = "Test Report"
+        fieldnames = ["Ref.No.", "Project Name", "Chainage","", "Direction", "Description of Issue",
+                          "Asset Type", "Performance Parameter(Type of Issue)",
+                          "Issue Raised On", "Name of Test", "Testing Method", "Standard References for testing",
+                          "Test Carried Out Date", "Testing Carried Out By(Name)", "Remark", "Outcome Report"]
+        
+        ws6.append(fieldnames)
+        ws6.merge_cells('A3:A4')
+        ws6.merge_cells('B3:B4')
+        ws6.merge_cells('C3:D3')
+        # ws1.merge_cells('C4:D4')
+        n1 = ws6.cell(row=4,column=3)
+        n2 = ws6.cell(row=4,column=4)
+        n1.value = "From (In Km)"
+        n2.value = "To (In Km)"
+        # ws1.merge_cells('D3:D4')
+        # n3 = ws1.cell(row=3,column=5)
+        # n3.value="Direction"
+        ws6.merge_cells('E3:E4')
+        ws6.merge_cells('F3:F4')
+        # ws3.merge_cells('G3:G4')
+        ws6.merge_cells('H3:H4')
+        ws6.merge_cells('I3:I4')
+        ws6.merge_cells('J3:J4')
+        ws6.merge_cells('K3:K4')
+        ws6.merge_cells('L3:L4')
+        ws6.merge_cells('M3:M4')
+        ws6.merge_cells('N3:N4')
+        ws6.merge_cells('O3:O4')
+        ws6.merge_cells('P3:P4')
+        ws6.merge_cells('Q3:Q4')
 
 
 
@@ -804,7 +841,20 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                 style(ws4,fieldnames, issue)
         
 
-        if issue.type.name == 'Investigation':
+        if issue.type.name == 'Investigation' and photo=="with photo":
+            if issue.attachments:
+                file_name = "" 
+                files = []
+                file = issue.attachments.filter(project_id=issue.project.id).values_list('attached_file')
+                for i in file:
+                    files.extend(i)
+                #     for j in len(file):
+                #         files.append(file[j])
+                for j in files:
+                    file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
+            else:
+                file_name=""
+                print(file_name)
             issue_data = [[
                 issue.ref,
                 issue.project.name,
@@ -812,6 +862,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                 issue.investigation_chainage_to,
                 issue.investigation_chainage_side,
                 issue.investigation_description,
+                file_name,
                 issue.asset_name,
                 issue.test_name,
                 "",
@@ -834,6 +885,36 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
             ws3 = wb['Test Report']
             style(ws3,fieldnames, issue)
 
+        if issue.type.name == 'Investigation' and photo=="without photo":
+            issue_data = [[
+                issue.ref,
+                issue.project.name,
+                issue.investigation_chainage_from,
+                issue.investigation_chainage_to,
+                issue.investigation_chainage_side,
+                issue.investigation_description,
+                # file_name,
+                issue.asset_name,
+                issue.test_name,
+                "",
+                "",
+                "",
+                "",
+                issue.assigned_to.username if issue.assigned_to else None,
+                "",
+                "",
+            ]]
+            for data in issue_data:
+                ws6.append(data)
+
+
+            wb.save("table.xlsx")
+            wb.close()
+
+            wb = load_workbook('table.xlsx')
+        
+            ws6 = wb['Test Report']
+            style(ws6,fieldnames, issue)
 
         if issue.type.name == 'Accident':
             
