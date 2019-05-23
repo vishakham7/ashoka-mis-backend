@@ -38,6 +38,14 @@ def style(ws,fieldnames, issue,file_name=None):
                 underline='none',
                 strike=False,
                 color='FF000000')
+    font2 = Font(name='Calibri',
+                size=11,
+                bold=True,
+                italic=False,
+                vertAlign=None,
+                underline='none',
+                strike=False,
+                color='FFFFFF')
     color = Font(name='Calibri',
                 size=11,
                 bold=False,
@@ -127,7 +135,7 @@ def style(ws,fieldnames, issue,file_name=None):
                             # print(aa[j])
                             # ws.cell(row=new_row, column=7).hyperlink = aa[j]
                             ws.cell(row=new_row, column=7).hyperlink = aa[j]
-                            ws.cell(row=new_row, column=7).value = aa[j]
+                            ws.cell(row=new_row, column=7).value = file_name
                         if new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
                             http = urllib3.PoolManager()
                             # r = http.request('GET', aa[j-(len(aa)-1)])
@@ -143,6 +151,7 @@ def style(ws,fieldnames, issue,file_name=None):
                                     # ws.cell(row=new_row, column=7).value = aa[j]
                                     # ws.cell(row=new_row, column=7).hyperlink = aa[j]
                                     ws.cell(row=new_row, column=7).value = "<img src='"+ aa[j] + "' height=100 width=70/>"
+                                    ws.cell(row=new_row, column=7).font = font2
                             # if new[-1]=="svg":
                             #     ws.cell(row=new_row, column=7).value = "<img src='"+ aa[j] + "' height=100 width=70/>"
 
@@ -162,7 +171,7 @@ def style(ws,fieldnames, issue,file_name=None):
                             # # ws.cell(row=new_row, column=7).hyperlink = aa[j]
                             # ws.cell(row=new_row, column=7).value = "<img src='"+  aa[j] + "' height=100 width=70/>"
                         if len(n)>180:                
-                        #     # ws.row_dimensions[new_row].height = 120
+                            ws.row_dimensions[new_row].height = 120
                             if new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
                         #         # print(aa[j])
                                 http = urllib3.PoolManager()
@@ -179,7 +188,9 @@ def style(ws,fieldnames, issue,file_name=None):
                                 img.width =100
                                 ws.add_image(img,'G'+str(new_row))
                         #         # ws.cell(row=new_row, column=7).value = aa[j]
-                                ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j] + "'></img>"
+                                ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j] + "'  />"
+                                ws.cell(row=new_row, column=7).font = font2
+
                                 
 
                         #         # ============================================================
@@ -205,6 +216,7 @@ def style(ws,fieldnames, issue,file_name=None):
 
 
                         #     # ws.cell(row=new_row, column=7).hyperlink = nnn
+
                         n =""
         # /////////////////////////////////////////
                     # val.append(name)
