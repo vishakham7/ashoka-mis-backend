@@ -364,8 +364,8 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                           "Issue Raised On (Date)", "Issue Raised By\n (Name of Concessionaire)",
                           "Issue Raised To\n (Assignee Name Max Upto 3 Persons)" , "Max Time limit for Rectification/Repair",
                           "", "Action Taken",
-                          "", "", "Issue Closed By",
-                          "Photograph Post Compliance", "Remark", "Current Status","Description Of Compliance" ]
+                          "", "", "Issue Closed By","Description Of Compliance",
+                          "Photograph Post Compliance", "Remark", "Current Status"]
         ws2.append(fieldnames)
         ws2.merge_cells('A3:A4')
         ws2.merge_cells('B3:B4')
@@ -418,8 +418,8 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                           "Issue Raised On (Date)", "Issue Raised By\n (Name of Concessionaire)",
                           "Issue Raised To\n (Assignee Name Max Upto 3 Persons)" , "Max Time limit for Rectification/Repair",
                           "", "Action Taken",
-                          "", "", "Issue Closed By",
-                          "Photograph Post Compliance", "Remark", "Current Status","Description Of Compliance" ]
+                          "", "", "Issue Closed By","Description Of Compliance",
+                          "Photograph Post Compliance", "Remark", "Current Status"]
         ws4.append(fieldnames)
         ws4.merge_cells('A3:A4')
         ws4.merge_cells('B3:B4')
@@ -731,6 +731,8 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                         new =""
                         for i in new_status_name:
                             new = i
+
+
                     issue_data = [[
                             issue.ref,
                             issue.project.name,
@@ -746,14 +748,14 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                             new_watcher_list,
                             timeline,
                             target_date,
-                            new if issue.status else None,
+                            'new' if issue.status else None,
                             issue.finished_date if status_name=='Closed' else None,
                             'Yes' if issue.compliance_is_update==True else 'No',
                             issue.assigned_to.full_name if issue.assigned_to else None,
                             issue.compliance_description,
                             issue.attachments.name,
                             "",
-                            new if issue.status else None,
+                            'new' if issue.status else None,
                         ]]
                     for data in issue_data:
                         ws2.append(data)
