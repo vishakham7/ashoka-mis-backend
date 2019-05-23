@@ -141,7 +141,7 @@ def style(ws,fieldnames, issue,file_name=None):
 
                                     ws.add_image(img,'G'+str(new_row))
                                     # ws.cell(row=new_row, column=7).value = aa[j]
-                                    ws.cell(row=new_row, column=7).hyperlink = aa[j]
+                                    # ws.cell(row=new_row, column=7).hyperlink = aa[j]
                                     ws.cell(row=new_row, column=7).value = "<img src='"+ aa[j] + "' height=100 width=70/>"
                             # if new[-1]=="svg":
                             #     ws.cell(row=new_row, column=7).value = "<img src='"+ aa[j] + "' height=100 width=70/>"
