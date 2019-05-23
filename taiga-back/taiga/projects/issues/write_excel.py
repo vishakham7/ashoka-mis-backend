@@ -114,6 +114,7 @@ def style(ws,fieldnames, issue,file_name=None):
                     aaa.append(split)
                 for aa in aaa:
                     for j in range(len(aa)-1):
+                        
                         new = aa[j].split('.')
                         doc_name = new[-2].split('/')
                         file_name = doc_name[-1]+'.'+new[-1]
@@ -122,40 +123,43 @@ def style(ws,fieldnames, issue,file_name=None):
                         n += name
                         
                         if new[-1]=="xlsx" or new[-1]=="docx" or new[-1]=="doc" or new[-1]=="pdf":
-                            print(aa[j])
+                            # print(aa[j])
                             # ws.cell(row=new_row, column=7).hyperlink = aa[j]
-                            ws.cell(row=new_row, column=7).value = file_name
-                        if new[-1]=="svg" or new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
-                            print(aa[j])
-                        #     http = urllib3.PoolManager()
-                        #     # r = http.request('GET', aa[j-(len(aa)-1)])
-                        #     r = http.request('GET', aa[j])
-                        #     image_file = io.BytesIO(r.data)
-                        
-                        #     img = Image(image_file)
-                        #     img.height=100
-                        #     img.width =100
-                        #     ws.add_image(img,'G'+str(new_row))
+                            ws.cell(row=new_row, column=7).hyperlink = aa[j]
                             ws.cell(row=new_row, column=7).value = aa[j]
-                            # ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j] + "'></img>"
-                        if len(n)>180:                
-                            # ws.row_dimensions[new_row].height = 120
-                            if new[-1]=="svg" or new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
-                                print(aa[j])
+                        if new[-1]=="svg" or new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
+                            # print(aa[j])
+                            # print(aa[j-(len(aa))])
+                            http = urllib3.PoolManager()
+                            # r = http.request('GET', aa[j-(len(aa)-1)])
+                            r = http.request('GET', aa[j])
+                            image_file = io.BytesIO(r.data)
+                        
+                            img = Image(image_file)
+                            img.height=100
+                            img.width =100
+                            ws.add_image(img,'G'+str(new_row))
+                            # ws.cell(row=new_row, column=7).value = aa[j]
+                            # ws.cell(row=new_row, column=7).hyperlink = aa[j]
+                            ws.cell(row=new_row, column=7).value = "<img src='"+  aa[j] + "' height=100 width=70/>"
+                        # if len(n)>180:                
+                        #     # ws.row_dimensions[new_row].height = 120
+                        #     if new[-1]=="svg" or new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
+                        #         # print(aa[j])
                         #         http = urllib3.PoolManager()
-                        #         r = http.request('GET', aa[j-(len(aa)-1)])
-                        #         # r = http.request('GET', aa[j])
-                        #         print(aa[j])
+                        #         # r = http.request('GET', aa[j-(len(aa)-1)])
+                        #         r = http.request('GET', aa[j])
+                        # #         print(aa[j])
                         #         image_file = io.BytesIO(r.data)
-                        #         print("0000---------------0000")
-                        #         print(image_file)
+                        # #         print("0000---------------0000")
+                        # #         print(image_file)
                         #         img = Image(image_file)
-                        #         print("000000000000000000000000")
-                        #         print(img)
+                        # #         print("000000000000000000000000")
+                        # #         print(img)
                         #         img.height=100
                         #         img.width =100
                         #         ws.add_image(img,'G'+str(new_row))
-                                ws.cell(row=new_row, column=7).value = aa[j]
+                        #         # ws.cell(row=new_row, column=7).value = aa[j]
                         #         ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j-(len(aa)-1)] + "'></img>"
                                 
 
@@ -877,7 +881,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
             wb = load_workbook('table.xlsx')
         
             ws3 = wb['Test Report']
-            style(ws3,fieldnames, issue)
+            style(ws3,fieldnames, issue, file_name)
 
         if issue.type.name == 'Investigation' and photo=="without photo":
             issue_data = [[
@@ -979,6 +983,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
         html = new.to_html(escape=False).replace('&lt;','<').replace('&gt;', '>')
         pisa_context = pisa.CreatePDF(html)
         response = pisa_context.dest.getvalue()
+        print(html)
         return html
         # return response
 
