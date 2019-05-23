@@ -988,13 +988,13 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
             style(ws4,fieldnames, issue)
 
     if doc_type=="pdf":
-        new = pd.read_excel('table.xlsx',na_filter=False,header=None, names="",skiprows=[0,1])
+        new = pd.read_excel('table.xlsx',na_filter=False,header=None, names="",border="0")
     
         # for i in wwww:
         #  
         pd.set_option('display.max_colwidth', 500)   # FOR TABLE <th>
 
-        html = new.to_html(escape=False).replace('&lt;','<').replace('&gt;', '>')
+        html = new.to_html(escape=False,index=False,header=False,border="0.5").replace('&lt;','<').replace('&gt;', '>')
         pisa_context = pisa.CreatePDF(html)
         response = pisa_context.dest.getvalue()
         return html
