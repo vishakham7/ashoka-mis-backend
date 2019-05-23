@@ -27,6 +27,7 @@ from openpyxl.drawing.spreadsheet_drawing import AbsoluteAnchor, OneCellAnchor, 
 from openpyxl.utils.units import pixels_to_EMU, cm_to_EMU
 from openpyxl.drawing.xdr import XDRPoint2D, XDRPositiveSize2D
 from taiga.users.models import User
+# from PIL import Image
 
 def style(ws,fieldnames, issue,file_name=None):
     font = Font(name='Calibri',
@@ -132,10 +133,10 @@ def style(ws,fieldnames, issue,file_name=None):
                             # r = http.request('GET', aa[j-(len(aa)-1)])
                             r = http.request('GET', aa[0])
                             image_file = io.BytesIO(r.data)
-                        
                             img = Image(image_file)
                             img.height=100
                             img.width =100
+
                             ws.add_image(img,'G'+str(new_row))
                             # ws.cell(row=new_row, column=7).value = aa[j]
                             # ws.cell(row=new_row, column=7).hyperlink = aa[j]
@@ -279,10 +280,8 @@ def style(ws,fieldnames, issue,file_name=None):
                     #                 print(cell_new)
                     
                             
-                                    
 
-
-def write_excel(project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name,request):
+def write_excel(project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name):
     wb = Workbook()
     ws1 = wb.active
     ws2 = wb.active
@@ -577,7 +576,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
     wwww = []  
         
     for issue in queryset:
-        if issue.type.name=='Issue'  and photo=="with photo" and status==None:
+        if issue.type.name=='Issue'  and photo=="with photo":
             qqq = issue.watchers
             watchers = []
             new_watcher_list =  ""
@@ -594,51 +593,48 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
 
             for i in range(len(split)):
                 new_watcher_list = split[i] + new_watcher_list
-            if issue.type.name == type:
-                if issue.attachments:
-                    file_name ="" 
-                    files = []
+            if issue.attachments:
+                file_name ="" 
+                files = []
 
-                    file = issue.attachments.filter(project__id=issue.project.id).values_list('attached_file')
-                    for i in file:
-                        files.extend(i)
-                    #     for j in len(file):
-                    #         files.append(file[j])
-                    for j in files:
-                        file_name += os.path.join(settings.MEDIA_URL,str(j)) +"\n"
-                        
-                
-               
-                        # file_name.append(os.path.join(settings.MEDIA_URL,str(j)))
-                else:
-                    file_name=""
+                file = issue.attachments.filter(project__id=issue.project.id).values_list('attached_file')
+                for i in file:
+                    files.extend(i)
+                #     for j in len(file):
+                #         files.append(file[j])
+                for j in files:
+                    file_name += os.path.join(settings.MEDIA_URL,str(j)) +"\n"
+                    
+            
+           
+                    # file_name.append(os.path.join(settings.MEDIA_URL,str(j)))
+            else:
+                file_name=""
 
-                Raised_date = datetime.strftime(issue.created_date.date(),"%d-%m-%Y")
-                issue_data = [[
-                    issue.ref,
-                    issue.project.name,
-                    issue.chainage_from,
-                    issue.chainage_to,
-                    issue.chainage_side,
-                    issue.description,
-                    file_name if issue.attachments else None,
-                    issue.issue_category,
-                    issue.issue_subcategory,
-                    Raised_date,
-                    issue.owner.full_name if issue.owner else None,
-                    new_watcher_list,
-                ]]
-                for data in issue_data:
-                    ws1.append(data)
-                wb.save("table.xlsx")
-                wb.close()
+            Raised_date = datetime.strftime(issue.created_date.date(),"%d-%m-%Y")
+            issue_data = [[
+                issue.ref,
+                issue.project.name,
+                issue.chainage_from,
+                issue.chainage_to,
+                issue.chainage_side,
+                issue.description,
+                file_name if issue.attachments else None,
+                issue.issue_category,
+                issue.issue_subcategory,
+                Raised_date,
+                issue.owner.full_name if issue.owner else None,
+                new_watcher_list,
+            ]]
+            for data in issue_data:
+                ws1.append(data)
+            wb.save("table.xlsx")
+            wb.close()
 
-                wb = load_workbook('table.xlsx')
-                ws1 = wb['Inspection Report']
+            wb = load_workbook('table.xlsx')
+            ws1 = wb['Inspection Report']
 
-
-
-                style(ws1,fieldnames, file_name, issue)
+            style(ws1,fieldnames, file_name, issue)
 
 
         if issue.type.name == 'Issue' and photo=="without photo" and status==None:
