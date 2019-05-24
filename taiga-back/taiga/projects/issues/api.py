@@ -349,7 +349,7 @@ class IssueViewSet(
             qs = qs.filter(created_date__date__range=[start_date, end_date])
         else:
         #     qs = super().get_queryset()
-            qs = qs.filter(project_id=project, type=type_id)
+            qs = qs.filter(project_id=project, type=type)
         
         qs = qs.select_related("owner", "assigned_to", "status", "project")
         include_attachments = "include_attachments" in self.request.QUERY_PARAMS
