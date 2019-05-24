@@ -319,23 +319,25 @@ class IssueViewSet(
         return super().update(request, *args, **kwargs)
 
     def get_queryset(self):
+        project = self.request.QUERY_PARAMS.get('project', None)
+        new_project = Project.objects.get(pk=project)
         type = self.request.QUERY_PARAMS.get('type_id', None)
         q1 = self.request.QUERY_PARAMS.get('issue_cat', None)
         q2 = self.request.QUERY_PARAMS.get('issue_sub', None)
         start_date = self.request.QUERY_PARAMS.get('start_date', None)
         end_date = self.request.QUERY_PARAMS.get('end_date', None)
-        params = self.request.QUERY_PARAMS
-        type_name = IssueType.objects.get(id=type)
-
+        # params = self.request.QUERY_PARAMS
+        type_name = self.request.QUERY_PARAMS.get('type_name', None)
+        print(type_name)
         qs = super().get_queryset()
 
         if q1 and q2 and start_date and end_date:
-            if type_name.name == "Investigation":
+            if type_name == "Investigation":
                 qs = qs.filter(asset_name=q1, test_name=q2,created_date__date__range=[start_date, end_date])
             else:
                 qs = qs.filter(issue_category=q1, issue_subcategory=q2,created_date__date__range=[start_date, end_date])
         elif q1 and start_date and end_date:
-            if type_name.name == "Investigation":
+            if type_name == "Investigation":
                 qs = qs.filter(asset_name=q1,created_date__date__range=[start_date, end_date])
             else:
                 qs = qs.filter(issue_category=q1,created_date__date__range=[start_date, end_date])
