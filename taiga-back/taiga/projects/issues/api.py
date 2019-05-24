@@ -70,10 +70,12 @@ def dashboard(request, project_id=None):
     result['user_count'] = project.members.count()
     result['issues_identified'] = Issue.objects.filter(project_id = project_id, type__name = 'Issue',status__name__in=status).count()
     result['issue_closed'] = Issue.objects.filter(project_id = project_id, status__name__in = status, type__name = 'Issue').count()
+    
     result['issue_pending'] = Issue.objects.filter(project_id = project_id, status__name = 'Pending', type__name = 'Issue').count()
     result['accidents_report'] = Issue.objects.filter(project_id = project_id, type__name = 'Accident').count()
     result['test_and_investigation'] = Issue.objects.filter(project_id=project_id, type__name='Investigation').count()
 
+    print(result['issue_closed'])
     return JsonResponse(result)
 
 
@@ -342,7 +344,9 @@ class IssueViewSet(
         
         elif start_date and end_date:
             qs = qs.filter(created_date__date__range=[start_date, end_date])
-        print(qs.count())
+        else:
+            qs = super().get_queryset()
+        
         qs = qs.select_related("owner", "assigned_to", "status", "project")
         include_attachments = "include_attachments" in self.request.QUERY_PARAMS
         qs = attach_extra_info(qs, user=self.request.user,
