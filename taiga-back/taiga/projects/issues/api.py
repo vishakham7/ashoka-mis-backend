@@ -261,6 +261,7 @@ class IssueViewSet(
             return serializers.IssueNeighborsSerializer
 
         if self.action == "list":
+
             return serializers.IssueListSerializer
 
         return serializers.IssueSerializer
@@ -268,6 +269,7 @@ class IssueViewSet(
     def update(self, request, *args, **kwargs):
         self.object = self.get_object_or_none()
         project_id = request.DATA.get('project', None)
+
 
         if project_id and self.object and self.object.project.id != project_id:
             try:
@@ -312,7 +314,7 @@ class IssueViewSet(
                         old_type = self.object.project.issue_types.get(pk=type_id)
                         new_type = new_project.issue_types.get(name=old_type.name)
                         request.DATA['type'] = new_type.id
-                    except IssueType.DoesNotExist:
+                    except IssueType.DoesNotExist as e:
                         request.DATA['type'] = new_project.default_issue_type.id
 
             except Project.DoesNotExist:
@@ -321,6 +323,7 @@ class IssueViewSet(
         return super().update(request, *args, **kwargs)
 
     def get_queryset(self):
+        print("===========================================")
         project = self.request.QUERY_PARAMS.get('project', None) 
         type = self.request.QUERY_PARAMS.get('type_id', None)
         q1 = self.request.QUERY_PARAMS.get('issue_cat', None)
@@ -329,8 +332,8 @@ class IssueViewSet(
         end_date = self.request.QUERY_PARAMS.get('end_date', None)
         # params = self.request.QUERY_PARAMS
         type_name = self.request.QUERY_PARAMS.get('type_name', None)
-        print(type_name)
         qs = super().get_queryset()
+
 
         
 
@@ -348,8 +351,8 @@ class IssueViewSet(
         elif start_date and end_date:
             qs = qs.filter(created_date__date__range=[start_date, end_date])
         else:
-        #     qs = super().get_queryset()
-            qs = qs.filter(project_id=project, type=type)
+            qs = super().get_queryset()
+            # qs = qs.filter(project_id=project, type=type)
         
         qs = qs.select_related("owner", "assigned_to", "status", "project")
         include_attachments = "include_attachments" in self.request.QUERY_PARAMS
