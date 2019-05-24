@@ -269,8 +269,6 @@ class IssueViewSet(
     def update(self, request, *args, **kwargs):
         self.object = self.get_object_or_none()
         project_id = request.DATA.get('project', None)
-
-
         if project_id and self.object and self.object.project.id != project_id:
             try:
                 new_project = Project.objects.get(pk=project_id)
@@ -323,7 +321,6 @@ class IssueViewSet(
         return super().update(request, *args, **kwargs)
 
     def get_queryset(self):
-        print("===========================================")
         project = self.request.QUERY_PARAMS.get('project', None) 
         type = self.request.QUERY_PARAMS.get('type_id', None)
         q1 = self.request.QUERY_PARAMS.get('issue_cat', None)
@@ -332,9 +329,8 @@ class IssueViewSet(
         end_date = self.request.QUERY_PARAMS.get('end_date', None)
         # params = self.request.QUERY_PARAMS
         type_name = self.request.QUERY_PARAMS.get('type_name', None)
+        
         qs = super().get_queryset()
-
-
         
 
         if q1 and q2 and start_date and end_date:
@@ -350,9 +346,9 @@ class IssueViewSet(
         
         elif start_date and end_date:
             qs = qs.filter(created_date__date__range=[start_date, end_date])
-        else:
-            qs = super().get_queryset()
-            # qs = qs.filter(project_id=project, type=type)
+        # else:
+        #     qs = super().get_queryset()
+        #     # qs = qs.filter(project_id=project, type=type)
         
         qs = qs.select_related("owner", "assigned_to", "status", "project")
         include_attachments = "include_attachments" in self.request.QUERY_PARAMS
@@ -751,11 +747,13 @@ class IssueTypeIssue(IssueViewSet):
             if issue_status_id:
                 Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
 
-            
+        
         else:
+            status_name = self.request.DATA['status_name']
+            project = self.request.DATA['project']
             try:
                 issue_status_id = IssueStatus.objects.get(project_id = project, name = status_name)
-            except:
+            except Exception as e:
                 issue_status_id = None
 
             if issue_status_id:
@@ -769,7 +767,7 @@ class IssueTypeIssue(IssueViewSet):
             if type_value_id:
                 Issue.objects.filter(id = object.id).update(type_id = type_value_id.id)
 
-
+    
 class ComplianceTypeIssue(IssueViewSet):
     pass
     # def get_queryset(self):
