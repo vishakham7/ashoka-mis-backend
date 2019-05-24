@@ -321,6 +321,7 @@ class IssueViewSet(
         return super().update(request, *args, **kwargs)
 
     def get_queryset(self):
+        project = self.request.QUERY_PARAMS.get('project', None) 
         type = self.request.QUERY_PARAMS.get('type_id', None)
         q1 = self.request.QUERY_PARAMS.get('issue_cat', None)
         q2 = self.request.QUERY_PARAMS.get('issue_sub', None)
@@ -330,6 +331,8 @@ class IssueViewSet(
         type_name = self.request.QUERY_PARAMS.get('type_name', None)
         print(type_name)
         qs = super().get_queryset()
+
+        
 
         if q1 and q2 and start_date and end_date:
             if type_name == "Investigation":
@@ -345,7 +348,8 @@ class IssueViewSet(
         elif start_date and end_date:
             qs = qs.filter(created_date__date__range=[start_date, end_date])
         else:
-            qs = super().get_queryset()
+        #     qs = super().get_queryset()
+            qs = qs.filter(project_id=project, type=type_id)
         
         qs = qs.select_related("owner", "assigned_to", "status", "project")
         include_attachments = "include_attachments" in self.request.QUERY_PARAMS
