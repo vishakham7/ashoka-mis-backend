@@ -65,7 +65,7 @@ def dashboard(request, project_id=None):
 
     result = {}
     project = Project.objects.get(pk = project_id)
-    status = ['Closed', 'Maintenance Closed','Maintenance Pending']
+    status = ['Open', 'Closed','Pending']
     
     result['user_count'] = project.members.count()
     result['issues_identified'] = Issue.objects.filter(project_id = project_id, type__name = 'Issue',status__name__in=status).count()
