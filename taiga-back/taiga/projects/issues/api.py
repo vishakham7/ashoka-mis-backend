@@ -98,22 +98,21 @@ def dashboard_graph_data(request, project_id=None):
     bymonth_select = {"month": """DATE_TRUNC('month', created_date)"""}
 
     issue_identified_months = Issue.objects.filter(project_id = int(project_id), created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
-
     empty_data = [
-        {
-            "month": "Sep",
-            "count": 0
-        }, {
-            "month": "Oct",
-            "count": 0
-        }, {
-            "month": "Nov",
-            "count": 0
-        }, {
-            "month": "Dec",
-            "count": 0
-        }]
-
+        # {
+        #     "month": "Sep",
+        #     "count": 0
+        # }, {
+        #     "month": "Oct",
+        #     "count": 0
+        # }, {
+        #     "month": "Nov",
+        #     "count": 0
+        # }, {
+        #     "month": "Dec",
+        #     "count": 0
+        # }]
+    ]
     issue_identified_months_list.extend(empty_data)
 
     if issue_identified_months:
@@ -146,7 +145,7 @@ def dashboard_graph_data(request, project_id=None):
 
     accident_months = Issue.objects.filter(project_id = int(project_id), type__name = 'Accident', created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
     accident_months_list.extend(empty_data)
-    
+
     if accident_months:
         for month in accident_months:
             accident_months_list.append({
@@ -162,6 +161,8 @@ def dashboard_graph_data(request, project_id=None):
     response_data = {}
 
     response_data['issue_closed'] = issue_closed_months_list
+    print("-------------issue_closed_months_list----------------")
+    print(issue_closed_months_list)
 
     response_data['issue_identified'] = issue_identified_months_list 
 
