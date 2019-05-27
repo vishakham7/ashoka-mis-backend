@@ -142,18 +142,48 @@ def dashboard_graph_data(request, project_id=None):
 
     issue_identified_months_list.extend(empty_data)
 
-    if issue_identified_months:
-        for month in issue_identified_months:
+    # if issue_identified_months:
+    #     for month in issue_identified_months:
 
-            issue_identified_months_list.append({
-                "month": month['month'].strftime("%b"),
-                "count": month['num_issues']
-            })
+    #         issue_identified_months_list.append({
+    #             "month": month['month'].strftime("%b"),
+    #             "count": month['num_issues']
+    #         })
+    # else:
+    #     issue_identified_months_list.append({
+    #         "month": "Jan",
+    #         "count": 0
+    #     })
+    dummy_list_new = []
+    if issue_identified_months:
+        for i in new1:
+            for month in issue_identified_months:
+                # if i not in issue_closed_months_list:
+                if month['month'].strftime("%b")==i and i not in dummy_list_new:
+                   
+                    issue_identified_months_list.append({
+                        "month": month['month'].strftime("%b"),
+                        "count": month['num_issues']
+                    })
+                    
+                    dummy_list_new.append(i)
+                else:
+
+                    if i not in dummy_list_new:
+
+                        issue_identified_months_list.append({
+                            "month": i,
+                            "count": 0
+                        })
+
+                        dummy_list_new.append(i)
     else:
-        issue_identified_months_list.append({
-            "month": "Jan",
-            "count": 0
-        })
+        for i in new1:
+            issue_identified_months_list.append({
+                    "month": i,
+                    "count": 0
+                })
+
 
     # print("--------------------------------------")
     # print(issue_closed_months_list)
@@ -181,27 +211,34 @@ def dashboard_graph_data(request, project_id=None):
     #     else:
     #         print("no data")
     dummy_list = []
-    for i in new1:
-        for month in issue_closed_months:
-            # if i not in issue_closed_months_list:
-            if month['month'].strftime("%b")==i and i not in dummy_list:
-               
-                issue_closed_months_list.append({
-                    "month": month['month'].strftime("%b"),
-                    "count": month['num_issues']
-                })
-                
-                dummy_list.append(i)
-            else:
-
-                if i not in dummy_list:
-
+    if issue_closed_months:
+        for i in new1:
+            for month in issue_closed_months:
+                # if i not in issue_closed_months_list:
+                if month['month'].strftime("%b")==i and i not in dummy_list:
+                   
                     issue_closed_months_list.append({
+                        "month": month['month'].strftime("%b"),
+                        "count": month['num_issues']
+                    })
+                    
+                    dummy_list.append(i)
+                else:
+
+                    if i not in dummy_list:
+
+                        issue_closed_months_list.append({
+                            "month": i,
+                            "count": 0
+                        })
+
+                        dummy_list.append(i)
+    else:
+        for i in new1:
+            issue_closed_months_list.append({
                         "month": i,
                         "count": 0
                     })
-
-                    dummy_list.append(i)
 
 
     # if issue_closed_months.count()<6:
@@ -243,27 +280,34 @@ def dashboard_graph_data(request, project_id=None):
 
 
     dummy_list_x = []
-    for i in new1:
-        for month in accident_months:
-            # if i not in issue_closed_months_list:
-            if month['month'].strftime("%b")==i and i not in dummy_list_x:
-            
-                accident_months_list.append({
-                    "month": month['month'].strftime("%b"),
-                    "count": month['num_issues']
-                })
+    if accident_months:
+        for i in new1:
+            for month in accident_months:
+                # if i not in issue_closed_months_list:
+                if month['month'].strftime("%b")==i and i not in dummy_list_x:
                 
-                dummy_list_x.append(i)
-            else:
-
-                if i not in dummy_list_x:
-
                     accident_months_list.append({
-                        "month": i,
-                        "count": 0
+                        "month": month['month'].strftime("%b"),
+                        "count": month['num_issues']
                     })
-
+                    
                     dummy_list_x.append(i)
+                else:
+
+                    if i not in dummy_list_x:
+
+                        accident_months_list.append({
+                            "month": i,
+                            "count": 0
+                        })
+
+                        dummy_list_x.append(i)
+    else:
+        for i in new1:
+            accident_months_list.append({
+                            "month": i,
+                            "count": 0
+                        })
 
     # if accident_months:
     #     for month in accident_months:
