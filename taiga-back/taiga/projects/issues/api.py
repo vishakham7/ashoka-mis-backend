@@ -57,6 +57,9 @@ from django.db.models import Count
 from openpyxl.writer.excel import save_virtual_workbook
 from openpyxl import load_workbook
 import pandas as pd
+import time
+import calendar 
+from dateutil.relativedelta import relativedelta    
 # from .export.pdf import html_to_pdf_view
 # from .export.excel import WriteToExcel
 
@@ -91,34 +94,57 @@ def dashboard_graph_data(request, project_id=None):
     issue_closed_months_list = []
     accident_months_list = []
 
-    time_threshold = datetime.datetime.now() - datetime.timedelta(days=150)
+    # time_threshold = datetime.datetime.now() - datetime.timedelta(days=150)
+    months = []
+    month_count = 0
+    time_threshold = datetime.datetime.now() - datetime.timedelta(days=180)
+    today = datetime.datetime.today()
+    day = today - relativedelta(months=6)
+    
+    # print(day)
+    # month_count += 1
+    # print(time_threshold)
 
-    # queryset = Issue.objects.filter(created_date = time_threshold)
-
+    x = 6
+    now = time.localtime()
+    month = []
+    print("====================================")
+    nnn = [time.localtime(time.mktime((now.tm_year, now.tm_mon - n, 1, 0, 0, 0, 0, 0, 0)))[1:2] for n in range(x)]
+    for i in nnn:
+        for j in i:
+            month.append(j)
+    print(month)
+    new1 = []
+    for num in month:
+        new = datetime.date(1900, num, 1).strftime('%b')
+        new1.append(new)
+    print(new1)
+  
     bymonth_select = {"month": """DATE_TRUNC('month', created_date)"""}
-
+   
     issue_identified_months = Issue.objects.filter(project_id = int(project_id), created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
-
     empty_data = [
-        {
-            "month": "Sep",
-            "count": 0
-        }, {
-            "month": "Oct",
-            "count": 0
-        }, {
-            "month": "Nov",
-            "count": 0
-        },
-         {
-            "month": "Dec",
-            "count": 0
-        }]
+        # {
+        #     "month": "Sep",
+        #     "count": 0
+        # }, {
+        #     "month": "Oct",
+        #     "count": 0
+        # }, {
+        #     "month": "Nov",
+        #     "count": 0
+        # },
+        #  {
+        #     "month": "Dec",
+        #     "count": 0
+        # }
+        ]
 
     issue_identified_months_list.extend(empty_data)
 
     if issue_identified_months:
         for month in issue_identified_months:
+
             issue_identified_months_list.append({
                 "month": month['month'].strftime("%b"),
                 "count": month['num_issues']
@@ -129,47 +155,141 @@ def dashboard_graph_data(request, project_id=None):
             "count": 0
         })
 
+    # print("--------------------------------------")
+    # print(issue_closed_months_list)
+
     issue_closed_months = Issue.objects.filter(project_id = int(project_id), status__name = 'Closed', created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
+    
     issue_closed_months_list.extend(empty_data)
 
-    if issue_closed_months:
+    # if issue_closed_months:
+    #     for month in issue_closed_months:
+    #         issue_closed_months_list.append({
+    #             "month": month['month'].strftime("%b"),
+    #             "count": month['num_issues']
+    #         })
+    # else:
+    # if issue_closed_months.count()<6:
+    #     for month in issue_closed_months:
+    #         if month['month'].strftime("%b") in new1:
+    #             # print(month['month'].strftime("%b"))
+    #             # print(new1)
+    #             issue_closed_months_list.append({
+    #                 "month": month['month'].strftime("%b"),
+    #                 "count": month['num_issues']
+    #             })
+    #     else:
+    #         print("no data")
+    dummy_list = []
+    for i in new1:
         for month in issue_closed_months:
-            issue_closed_months_list.append({
-                "month": month['month'].strftime("%b"),
-                "count": month['num_issues']
-            })
-    else:
-        issue_closed_months_list.append({
-            "month": "Jan",
-            "count": 0
-        })
+            # if i not in issue_closed_months_list:
+            if month['month'].strftime("%b")==i and i not in dummy_list:
+               
+                issue_closed_months_list.append({
+                    "month": month['month'].strftime("%b"),
+                    "count": month['num_issues']
+                })
+                
+                dummy_list.append(i)
+            else:
+
+                if i not in dummy_list:
+
+                    issue_closed_months_list.append({
+                        "month": i,
+                        "count": 0
+                    })
+
+                    dummy_list.append(i)
+
+
+    # if issue_closed_months.count()<6:
+    #     print("-------------if else-------------------------")
+    #     print(issue_closed_months.count())
+    #     for month in issue_closed_months:
+    #         issue_closed_months_list.append({
+    #             "month": month['month'].strftime("%b"),
+    #             "count": month['num_issues']
+    #         })
+    #         # issue_closed_months_list.append({
+    #         #     "month": "Jan",
+    #         #     "count": 0
+    #         # })
+    # else:
+    #     # if issue_closed_months:
+    #     for month in issue_closed_months:
+    #         issue_closed_months_list.append({
+    #             "month": month['month'].strftime("%b"),
+    #             "count": month['num_issues']
+    #         })
+
 
 
     accident_months = Issue.objects.filter(project_id = int(project_id), type__name = 'Accident', created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
     accident_months_list.extend(empty_data)
 
-    if accident_months:
+    # if accident_months:
+    #     for month in accident_months:
+    #         accident_months_list.append({
+    #             "month": month['month'].strftime("%b"),
+    #             "count": month['num_issues']
+    #         })
+    # else:
+    #     accident_months_list.append({
+    #         "month": "Jan",
+    #         "count": 0
+    #     })
+
+
+    dummy_list_x = []
+    for i in new1:
         for month in accident_months:
-            accident_months_list.append({
-                "month": month['month'].strftime("%b"),
-                "count": month['num_issues']
-            })
-    else:
-        accident_months_list.append({
-            "month": "Jan",
-            "count": 0
-        })
+            # if i not in issue_closed_months_list:
+            if month['month'].strftime("%b")==i and i not in dummy_list_x:
+            
+                accident_months_list.append({
+                    "month": month['month'].strftime("%b"),
+                    "count": month['num_issues']
+                })
+                
+                dummy_list_x.append(i)
+            else:
+
+                if i not in dummy_list_x:
+
+                    accident_months_list.append({
+                        "month": i,
+                        "count": 0
+                    })
+
+                    dummy_list_x.append(i)
+
+    # if accident_months:
+    #     for month in accident_months:
+    #         accident_months_list.append({
+    #             "month": month['month'].strftime("%b"),
+    #             "count": month['num_issues']
+    #         })
+    # else:
+    #     accident_months_list.append({
+    #         "month": "Jan",
+    #         "count": 0
+    #     })
+
 
     response_data = {}
 
     response_data['issue_closed'] = issue_closed_months_list
-    print("-------------issue_closed_months_list----------------")
-    print(issue_closed_months_list)
+    # print("-------------issue_closed_months_list----------------")
+    # print(issue_closed_months_list)
 
     response_data['issue_identified'] = issue_identified_months_list 
-
+    # print("-------------issue_identified----------------")
+    # print(issue_identified_months_list)
     response_data['accident'] = accident_months_list
-
+    # print("-------------accident_months_list----------------")
+    # print(accident_months_list)
     return JsonResponse(response_data)
 
 
