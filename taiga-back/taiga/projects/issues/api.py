@@ -100,16 +100,16 @@ def dashboard_graph_data(request, project_id=None):
     issue_identified_months = Issue.objects.filter(project_id = int(project_id), created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
 
     empty_data = [
-        # {
-        #     "month": "Sep",
-        #     "count": 0
-        # }, {
-        #     "month": "Oct",
-        #     "count": 0
-        # }, {
-        #     "month": "Nov",
-        #     "count": 0
-        # },
+        {
+            "month": "Sep",
+            "count": 0
+        }, {
+            "month": "Oct",
+            "count": 0
+        }, {
+            "month": "Nov",
+            "count": 0
+        },
          {
             "month": "Dec",
             "count": 0
