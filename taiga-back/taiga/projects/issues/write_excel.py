@@ -225,7 +225,7 @@ def style(ws,fieldnames, issue,file_name=None):
 
                         #     # ws.cell(row=new_row, column=7).hyperlink = nnn
 
-                        n =""
+                        # n =""
         # /////////////////////////////////////////
                     # val.append(name)
                     # for i in range(len(val)-1):
@@ -710,7 +710,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
             for issue in queryset:
                 qqq = issue.watchers
                 watchers = []
-                new_watcher_list =  ""
+                new_watcher_list =  "" + "\n"
                 watcher_username =""
                 if issue.assigned_to:
                     watcher_username = '1. '+issue.assigned_to.full_name 
@@ -724,6 +724,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
 
                 for i in range(len(split)):
                     new_watcher_list = split[i] + new_watcher_list
+               
                 a = issue.created_date.date()
                 b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
                 timeline = b-a
