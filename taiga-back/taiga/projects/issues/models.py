@@ -113,7 +113,8 @@ class Issue(OCCModelMixin, WatchedModelMixin, BlockedMixin, TaggedMixin, DueDate
     image_url = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Image Url"))
     testing_method = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Testng Method"))
 
-
+    closed_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, default=None,
+                              related_name="user", verbose_name=_("user"))
 
 
 

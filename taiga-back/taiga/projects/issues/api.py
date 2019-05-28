@@ -436,6 +436,8 @@ class IssueViewSet(
     def update(self, request, *args, **kwargs):
         self.object = self.get_object_or_none()
         project_id = request.DATA.get('project', None)
+        closed_by_id = request.DATA.get('closed_by_id', None)
+    
         if project_id and self.object and self.object.project.id != project_id:
             try:
                 new_project = Project.objects.get(pk=project_id)
@@ -481,6 +483,14 @@ class IssueViewSet(
                         request.DATA['type'] = new_type.id
                     except IssueType.DoesNotExist as e:
                         request.DATA['type'] = new_project.default_issue_type.id
+                closed_by_id = request.DATA.get('closed_by_id', None)
+                # if closed_by_id is not None:
+                #     try:
+                #         closed_by_id = Issue.objects.get(project=project_id,closed_by__id=closed_by_id)
+                #         # print(closed_by_id.id)
+                #         request.DATA['closed_by'] = closed_by_id
+                #     except Exception as e:
+                #         print(e)
 
             except Project.DoesNotExist:
                 return response.BadRequest(_("The project doesn't exist"))
@@ -499,7 +509,6 @@ class IssueViewSet(
         
         qs = super().get_queryset()
         
-
         if q1 and q2 and start_date and end_date:
             if type_name == "Investigation":
                 qs = qs.filter(asset_name=q1, test_name=q2,created_date__date__range=[start_date, end_date])
@@ -902,7 +911,8 @@ class IssueTypeIssue(IssueViewSet):
 
     def post_save(self, object, created=False, updated=False):
         super().post_save(object, created=created)
-
+        closed_by = self.request.DATA['closed_by_id']
+       
         if created:
             project_id = object.project_id
 
@@ -918,6 +928,13 @@ class IssueTypeIssue(IssueViewSet):
         else:
             status_name = self.request.DATA['status_name']
             project = self.request.DATA['project']
+            closed_by_id = self.request.DATA['closed_by_id']
+
+            # try:
+            #     closed_by = User.objects.get(id=closed_by)
+            #     return closed_by
+            # except Exception as e:
+            #     print(e)
             try:
                 issue_status_id = IssueStatus.objects.get(project_id = project, name = status_name)
             except Exception as e:
@@ -925,7 +942,8 @@ class IssueTypeIssue(IssueViewSet):
 
             if issue_status_id:
                 Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
-
+            if closed_by_id:
+                Issue.objects.filter(id = object.id).update(closed_by = closed_by_id)
             try:
                 type_value_id = IssueType.objects.get(name='Issue', project_id = project)
             except:
@@ -933,6 +951,7 @@ class IssueTypeIssue(IssueViewSet):
 
             if type_value_id:
                 Issue.objects.filter(id = object.id).update(type_id = type_value_id.id)
+
 
     
 class ComplianceTypeIssue(IssueViewSet):

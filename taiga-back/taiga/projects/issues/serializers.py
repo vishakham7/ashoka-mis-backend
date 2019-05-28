@@ -32,6 +32,7 @@ from taiga.projects.tagging.serializers import TaggedInProjectResourceSerializer
 from taiga.projects.votes.mixins.serializers import VoteResourceSerializerMixin
 from taiga.projects.models import IssueStatus, IssueType
 from .models import Issue
+from ...users.models import User
 class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer,
                           OwnerExtraInfoSerializerMixin, AssignedToExtraInfoSerializerMixin,
                           StatusExtraInfoSerializerMixin, ProjectExtraInfoSerializerMixin,
@@ -45,6 +46,9 @@ class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer
     type = Field(attr="type_id")
     milestone = Field(attr="milestone_id")
     project = Field(attr="project_id")
+    # ////////////////////////
+    # closed_by = Field()
+    # ///////////////////////
     created_date = Field()
     modified_date = Field()
     finished_date = Field()
@@ -97,12 +101,31 @@ class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer
     investigation_chainage_side = Field()
     image_url = Field()
     testing_method = Field()
+
+    closed_by_name = MethodField()
     
+    def get_closed_by_name(self,obj):
+        print("---------------------------------")
+        print(obj.closed_by)
+        try:
+            changed = Issue.objects.get(project=obj.project,closed_by__user__id = obj.closed_by.id).first()
+        except:
+            changed = None
+        if changed:
+            print(changed)
+            return changed
+        else:
+            return ''
+        # if obj.closed_by:
+        #     return obj.closed_by
+        # else:
+        #     return ''
 
     def get_status_name(self, obj):
         try:
-            status = IssueStatus.objects.get(pk = obj.status_id)
-        except:
+            status = Issue.objects.get(pk = obj.status_id)
+        except Exception as e:
+            print(e)
             status = None
 
         if status:
@@ -161,7 +184,24 @@ class IssueSerializer(IssueListSerializer):
     investigation_chainage_side = Field()
     image_url = Field()
     testing_method = Field()
+    closed_by_name = MethodField()
     
+    def get_closed_by_name(self,obj):
+        print("---------------------------------")
+        print(obj.closed_by.id)
+        try:
+            changed = Issue.objects.filter(project=obj.project,closed_by = obj.closed_by.id).first()
+        except Exception as e:
+            print(e)
+            changed = None
+        if changed:
+            return changed.closed_by.full_name
+        else:
+            return ''
+        
+
+
+
     def get_project_start_end_chainage(self, obj):
         return obj.project.start_and_end_chainage
 
