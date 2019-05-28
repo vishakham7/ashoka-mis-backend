@@ -105,21 +105,20 @@ class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer
     closed_by_name = MethodField()
     
     def get_closed_by_name(self,obj):
-        print("---------------------------------")
-        print(obj.closed_by)
-        try:
-            changed = Issue.objects.get(project=obj.project,closed_by__user__id = obj.closed_by.id).first()
-        except:
-            changed = None
-        if changed:
-            print(changed)
-            return changed
-        else:
-            return ''
-        # if obj.closed_by:
-        #     return obj.closed_by
-        # else:
-        #     return ''
+        if obj.closed_by.id:
+            try:
+                changed = Issue.objects.get(project=obj.project,closed_by__user__id = obj.closed_by.id).first()
+            except:
+                changed = None
+            if changed:
+                print(changed)
+                return changed
+            else:
+                return ''
+            # if obj.closed_by:
+            #     return obj.closed_by
+            # else:
+            #     return ''
 
     def get_status_name(self, obj):
         try:
@@ -187,17 +186,16 @@ class IssueSerializer(IssueListSerializer):
     closed_by_name = MethodField()
     
     def get_closed_by_name(self,obj):
-        print("---------------------------------")
-        print(obj.closed_by.id)
-        try:
-            changed = Issue.objects.filter(project=obj.project,closed_by = obj.closed_by.id).first()
-        except Exception as e:
-            print(e)
-            changed = None
-        if changed:
-            return changed.closed_by.full_name
-        else:
-            return ''
+        if obj.closed_by.id:
+            try:
+                changed = Issue.objects.filter(project=obj.project,closed_by = obj.closed_by.id).first()
+            except Exception as e:
+                print(e)
+                changed = None
+            if changed:
+                return changed.closed_by.full_name
+            else:
+                return ''
         
 
 
