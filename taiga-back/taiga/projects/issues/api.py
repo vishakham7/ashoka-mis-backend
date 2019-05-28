@@ -891,6 +891,7 @@ class IssueTypeIssue(IssueViewSet):
         else:
             request.DATA['issue_id_count'] = 1
 
+
         issue_id_count = str(request.DATA['issue_id_count'])
         now = datetime.datetime.now()
         prev_year = str(now.year -1)
