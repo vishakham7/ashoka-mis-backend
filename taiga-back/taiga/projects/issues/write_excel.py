@@ -156,6 +156,7 @@ def style(ws,fieldnames, issue,file_name=None):
                                     ws.cell(row=new_row, column=6).value = "<img src='"+ aa[j] + "' height=100 width=70/>"
 
                                     ws.cell(row=new_row, column=6).font = font2
+                                    
                         # if new[-1]=="svg":
                         #     http = urllib3.PoolManager()
                         #     # r = http.request('GET', aa[j-(len(aa)-1)])
