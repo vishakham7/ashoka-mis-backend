@@ -150,9 +150,30 @@ def style(ws,fieldnames, issue,file_name=None):
                                     img.width =100
 
                                     ws.add_image(img,'F'+str(new_row))
+                                    ws.row_dimensions[new_row].height = 40
                                     # ws.cell(row=new_row, column=7).value = aa[j]
                                     # ws.cell(row=new_row, column=7).hyperlink = aa[j]
                                     ws.cell(row=new_row, column=6).value = "<img src='"+ aa[j] + "' height=100 width=70/>"
+
+                                    ws.cell(row=new_row, column=6).font = font2
+                        if new[-1]=="svg":
+                            http = urllib3.PoolManager()
+                            # r = http.request('GET', aa[j-(len(aa)-1)])
+                            if aa[j]:
+                                r = http.request('GET', aa[j])
+                                image_file = io.BytesIO(r.data)
+                                if image_file:
+                                    img = Image(image_file)
+                                    img.height=100
+                                    img.width =100
+                                    img.format = new[-1]
+
+                                    ws.add_image(img,'F'+str(new_row))
+                                    ws.row_dimensions[new_row].height = 40
+                                    # ws.cell(row=new_row, column=7).value = aa[j]
+                                    # ws.cell(row=new_row, column=7).hyperlink = aa[j]
+                                    ws.cell(row=new_row, column=6).value = "<img src='"+ aa[j] + "' height=100 width=70/>"
+
                                     ws.cell(row=new_row, column=6).font = font2
                         
 
