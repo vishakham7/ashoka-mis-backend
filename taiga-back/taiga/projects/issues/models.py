@@ -111,6 +111,12 @@ class Issue(OCCModelMixin, WatchedModelMixin, BlockedMixin, TaggedMixin, DueDate
     investigation_chainage_to = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Investigation Chainage To"))
     investigation_chainage_side = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Investigation Chainage Side"))
     image_url = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Image Url"))
+    testing_method = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Testng Method"))
+
+
+
+
+
     _importing = None
 
     class Meta:

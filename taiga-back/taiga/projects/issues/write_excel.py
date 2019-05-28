@@ -80,6 +80,7 @@ def style(ws,fieldnames, issue,file_name=None):
     for i in range(3,row_count+1):
         ws.row_dimensions[i].height = 50
 
+    ws.row_dimensions[2].height = 40
     
     for row in ws:
         for cell1 in row:
@@ -106,6 +107,10 @@ def style(ws,fieldnames, issue,file_name=None):
             file_row.append(row)
         l=[]
         for i in range(len(file_row)):
+            print("-------------------------")
+            print(row_count)
+            print(row_count-4)
+            print(len(file_row)==(row_count-4))
             if len(file_row)==(row_count-4):
                 l.append(file_row[i])
         print(l)
@@ -116,6 +121,8 @@ def style(ws,fieldnames, issue,file_name=None):
         n=""
         hh=""
         for new_row in l:
+            print("-------------new_row-------------")
+            print(new_row)
             file = ws.cell(row=new_row, column=7).value
             if file:
                 split = file.split('\n')
@@ -300,6 +307,8 @@ def style(ws,fieldnames, issue,file_name=None):
                             
 
 def write_excel(project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name):
+    # print(project.name)
+
     wb = Workbook()
     ws1 = wb.active
     ws2 = wb.active
@@ -319,22 +328,23 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
     queryset = attach_watchers_to_queryset(queryset)
     if type == 'Issue' and photo=="with photo" and status==None:
         ws1.title = "Inspection Report"
-        ws1['A1'] = "R01: For External Parties:  IE and NHAI-PD or RO"
-        ws1['A2'] = "R01.1 : Inspection Report with Photogragh"
-        fieldnames = ["Ref.No.", "Project Name", "Chainage","" , "Direction", "Description of Issue",
+        ws1['A1'] = "Inspection Report with Photogragh"
+        ws1['A2'] = "Project Name"
+        ws1['B2'] = project.name
+        fieldnames = ["Ref.No.", "Chainage","" , "Direction", "Description of Issue",
                               "Photograph During Inspection", "Asset Type", "Performance Parameter (Type of Issue)",
                               "Issue Raised On (Date)", "Issue Raised By (Name of Concessionaire)",
                               "Issue Raised To (Assignee Name Max Upto 3 Persons)"]
         ws1.append(fieldnames)
         ws1.merge_cells('A3:A4')
-        ws1.merge_cells('B3:B4')
-        ws1.merge_cells('C3:D3')
+        ws1.merge_cells('B3:c3')
+        # ws1.merge_cells('C3:D3')
         # ws1.merge_cells('C4:D4')
-        n1 = ws1.cell(row=4,column=3)
-        n2 = ws1.cell(row=4,column=4)
+        n1 = ws1.cell(row=4,column=2)
+        n2 = ws1.cell(row=4,column=3)
         n1.value = "From (In Km)"
         n2.value = "To (In Km)"
-        # ws1.merge_cells('D3:D4')
+        ws1.merge_cells('D3:D4')
         # n3 = ws1.cell(row=3,column=5)
         # n3.value="Direction"
         ws1.merge_cells('E3:E4')
@@ -344,38 +354,39 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
         ws1.merge_cells('I3:I4')
         ws1.merge_cells('J3:J4')
         ws1.merge_cells('K3:K4')
-        ws1.merge_cells('L3:L4')
+        # ws1.merge_cells('L3:L4')
         
 
     if type == 'Issue' and photo=="without photo" and status==None:
 
         ws5.title = "Inspection Reportssssss"
-        ws5['A1'] = "R01: For External Parties:  IE and NHAI-PD or RO"
-        ws5['A2'] = "R01.1 : Inspection Report with Photogragh"
-        fieldnames = ["Ref.No.", "Project Name", "Chainage","" , "Direction", "Description of Issue",
+        ws5['A1'] = "Inspection Report with Photogragh"
+        ws5['A2'] = "Project Name"
+        ws5['B2'] = project.name
+        fieldnames = ["Ref.No.", "Chainage","" , "Direction", "Description of Issue",
                               "Asset Type", "Performance Parameter (Type of Issue)",
                               "Issue Raised On (Date)", "Issue Raised By (Name of Concessionaire)",
                               "Issue Raised To (Assignee Name Max Upto 3 Persons)"]
         ws5.append(fieldnames)
     
-        ws5.merge_cells('A3:A4')
-        ws5.merge_cells('B3:B4')
-        ws5.merge_cells('C3:D3')
+        ws1.append(fieldnames)
+        ws1.merge_cells('A3:A4')
+        ws1.merge_cells('B3:c3')
+        # ws1.merge_cells('C3:D3')
         # ws1.merge_cells('C4:D4')
-        n1 = ws5.cell(row=4,column=3)
-        n2 = ws5.cell(row=4,column=4)
+        n1 = ws1.cell(row=4,column=2)
+        n2 = ws1.cell(row=4,column=3)
         n1.value = "From (In Km)"
         n2.value = "To (In Km)"
-        # ws1.merge_cells('D3:D4')
+        ws1.merge_cells('D3:D4')
         # n3 = ws1.cell(row=3,column=5)
         # n3.value="Direction"
-        ws5.merge_cells('E3:E4')
-        ws5.merge_cells('F3:F4')
-        ws5.merge_cells('G3:G4')
-        ws5.merge_cells('H3:H4')
-        ws5.merge_cells('I3:I4')
-        ws5.merge_cells('J3:J4')
-        ws5.merge_cells('K3:K4')
+        ws1.merge_cells('E3:E4')
+        ws1.merge_cells('F3:F4')
+        ws1.merge_cells('G3:G4')
+        ws1.merge_cells('H3:H4')
+        ws1.merge_cells('I3:I4')
+        ws1.merge_cells('J3:J4')
         # ws1.merge_cells('L3:L4')
     if type == 'Issue' and name=="Compliance" and photo=="with photo" and status:
 
@@ -383,10 +394,11 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
         ws2 = wb.active
     
         ws2.title = "Manitenance Report"
-        ws2['A1'] = "For External Parties:  IE and NHAI-PD or RO"
-        ws2['A2'] = "Maintenance Report"
+        ws2['A1'] = "Maintenance Report"
+        ws2['A2'] = "Project Name"
+        ws2['B2'] = project.name
         
-        fieldnames = ["Ref.No.", "Project Name", "Chainage","", "Direction", "Description of Issue",
+        fieldnames = ["Ref.No.", "Chainage","", "Direction", "Description of Issue",
                           "Photograph During Inspection", "Asset Type", "Performance Parameter\n (Type of Issue)",
                           "Issue Raised On (Date)", "Issue Raised By\n (Name of Concessionaire)",
                           "Issue Raised To\n (Assignee Name Max Upto 3 Persons)" , "Max Time limit for Rectification/Repair",
@@ -395,14 +407,14 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                           "Photograph Post Compliance", "Remark", "Current Status"]
         ws2.append(fieldnames)
         ws2.merge_cells('A3:A4')
-        ws2.merge_cells('B3:B4')
-        ws2.merge_cells('C3:D3')
+        ws2.merge_cells('B3:C3')
+        # ws2.merge_cells('C3:D3')
         # ws1.merge_cells('C4:D4')
-        n1 = ws2.cell(row=4,column=3)
-        n2 = ws2.cell(row=4,column=4)
+        n1 = ws2.cell(row=4,column=2)
+        n2 = ws2.cell(row=4,column=3)
         n1.value = "From (In Km)"
         n2.value = "To (In Km)"
-        # ws1.merge_cells('D3:D4')
+        ws2.merge_cells('D3:D4')
         # n3 = ws1.cell(row=3,column=5)
         # n3.value="Direction"
         ws2.merge_cells('E3:E4')
@@ -412,35 +424,36 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
         ws2.merge_cells('I3:I4')
         ws2.merge_cells('J3:J4')
         ws2.merge_cells('K3:K4')
-        ws2.merge_cells('L3:L4')
-        ws2.merge_cells('M3:N3')
-        n1 = ws2.cell(row=4,column=13)
-        n2 = ws2.cell(row=4,column=14)
+        # ws2.merge_cells('L3:L4')
+        ws2.merge_cells('L3:M3')
+        n1 = ws2.cell(row=4,column=12)
+        n2 = ws2.cell(row=4,column=13)
         n1.value = "Timeline\n (As per  Schedule F)"
         n2.value = "Target Date\n(As per  Schedule F)"
         # ws2.merge_cells('M3:M4')
         # ws2.merge_cells('N3:N4')
-        ws2.merge_cells('O3:Q3')
-        n1 = ws2.cell(row=4,column=15)
-        n2 = ws2.cell(row=4,column=16)
-        n3 = ws2.cell(row=4,column=17)
+        ws2.merge_cells('N3:P3')
+        n1 = ws2.cell(row=4,column=14)
+        n2 = ws2.cell(row=4,column=15)
+        n3 = ws2.cell(row=4,column=16)
         n1.value = "Status\n(Open/Closed/Under Rectification)"
         n2.value = "Issue Closed On Date\n(If Closed)"
         n3.value = "Complianced\n (Yes/No)"
 
-
+        ws2.merge_cells('Q3:Q4')
         ws2.merge_cells('R3:R4')
         ws2.merge_cells('S3:S4')
         ws2.merge_cells('T3:T4')
         ws2.merge_cells('U3:U4')
-        ws2.merge_cells('V3:V4')
+        # ws2.merge_cells('V3:V4')
 
     if type=='Issue' and name=="Compliance" and photo=="without photo" and status:
     
         ws4.title = "Manitenance Report"
-        ws4['A1'] = "For External Parties:  IE and NHAI-PD or RO"
-        ws4['A2'] = "Maintenance Report"
-        fieldnames = ["Ref.No.", "Project Name", "Chainage","", "Direction", "Description of Issue",
+        ws4['A1'] = "Maintenance Report"
+        ws4['A2'] = "Project Name"
+        ws4['B2'] = project.name
+        fieldnames = ["Ref.No.", "Chainage","", "Direction", "Description of Issue",
                           "Asset Type", "Performance Parameter\n (Type of Issue)",
                           "Issue Raised On (Date)", "Issue Raised By\n (Name of Concessionaire)",
                           "Issue Raised To\n (Assignee Name Max Upto 3 Persons)" , "Max Time limit for Rectification/Repair",
@@ -449,14 +462,14 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                           "Photograph Post Compliance", "Remark", "Current Status"]
         ws4.append(fieldnames)
         ws4.merge_cells('A3:A4')
-        ws4.merge_cells('B3:B4')
-        ws4.merge_cells('C3:D3')
+        ws4.merge_cells('B3:C3')
+        # ws2.merge_cells('C3:D3')
         # ws1.merge_cells('C4:D4')
-        n1 = ws4.cell(row=4,column=3)
-        n2 = ws4.cell(row=4,column=4)
+        n1 = ws4.cell(row=4,column=2)
+        n2 = ws4.cell(row=4,column=3)
         n1.value = "From (In Km)"
         n2.value = "To (In Km)"
-        # ws1.merge_cells('D3:D4')
+        ws4.merge_cells('D3:D4')
         # n3 = ws1.cell(row=3,column=5)
         # n3.value="Direction"
         ws4.merge_cells('E3:E4')
@@ -465,38 +478,39 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
         ws4.merge_cells('H3:H4')
         ws4.merge_cells('I3:I4')
         ws4.merge_cells('J3:J4')
-        ws4.merge_cells('K3:K4')
-        ws4.merge_cells('L3:M3')
-        n1 = ws4.cell(row=4,column=12)
-        n2 = ws4.cell(row=4,column=13)
+        # ws4.merge_cells('K3:K4')
+        # ws2.merge_cells('L3:L4')
+        ws4.merge_cells('K3:L3')
+        n1 = ws4.cell(row=4,column=11)
+        n2 = ws4.cell(row=4,column=12)
         n1.value = "Timeline\n (As per  Schedule F)"
         n2.value = "Target Date\n(As per  Schedule F)"
-        
-        ws4.merge_cells('N3:P3')
-        
-        n1 = ws4.cell(row=4,column=14)
-        n2 = ws4.cell(row=4,column=15)
-        n3 = ws4.cell(row=4,column=16)
+        # ws2.merge_cells('M3:M4')
+        # ws2.merge_cells('N3:N4')
+        ws4.merge_cells('M3:O3')
+        n1 = ws4.cell(row=4,column=13)
+        n2 = ws4.cell(row=4,column=14)
+        n3 = ws4.cell(row=4,column=15)
         n1.value = "Status\n(Open/Closed/Under Rectification)"
         n2.value = "Issue Closed On Date\n(If Closed)"
         n3.value = "Complianced\n (Yes/No)"
-
+        ws4.merge_cells('P3:P4')
         ws4.merge_cells('Q3:Q4')
         ws4.merge_cells('R3:R4')
         ws4.merge_cells('S3:S4')
         ws4.merge_cells('T3:T4')
-        ws4.merge_cells('U3:U4')
 
 
     if type == 'Investigation' and photo=="with photo":
         
         ws3.title = "Test Report"
-        ws3['A1'] = ""
-        ws3['A2'] = "Test Report"
-        fieldnames = ["Ref.No.", "Project Name", "Chainage","", "Direction", "Description of Issue",
-                          "Photograph During Inspection", "Asset Type", "Performance Parameter(Type of Issue)",
-                          "Issue Raised On", "Name of Test", "Testing Method", "Standard References for testing",
-                          "Test Carried Out Date", "Testing Carried Out By(Name)", "Remark", "Outcome Report"]
+        ws3['A1'] = "Test Report"
+        ws3['A2'] = "Project Name"
+        ws3['B2'] = project.name
+        fieldnames = ["Ref.No.","Description of Test/ Investigation", "Chainage","", "Direction",
+                          "Asset Type", "Performance Parameter",
+                          "Name of Test", "Testing Method", "Standard References for testing",
+                          "Test Carried Out Date", "Testing Carried Out By(Name)"]
         
         ws3.append(fieldnames)
         ws3.merge_cells('A3:A4')
@@ -518,55 +532,47 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
         ws3.merge_cells('J3:J4')
         ws3.merge_cells('K3:K4')
         ws3.merge_cells('L3:L4')
-        ws3.merge_cells('M3:M4')
-        ws3.merge_cells('N3:N4')
-        ws3.merge_cells('O3:O4')
-        ws3.merge_cells('P3:P4')
-        ws3.merge_cells('Q3:Q4')
-
+  
     if type == 'Investigation' and photo=="without photo":
         
         ws6.title = "Test Report"
         ws6['A1'] = ""
         ws6['A2'] = "Test Report"
-        fieldnames = ["Ref.No.", "Project Name", "Chainage","", "Direction", "Description of Issue",
-                          "Asset Type", "Performance Parameter(Type of Issue)",
-                          "Issue Raised On", "Name of Test", "Testing Method", "Standard References for testing",
-                          "Test Carried Out Date", "Testing Carried Out By(Name)", "Remark", "Outcome Report"]
+        fieldnames = ["Ref.No.","Description of Test/ Investigation", "Chainage","", "Direction",
+                          "Asset Type", "Performance Parameter",
+                          "Name of Test", "Testing Method", "Standard References for testing",
+                          "Test Carried Out Date", "Testing Carried Out By(Name)"]
         
-        ws6.append(fieldnames)
-        ws6.merge_cells('A3:A4')
-        ws6.merge_cells('B3:B4')
-        ws6.merge_cells('C3:D3')
+        ws3.append(fieldnames)
+        ws3.merge_cells('A3:A4')
+        ws3.merge_cells('B3:B4')
+        ws3.merge_cells('C3:D3')
         # ws1.merge_cells('C4:D4')
-        n1 = ws6.cell(row=4,column=3)
-        n2 = ws6.cell(row=4,column=4)
+        n1 = ws3.cell(row=4,column=3)
+        n2 = ws3.cell(row=4,column=4)
         n1.value = "From (In Km)"
         n2.value = "To (In Km)"
         # ws1.merge_cells('D3:D4')
         # n3 = ws1.cell(row=3,column=5)
         # n3.value="Direction"
-        ws6.merge_cells('E3:E4')
-        ws6.merge_cells('F3:F4')
-        # ws3.merge_cells('G3:G4')
-        ws6.merge_cells('H3:H4')
-        ws6.merge_cells('I3:I4')
-        ws6.merge_cells('J3:J4')
-        ws6.merge_cells('K3:K4')
-        ws6.merge_cells('L3:L4')
-        ws6.merge_cells('M3:M4')
-        ws6.merge_cells('N3:N4')
-        ws6.merge_cells('O3:O4')
-        ws6.merge_cells('P3:P4')
-        ws6.merge_cells('Q3:Q4')
+        ws3.merge_cells('E3:E4')
+        ws3.merge_cells('F3:F4')
+        ws3.merge_cells('G3:G4')
+        ws3.merge_cells('H3:H4')
+        ws3.merge_cells('I3:I4')
+        ws3.merge_cells('J3:J4')
+        ws3.merge_cells('K3:K4')
+        ws3.merge_cells('L3:L4')
 
 
 
     if type == 'Accident':
        
         ws4.title = "Summary of Accident"
-        ws4['A1'] = "Report Name : Summary of Accident Report"
+        ws4['A1'] = "Summary of Accident Report"
         ws4['A2'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
+        ws4['B2'] = "Project Name"
+        ws4['C2'] = project.name
         
 
         fieldnames = ["Ref.No.", "Description","Up to previous month","","During this month","",
@@ -632,7 +638,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
             Raised_date = datetime.strftime(issue.created_date.date(),"%d-%m-%Y")
             issue_data = [[
                 issue.ref,
-                issue.project.name,
+                # issue.project.name,
                 issue.chainage_from,
                 issue.chainage_to,
                 issue.chainage_side,
@@ -676,7 +682,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
             Raised_date = datetime.strftime(issue.created_date.date(),"%d-%m-%Y")
             issue_data = [[
                 issue.ref,
-                issue.project.name,
+                # issue.project.name,
                 issue.chainage_from,
                 issue.chainage_to,
                 issue.chainage_side,
@@ -757,7 +763,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
 
                     issue_data = [[
                             issue.ref,
-                            issue.project.name,
+                            # issue.project.name,
                             issue.chainage_from,
                             issue.chainage_to,
                             issue.chainage_side,
@@ -834,7 +840,6 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                             new = i
                     issue_data = [[
                             issue.ref,
-                            issue.project.name,
                             issue.chainage_from,
                             issue.chainage_to,
                             issue.chainage_side,
@@ -846,14 +851,14 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                             new_watcher_list,
                             timeline,
                             target_date,
-                            new if issue.status else None,
+                            "new" if issue.status else None,
                             issue.finished_date if status_name=='Closed' else None,
                             'Yes' if issue.compliance_is_update==True else 'No',
                             issue.assigned_to.full_name if issue.assigned_to else None,
                             issue.compliance_description,
                             issue.attachments.name,
                             "",
-                            new if issue.status else None,
+                            "new" if issue.status else None,
                         ]]
                     for data in issue_data:
                         ws4.append(data)
@@ -866,36 +871,19 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
         
 
         if issue.type.name == 'Investigation' and photo=="with photo":
-            if issue.attachments:
-                file_name = "" 
-                files = []
-                file = issue.attachments.filter(project_id=issue.project.id).values_list('attached_file')
-                for i in file:
-                    files.extend(i)
-                #     for j in len(file):
-                #         files.append(file[j])
-                for j in files:
-                    file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
-            else:
-                file_name=""
-                print(file_name)
             issue_data = [[
                 issue.ref,
-                issue.project.name,
+                issue.investigation_description,
                 issue.investigation_chainage_from,
                 issue.investigation_chainage_to,
                 issue.investigation_chainage_side,
-                issue.investigation_description,
-                file_name,
                 issue.asset_name,
                 issue.test_name,
-                "",
-                "",
-                "",
-                "",
-                issue.assigned_to.username if issue.assigned_to else None,
-                "",
-                "",
+                issue.test_name,
+                issue.testing_method,
+                issue.test_specifications,
+                issue.created_date.date(),
+                issue.owner.full_name if issue.owner else None,
             ]]
             for data in issue_data:
                 ws3.append(data)
@@ -907,26 +895,22 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
             wb = load_workbook('table.xlsx')
         
             ws3 = wb['Test Report']
-            style(ws3,fieldnames, issue, file_name)
+            style(ws3,fieldnames, issue)
 
         if issue.type.name == 'Investigation' and photo=="without photo":
             issue_data = [[
                 issue.ref,
-                issue.project.name,
+                issue.investigation_description,
                 issue.investigation_chainage_from,
                 issue.investigation_chainage_to,
                 issue.investigation_chainage_side,
-                issue.investigation_description,
-                # file_name,
                 issue.asset_name,
                 issue.test_name,
-                "",
-                "",
-                "",
-                "",
-                issue.assigned_to.username if issue.assigned_to else None,
-                "",
-                "",
+                issue.test_name,
+                issue.testing_method,
+                issue.test_specifications,
+                issue.created_date.date(),
+                issue.owner.full_name if issue.owner else None,
             ]]
             for data in issue_data:
                 ws6.append(data)

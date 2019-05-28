@@ -96,6 +96,8 @@ class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer
     investigation_chainage_to = Field()
     investigation_chainage_side = Field()
     image_url = Field()
+    testing_method = Field()
+    
 
     def get_status_name(self, obj):
         try:
@@ -158,7 +160,8 @@ class IssueSerializer(IssueListSerializer):
     investigation_chainage_to = Field()
     investigation_chainage_side = Field()
     image_url = Field()
-
+    testing_method = Field()
+    
     def get_project_start_end_chainage(self, obj):
         return obj.project.start_and_end_chainage
 
