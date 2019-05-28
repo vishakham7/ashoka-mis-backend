@@ -123,7 +123,7 @@ def style(ws,fieldnames, issue,file_name=None):
         for new_row in l:
             print("-------------new_row-------------")
             print(new_row)
-            file = ws.cell(row=new_row, column=7).value
+            file = ws.cell(row=new_row, column=6).value
             if file:
                 split = file.split('\n')
                 if split:
@@ -135,14 +135,14 @@ def style(ws,fieldnames, issue,file_name=None):
                         doc_name = new[-2].split('/')
                         file_name = doc_name[-1]+'.'+new[-1]
         
-                        name = ws.cell(row=new_row, column=7).value
+                        name = ws.cell(row=new_row, column=6).value
                         n += name
                         
                         if new[-1]=="xlsx" or new[-1]=="docx" or new[-1]=="doc" or new[-1]=="pdf":
                             # print(aa[j])
                             # ws.cell(row=new_row, column=7).hyperlink = aa[j]
-                            ws.cell(row=new_row, column=7).hyperlink = aa[j]
-                            ws.cell(row=new_row, column=7).value = file_name
+                            ws.cell(row=new_row, column=6).hyperlink = aa[j]
+                            ws.cell(row=new_row, column=6).value = file_name
                         if new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
                             http = urllib3.PoolManager()
                             # r = http.request('GET', aa[j-(len(aa)-1)])
@@ -154,11 +154,11 @@ def style(ws,fieldnames, issue,file_name=None):
                                     img.height=100
                                     img.width =100
 
-                                    ws.add_image(img,'G'+str(new_row))
+                                    ws.add_image(img,'F'+str(new_row))
                                     # ws.cell(row=new_row, column=7).value = aa[j]
                                     # ws.cell(row=new_row, column=7).hyperlink = aa[j]
-                                    ws.cell(row=new_row, column=7).value = "<img src='"+ aa[j] + "' height=100 width=70/>"
-                                    ws.cell(row=new_row, column=7).font = font2
+                                    ws.cell(row=new_row, column=6).value = "<img src='"+ aa[j] + "' height=100 width=70/>"
+                                    ws.cell(row=new_row, column=6).font = font2
                             # if new[-1]=="svg":
                             #     ws.cell(row=new_row, column=7).value = "<img src='"+ aa[j] + "' height=100 width=70/>"
 
@@ -193,10 +193,10 @@ def style(ws,fieldnames, issue,file_name=None):
                         # #         print(img)
                                 img.height=100
                                 img.width =100
-                                ws.add_image(img,'G'+str(new_row))
+                                ws.add_image(img,'F'+str(new_row))
                         #         # ws.cell(row=new_row, column=7).value = aa[j]
-                                ws.cell(row=new_row, column=7).value = "<img scr='"+  aa[j] + "'  />"
-                                ws.cell(row=new_row, column=7).font = font2
+                                ws.cell(row=new_row, column=6).value = "<img scr='"+  aa[j] + "'  />"
+                                ws.cell(row=new_row, column=6).font = font2
 
                                 
 
