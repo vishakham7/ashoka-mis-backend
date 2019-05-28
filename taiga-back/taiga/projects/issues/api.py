@@ -912,7 +912,6 @@ class IssueTypeIssue(IssueViewSet):
 
     def post_save(self, object, created=False, updated=False):
         super().post_save(object, created=created)
-        closed_by = self.request.DATA['closed_by_id']
        
         if created:
             project_id = object.project_id
@@ -931,20 +930,16 @@ class IssueTypeIssue(IssueViewSet):
             project = self.request.DATA['project']
             closed_by_id = self.request.DATA['closed_by_id']
 
-            # try:
-            #     closed_by = User.objects.get(id=closed_by)
-            #     return closed_by
-            # except Exception as e:
-            #     print(e)
             try:
                 issue_status_id = IssueStatus.objects.get(project_id = project, name = status_name)
-            except Exception as e:
+            except:
                 issue_status_id = None
 
             if issue_status_id:
                 Issue.objects.filter(id = object.id).update(status_id = issue_status_id.id)
             if closed_by_id:
                 Issue.objects.filter(id = object.id).update(closed_by = closed_by_id)
+
             try:
                 type_value_id = IssueType.objects.get(name='Issue', project_id = project)
             except:
