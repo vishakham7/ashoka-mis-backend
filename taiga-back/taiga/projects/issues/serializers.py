@@ -46,9 +46,6 @@ class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer
     type = Field(attr="type_id")
     milestone = Field(attr="milestone_id")
     project = Field(attr="project_id")
-    # ////////////////////////
-    # closed_by = Field()
-    # ///////////////////////
     created_date = Field()
     modified_date = Field()
     finished_date = Field()
@@ -121,8 +118,9 @@ class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer
 
     def get_status_name(self, obj):
         try:
-            status = Issue.objects.get(pk = obj.status_id)
-        except:
+            status = IssueStatus.objects.get(pk = obj.status_id)
+        except Exception as e:
+            print(e)
             status = None
 
         if status:
