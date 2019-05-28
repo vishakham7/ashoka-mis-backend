@@ -105,13 +105,12 @@ class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer
     closed_by_name = MethodField()
     
     def get_closed_by_name(self,obj):
-        if obj.closed_by.id:
+        if obj.closed_by:
             try:
                 changed = Issue.objects.get(project=obj.project,closed_by__user__id = obj.closed_by.id).first()
             except:
                 changed = None
             if changed:
-                print(changed)
                 return changed
             else:
                 return ''
@@ -123,8 +122,7 @@ class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer
     def get_status_name(self, obj):
         try:
             status = Issue.objects.get(pk = obj.status_id)
-        except Exception as e:
-            print(e)
+        except:
             status = None
 
         if status:
@@ -186,11 +184,10 @@ class IssueSerializer(IssueListSerializer):
     closed_by_name = MethodField()
     
     def get_closed_by_name(self,obj):
-        if obj.closed_by.id:
+        if obj.closed_by:
             try:
                 changed = Issue.objects.filter(project=obj.project,closed_by = obj.closed_by.id).first()
-            except Exception as e:
-                print(e)
+            except:
                 changed = None
             if changed:
                 return changed.closed_by.full_name
