@@ -117,16 +117,17 @@ class IssueListSerializer(VoteResourceSerializerMixin, WatchedResourceSerializer
             #     return ''
 
     def get_status_name(self, obj):
-        try:
-            status = IssueStatus.objects.get(pk = obj.status_id)
-        except Exception as e:
-            print(e)
-            status = None
+        if obj.status_id:
+            try:
+                status = IssueStatus.objects.get(pk = obj.status_id)
+            except Exception as e:
+                print(e)
+                status = None
 
-        if status:
-            return status.name
-        else:
-            return ''
+            if status:
+                return status.name
+            else:
+                return ''
 
 class IssueSerializer(IssueListSerializer):
     formatted_issue_id = Field()
@@ -199,15 +200,16 @@ class IssueSerializer(IssueListSerializer):
         return obj.project.start_and_end_chainage
 
     def get_status_name(self, obj):
-        try:
-            status = IssueStatus.objects.get(pk = obj.status_id)
-        except:
-            status = None
+        if obj.status_id:
+            try:
+                status = IssueStatus.objects.get(pk = obj.status_id)
+            except:
+                status = None
 
-        if status:
-            return status.name
-        else:
-            return ''
+            if status:
+                return status.name
+            else:
+                return ''
 
     def get_comment(self, obj):
         # NOTE: This method and field is necessary to historical comments work
