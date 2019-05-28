@@ -102,102 +102,102 @@ def style(ws,fieldnames, issue,file_name=None):
 
 
     #////////////////////////// images
-    if file_name:
-        file_row = []
-        for row in range(5,row_count+1):
-            file_row.append(row)
-        l=[]
-        for i in range(len(file_row)):
-            print("-------------------------")
-            print(row_count)
-            print(row_count-4)
-            print(len(file_row)==(row_count-4))
-            if len(file_row)==(row_count-4):
-                l.append(file_row[i])
-        print(l)
-        file_name = []
-        split = []
-        aaa=[]
-        val = []
-        n=""
-        hh=""
-        for new_row in l:
-            print("-------------new_row-------------")
-            print(new_row)
-            file = ws.cell(row=new_row, column=6).value
-            if file:
-                split = file.split('\n')
-                if split:
-                    aaa.append(split)
-                for aa in aaa:
-                    for j in range(len(aa)-1):
+    # if file_name:
+    #     file_row = []
+    #     for row in range(5,row_count+1):
+    #         file_row.append(row)
+    #     l=[]
+    #     for i in range(len(file_row)):
+    #         print("-------------------------")
+    #         print(row_count)
+    #         print(row_count-4)
+    #         print(len(file_row)==(row_count-4))
+    #         if len(file_row)==(row_count-4):
+    #             l.append(file_row[i])
+    #     print(l)
+    #     file_name = []
+    #     split = []
+    #     aaa=[]
+    #     val = []
+    #     n=""
+    #     hh=""
+    #     for new_row in l:
+    #         print("-------------new_row-------------")
+    #         print(new_row)
+    #         file = ws.cell(row=new_row, column=6).value
+    #         if file:
+    #             split = file.split('\n')
+    #             if split:
+    #                 aaa.append(split)
+    #             for aa in aaa:
+    #                 for j in range(len(aa)-1):
                         
-                        new = aa[j].split('.')
-                        doc_name = new[-2].split('/')
-                        file_name = doc_name[-1]+'.'+new[-1]
+    #                     new = aa[j].split('.')
+    #                     doc_name = new[-2].split('/')
+    #                     file_name = doc_name[-1]+'.'+new[-1]
         
-                        name = ws.cell(row=new_row, column=6).value
-                        n += name
+    #                     name = ws.cell(row=new_row, column=6).value
+    #                     n += name
                         
-                        if new[-1]=="xlsx" or new[-1]=="docx" or new[-1]=="doc" or new[-1]=="pdf":
-                            # print(aa[j])
-                            # ws.cell(row=new_row, column=7).hyperlink = aa[j]
-                            ws.cell(row=new_row, column=6).hyperlink = aa[j]
-                            ws.cell(row=new_row, column=6).value = file_name
-                        if new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
-                            http = urllib3.PoolManager()
-                            # r = http.request('GET', aa[j-(len(aa)-1)])
-                            if aa[j]:
-                                r = http.request('GET', aa[j])
-                                image_file = io.BytesIO(r.data)
-                                if image_file:
-                                    img = Image(image_file)
-                                    img.height=100
-                                    img.width =100
+    #                     if new[-1]=="xlsx" or new[-1]=="docx" or new[-1]=="doc" or new[-1]=="pdf":
+    #                         # print(aa[j])
+    #                         # ws.cell(row=new_row, column=7).hyperlink = aa[j]
+    #                         ws.cell(row=new_row, column=6).hyperlink = aa[j]
+    #                         ws.cell(row=new_row, column=6).value = file_name
+    #                     if new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
+    #                         http = urllib3.PoolManager()
+    #                         # r = http.request('GET', aa[j-(len(aa)-1)])
+    #                         if aa[j]:
+    #                             r = http.request('GET', aa[j])
+    #                             image_file = io.BytesIO(r.data)
+    #                             if image_file:
+    #                                 img = Image(image_file)
+    #                                 img.height=100
+    #                                 img.width =100
 
-                                    ws.add_image(img,'F'+str(new_row))
-                                    # ws.cell(row=new_row, column=7).value = aa[j]
-                                    # ws.cell(row=new_row, column=7).hyperlink = aa[j]
-                                    ws.cell(row=new_row, column=6).value = "<img src='"+ aa[j] + "' height=100 width=70/>"
-                                    ws.cell(row=new_row, column=6).font = font2
-                            # if new[-1]=="svg":
-                            #     ws.cell(row=new_row, column=7).value = "<img src='"+ aa[j] + "' height=100 width=70/>"
+    #                                 ws.add_image(img,'F'+str(new_row))
+    #                                 # ws.cell(row=new_row, column=7).value = aa[j]
+    #                                 # ws.cell(row=new_row, column=7).hyperlink = aa[j]
+    #                                 ws.cell(row=new_row, column=6).value = "<img src='"+ aa[j] + "' height=100 width=70/>"
+    #                                 ws.cell(row=new_row, column=6).font = font2
+    #                         # if new[-1]=="svg":
+    #                         #     ws.cell(row=new_row, column=7).value = "<img src='"+ aa[j] + "' height=100 width=70/>"
 
 
-                            # print(aa[j])
-                            # print(aa[j-(len(aa))])
-                            # http = urllib3.PoolManager()
-                            # # r = http.request('GET', aa[j-(len(aa)-1)])
-                            # r = http.request('GET', aa[j])
-                            # image_file = io.BytesIO(r.data)
+    #                         # print(aa[j])
+    #                         # print(aa[j-(len(aa))])
+    #                         # http = urllib3.PoolManager()
+    #                         # # r = http.request('GET', aa[j-(len(aa)-1)])
+    #                         # r = http.request('GET', aa[j])
+    #                         # image_file = io.BytesIO(r.data)
                         
-                            # img = Image(image_file)
-                            # img.height=100
-                            # img.width =100
-                            # ws.add_image(img,'G'+str(new_row))
-                            # # ws.cell(row=new_row, column=7).value = aa[j]
-                            # # ws.cell(row=new_row, column=7).hyperlink = aa[j]
-                            # ws.cell(row=new_row, column=7).value = "<img src='"+  aa[j] + "' height=100 width=70/>"
-                        if len(n)>180:                
-                            ws.row_dimensions[new_row].height = 120
-                            if new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
-                        #         # print(aa[j])
-                                http = urllib3.PoolManager()
-                                # r = http.request('GET', aa[j-(len(aa)-1)])
-                                r = http.request('GET', aa[j])
-                        # #         print(aa[j])
-                                image_file = io.BytesIO(r.data)
-                        # #         print("0000---------------0000")
-                        # #         print(image_file)
-                                img = Image(image_file)
-                        # #         print("000000000000000000000000")
-                        # #         print(img)
-                                img.height=100
-                                img.width =100
-                                ws.add_image(img,'F'+str(new_row))
-                        #         # ws.cell(row=new_row, column=7).value = aa[j]
-                                ws.cell(row=new_row, column=6).value = "<img scr='"+  aa[j] + "'  />"
-                                ws.cell(row=new_row, column=6).font = font2
+    #                         # img = Image(image_file)
+    #                         # img.height=100
+    #                         # img.width =100
+    #                         # ws.add_image(img,'G'+str(new_row))
+    #                         # # ws.cell(row=new_row, column=7).value = aa[j]
+    #                         # # ws.cell(row=new_row, column=7).hyperlink = aa[j]
+    #                         # ws.cell(row=new_row, column=7).value = "<img src='"+  aa[j] + "' height=100 width=70/>"
+    #                     if len(n)>180:                
+    #                         ws.row_dimensions[new_row].height = 120
+    #                         if new[-1]=="jpeg" or new[-1]=="jpg" or new[-1]=="png":
+    #                     #         # print(aa[j])
+    #                             http = urllib3.PoolManager()
+    #                             # r = http.request('GET', aa[j-(len(aa)-1)])
+    #                             r = http.request('GET', aa[j])
+    #                     # #         print(aa[j])
+    #                             image_file = io.BytesIO(r.data)
+    #                     # #         print("0000---------------0000")
+    #                     # #         print(image_file)
+    #                             img = Image(image_file)
+    #                     # #         print("000000000000000000000000")
+    #                     # #         print(img)
+    #                             img.height=100
+    #                             img.width =100
+    #                             ws.add_image(img,'F'+str(new_row))
+    #                     #         # ws.cell(row=new_row, column=7).value = aa[j]
+    #                             ws.cell(row=new_row, column=6).value = "<img scr='"+  aa[j] + "'  />"
+    #                             ws.cell(row=new_row, column=6).font = font2
 
                                 
 
@@ -724,7 +724,6 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
 
                 for i in range(len(split)):
                     new_watcher_list = split[i] + new_watcher_list
-
                 a = issue.created_date.date()
                 b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
                 timeline = b-a
@@ -815,7 +814,6 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
 
                 for i in range(len(split)):
                     new_watcher_list = split[i] + new_watcher_list
-                    
                 a = issue.created_date.date()
                 b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
                 timeline = b-a
