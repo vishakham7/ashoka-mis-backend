@@ -108,17 +108,14 @@ def dashboard_graph_data(request, project_id=None):
     x = 6
     now = time.localtime()
     month = []
-    print("====================================")
     nnn = [time.localtime(time.mktime((now.tm_year, now.tm_mon - n, 1, 0, 0, 0, 0, 0, 0)))[1:2] for n in range(x)]
     for i in nnn:
         for j in i:
             month.append(j)
-    print(month)
     new1 = []
     for num in month:
         new = datetime.date(1900, num, 1).strftime('%b')
         new1.append(new)
-    print(new1)
   
     bymonth_select = {"month": """DATE_TRUNC('month', created_date)"""}
    
@@ -423,14 +420,12 @@ class IssueViewSet(
                        "total_voters")
 
     def get_serializer_class(self, *args, **kwargs):
-
+    
         if self.action in ["retrieve", "by_ref"]:
             return serializers.IssueNeighborsSerializer
 
         if self.action == "list":
-
             return serializers.IssueListSerializer
-
         return serializers.IssueSerializer
 
     def update(self, request, *args, **kwargs):
@@ -484,13 +479,7 @@ class IssueViewSet(
                     except IssueType.DoesNotExist as e:
                         request.DATA['type'] = new_project.default_issue_type.id
                 closed_by_id = request.DATA.get('closed_by_id', None)
-                # if closed_by_id is not None:
-                #     try:
-                #         closed_by_id = Issue.objects.get(project=project_id,closed_by__id=closed_by_id)
-                #         # print(closed_by_id.id)
-                #         request.DATA['closed_by'] = closed_by_id
-                #     except Exception as e:
-                #         print(e)
+    
 
             except Project.DoesNotExist:
                 return response.BadRequest(_("The project doesn't exist"))
@@ -506,8 +495,11 @@ class IssueViewSet(
         end_date = self.request.QUERY_PARAMS.get('end_date', None)
         # params = self.request.QUERY_PARAMS
         type_name = self.request.QUERY_PARAMS.get('type_name', None)
-        
+       
         qs = super().get_queryset()
+
+        
+
         
         if q1 and q2 and start_date and end_date:
             if type_name == "Investigation":
@@ -522,14 +514,12 @@ class IssueViewSet(
         
         elif start_date and end_date:
             qs = qs.filter(created_date__date__range=[start_date, end_date])
-        # else:
-        #     qs = super().get_queryset()
-        #     # qs = qs.filter(project_id=project, type=type)
-        
+
         qs = qs.select_related("owner", "assigned_to", "status", "project")
         include_attachments = "include_attachments" in self.request.QUERY_PARAMS
         qs = attach_extra_info(qs, user=self.request.user,
-                               include_attachments=include_attachments,)
+                           include_attachments=include_attachments,)
+        
         return qs
 
     def pre_save(self, obj):
@@ -675,27 +665,6 @@ class IssueViewSet(
             # csv_response['Content-Disposition'] = 'attachment; filename="issues.html"'
             # return csv_response
            
-
-    @list_route(methods=["GET"])
-    def new(self, request):
-        get_data={}
-        status_id = []
-        uuid = request.QUERY_PARAMS.get("uuid", None)
-        start_date = request.QUERY_PARAMS.get('start_date')
-        end_date = request.QUERY_PARAMS.get('end_date')
-        type = request.QUERY_PARAMS.get('type')
-        status = request.QUERY_PARAMS.get('status')
-        asset = request.QUERY_PARAMS.get('asset_cat')
-        performance = request.QUERY_PARAMS.get('performance_cat')
-        photo = request.QUERY_PARAMS.get('photo')
-        get_data['start_date'] = start_date
-        get_data['end_date'] = end_date
-        get_data['status'] = status
-        get_data['type'] = type
-        get_data['asset'] = asset
-        get_data['performance'] = performance
-        get_data['photo'] = photo
-        return JsonResponse(get_data)
         
 
     @list_route(methods=["POST"])
