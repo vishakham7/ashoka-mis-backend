@@ -495,25 +495,33 @@ class IssueViewSet(
         end_date = self.request.QUERY_PARAMS.get('end_date', None)
         # params = self.request.QUERY_PARAMS
         type_name = self.request.QUERY_PARAMS.get('type_name', None)
-       
+        # qs = super().get_queryset()
         qs = super().get_queryset()
-
+        status = ['Open','Closed','Pending']
+        
         
 
         
         if q1 and q2 and start_date and end_date:
             if type_name == "Investigation":
-                qs = qs.filter(asset_name=q1, test_name=q2,created_date__date__range=[start_date, end_date])
+                qs = qs.filter(project=project,type=type,status__name__in=status,asset_name=q1, test_name=q2,created_date__date__range=[start_date, end_date])
             else:
-                qs = qs.filter(issue_category=q1, issue_subcategory=q2,created_date__date__range=[start_date, end_date])
+                qs = qs.filter(project=project,type=type,status__name__in=status,issue_category=q1, issue_subcategory=q2,created_date__date__range=[start_date, end_date])
         elif q1 and start_date and end_date:
             if type_name == "Investigation":
-                qs = qs.filter(asset_name=q1,created_date__date__range=[start_date, end_date])
+                qs = qs.filter(project=project,type=type,status__name__in=status,asset_name=q1,created_date__date__range=[start_date, end_date])
+                print(q1)
+                print(qs.count())
             else:
-                qs = qs.filter(issue_category=q1,created_date__date__range=[start_date, end_date])
-        
+                qs = qs.filter(project=project,type=type,status__name__in=status, issue_category=q1,created_date__date__range=[start_date, end_date])
+                print(qs.query)
         elif start_date and end_date:
-            qs = qs.filter(created_date__date__range=[start_date, end_date])
+            qs = qs.filter(project=project,type=type,status__name__in=status,created_date__date__range=[start_date, end_date])
+
+        # else:
+        #     print("=====================================")
+        #     qs = Issue.objects.filter(project_id = project, type = type,status__name__in=status)
+        #     print(qs.count())
 
         qs = qs.select_related("owner", "assigned_to", "status", "project")
         include_attachments = "include_attachments" in self.request.QUERY_PARAMS
