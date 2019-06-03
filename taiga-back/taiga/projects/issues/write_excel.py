@@ -108,7 +108,7 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
             file_row.append(row)
         l=[]
         for i in range(len(file_row)):
-            if len(file_row)==(row_count-3):
+            if len(file_row)==(row_count-4):
                 l.append(file_row[i])
         
         file_name = []
@@ -421,7 +421,7 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
                                         ws.cell(row=new_row, column=6).font = font2
 
                                 
-                        if new[-1]=="xlsx" or new[-1]=="docx" or new[-1]=="doc" or new[-1]=="pdf":
+                        if new[-1]=="xlsx" or new[-1]=="docx" or new[-1]=="doc" or new[-1]=="pdf" or new[-1]=="mp3":
                             ws.cell(row=new_row, column=6).hyperlink = aa[j]
                             ws.cell(row=new_row, column=6).value = file_name
 
@@ -758,7 +758,7 @@ def comp(ws,Compliance_file_name):
                                         ws.cell(row=new_row, column=7).font = font2
 
                                 
-                        if new[-1]=="xlsx" or new[-1]=="docx" or new[-1]=="doc" or new[-1]=="pdf" or new[-1]=="svg":
+                        if new[-1]=="xlsx" or new[-1]=="docx" or new[-1]=="doc" or new[-1]=="pdf" or new[-1]=="mp3":
                             ws.cell(row=new_row, column=7).hyperlink = aa[j]
                             ws.cell(row=new_row, column=7).value = file_name
                         
