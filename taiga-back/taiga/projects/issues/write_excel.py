@@ -1157,8 +1157,8 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                 file_new = issue.attachments.filter(project__id=issue.project.id, description="").values_list('description','attached_file')
                 if file_new:
                     for i in file_new:
-                        if i[0]=="":
-                            files.extend(i)
+                        
+                        files.extend(i)
                         #     for j in len(file):
                         #         files.append(file[j])
                     for j in files:
