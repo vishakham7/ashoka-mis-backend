@@ -1259,23 +1259,24 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                 if issue.attachments:
                     file_name = "" 
                     files = []
+                    Compliance_file_name = "" 
+                    Compliance_files = []
+
                     file = issue.attachments.all().filter(project__id=issue.project.id,description="").values_list('attached_file')
                     for i in file:
                         files.extend(i)
                     for j in files:
                         file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
+                
+
+                    
+                    Compliance_file = issue.attachments.all().filter(project__id=issue.project.id,description="Compliances").values_list('attached_file')
+                    for k in Compliance_file:
+                        Compliance_files.extend(k)
+                    for l in Compliance_files:
+                        Compliance_file_name = os.path.join(settings.MEDIA_URL,str(l)) +'\n' + Compliance_file_name
                 else:
                     file_name=""
-
-                if issue.attachments:
-                    Compliance_file_name = "" 
-                    Compliance_files = []
-                    Compliance_file = issue.attachments.all().filter(project__id=issue.project.id,description="Compliances").values_list('attached_file')
-                    for i in Compliance_file:
-                        Compliance_files.extend(i)
-                    for j in Compliance_files:
-                        Compliance_file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + Compliance_file_name
-                else:
                     Compliance_file_name=""
 
                 status_name = []
