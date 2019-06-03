@@ -496,11 +496,8 @@ class IssueViewSet(
         # params = self.request.QUERY_PARAMS
         type_name = self.request.QUERY_PARAMS.get('type_name', None)
         # qs = super().get_queryset()
-        qs = super().get_queryset()
+        qs = super().get_queryset().order_by('-id')
         status = ['Open','Closed','Pending']
-        
-        
-
         
         if q1 and q2 and start_date and end_date:
             if type_name == "Investigation":
