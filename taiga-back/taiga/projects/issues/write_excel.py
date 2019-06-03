@@ -426,6 +426,8 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
                             ws.cell(row=new_row, column=6).value = file_name
 
 
+def comp(Compliance_file_name):
+
     if Compliance_file_name:
         file_row = []
         for row in range(5,row_count+1):
@@ -1333,8 +1335,8 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
 
             wb = load_workbook('table.xlsx')
             ws2 = wb['Manitenance Report']
-            style(ws2,fieldnames, file_name,Compliance_file_name, issue)
-
+            style(ws2,fieldnames, file_name, issue)
+            comp(Compliance_file_name)
 
         if issue.type.name=='Issue' and name=="Compliance" and photo=="without photo" and status:
             for issue in queryset:
