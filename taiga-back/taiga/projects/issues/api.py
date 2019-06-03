@@ -607,6 +607,10 @@ class IssueViewSet(
         get_data={}
         status_id = []
         # PDF or Excel
+
+        print("=======user==============")
+        print(request.user.email)
+
         doc_type = request.QUERY_PARAMS.get('doc_type', None)
         uuid = request.QUERY_PARAMS.get("uuid", None)
         start_date = request.QUERY_PARAMS.get('start_date', None)
@@ -646,7 +650,7 @@ class IssueViewSet(
             queryset = project.issues.filter(type__name=type,created_date__date__range=[start_date, end_date]).order_by('ref')
         
 
-        data = write_excel.write_excel(project, queryset, type, status, start_date, end_date,asset,performance,photo,doc_type,name)
+        data = write_excel.write_excel(request, project, queryset, type, status, start_date, end_date,asset,performance,photo,doc_type,name)
         
 
         if doc_type=="excel":

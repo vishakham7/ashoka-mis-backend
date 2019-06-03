@@ -108,7 +108,7 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
             file_row.append(row)
         l=[]
         for i in range(len(file_row)):
-            if len(file_row)==(row_count-4):
+            if len(file_row)==(row_count-9):
                 l.append(file_row[i])
         
         file_name = []
@@ -427,8 +427,6 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
 
 
 def comp(ws,Compliance_file_name):
-    print("=================================file_name=======================")
-    print(Compliance_file_name)
     font2 = Font(name='Calibri',
                 size=11,
                 bold=True,
@@ -445,7 +443,7 @@ def comp(ws,Compliance_file_name):
             file_row.append(row)
         l=[]
         for i in range(len(file_row)):
-            if len(file_row)==(row_count-4):
+            if len(file_row)==(row_count-9):
                 l.append(file_row[i])
         
         file_name = []
@@ -851,7 +849,7 @@ def comp(ws,Compliance_file_name):
         
                             
 
-def write_excel(project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name):
+def write_excel(request, project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name):
     # print(project.name)
 
     wb = Workbook()
@@ -873,9 +871,25 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
     queryset = attach_watchers_to_queryset(queryset)
     if type == 'Issue' and photo=="with photo" and status==None:
         ws1.title = "Inspection Report"
-        ws1['A1'] = "Inspection Report with Photogragh"
-        ws1['A2'] = "Project Name"
-        ws1['B2'] = project.name
+        ws1['A1'] = "User Name:"
+        ws1['A2'] = "User Id:"
+        ws1['A3'] = "Role:"
+        ws1['A4'] = "Project Name:"
+        ws1['A5'] = "Asset Type:"
+        ws1['A6'] = "Performance Parameter:"
+        ws1['A7'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
+        # ws1['A1'] = "Inspection Report with Photogragh"
+        # ws1['A2'] = "Project Name"
+
+        ws1['B1'] = request.user.full_name
+        ws1['B2'] = request.user.email
+        ws1['B3'] = ""
+        ws1['B4'] = project.name
+        ws1['B5'] = asset if asset else "All"
+        ws1['B6'] = performance if performance else "All"
+        ws1['B7'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
+        # ws1['B2'] = project.name
+
         fieldnames = ["Ref.No.", "Chainage","" , "Direction", "Description of Issue",
                               "Photograph During Inspection", "Asset Type", "Performance Parameter",
                               "Issue Raised On", "Issue Raised By",
@@ -1293,8 +1307,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                 else:
                     file_name=""
                     Compliance_file_name=""
-                print("----------compliance_is_update---------")
-                print(Compliance_file_name)
+              
                 status_name = []
                 status_names =  project.issues.filter(status__id__in=status)
                 new_status_name =[]
@@ -1542,7 +1555,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
             style(ws4,fieldnames, issue)
 
     if doc_type=="pdf":
-        new = pd.read_excel('table.xlsx',na_filter=False,header=None, names="",border="0")
+        new = pd.read_excel('table.xlsx',na_filter=False,header=None, names="",nrwos=500)
     
         # for i in wwww:
         #  
