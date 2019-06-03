@@ -1158,7 +1158,8 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                 attachment_description = "" 
                 for desc in description:
                     attachment_description = desc
-                if attachment_description == "":
+                print(attachment_description)
+                if attachment_description:
                     for i in file:
                         files.extend(i)
                     for j in files:
