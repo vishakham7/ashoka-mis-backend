@@ -427,7 +427,14 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
 
 
 def comp(ws,Compliance_file_name):
-
+    font2 = Font(name='Calibri',
+                size=11,
+                bold=True,
+                italic=False,
+                vertAlign=None,
+                underline='none',
+                strike=False,
+                color='FFFFFF')
     if Compliance_file_name:
         row_count = ws.max_row
         column_count = ws.max_column
