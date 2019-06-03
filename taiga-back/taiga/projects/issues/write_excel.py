@@ -276,7 +276,7 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
                                         ws.cell(row=new_row, column=6).value = "<img src='"+ aa[2] + "' height=100 width=70/><br><img src='"+ aa[1] + "' height=100 width=70/><br><img src='"+ aa[0] + "' height=100 width=70/>"
 
                                         ws.cell(row=new_row, column=6).font = font2
-                            if len(aa) == 3:
+                            elif len(aa) == 3:
                                 print("00000000000000000000000000")
                                 print(len(aa))
                                 http = urllib3.PoolManager()
@@ -372,7 +372,7 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
 
                                         ws.cell(row=new_row, column=6).font = font2
                                     
-                            if len(aa) == 2:
+                            elif len(aa) == 2:
                                 http = urllib3.PoolManager()
                                 r = http.request('GET',aa[0])
                                 image_file = io.BytesIO(r.data)
@@ -611,7 +611,7 @@ def comp(ws,Compliance_file_name):
                                         ws.cell(row=new_row, column=6).value = "<img src='"+ aa[2] + "' height=100 width=70/><br><img src='"+ aa[1] + "' height=100 width=70/><br><img src='"+ aa[0] + "' height=100 width=70/>"
 
                                         ws.cell(row=new_row, column=6).font = font2
-                            if len(aa) == 3:
+                            elif len(aa) == 3:
                                 print("00000000000000000000000000")
                                 print(len(aa))
                                 http = urllib3.PoolManager()
@@ -707,7 +707,7 @@ def comp(ws,Compliance_file_name):
 
                                         ws.cell(row=new_row, column=7).font = font2
                                     
-                            if len(aa) == 2:
+                            elif len(aa) == 2:
                                 http = urllib3.PoolManager()
                                 r = http.request('GET',aa[0])
                                 image_file = io.BytesIO(r.data)
