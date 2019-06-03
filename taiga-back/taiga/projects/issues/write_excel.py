@@ -429,6 +429,8 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
 def comp(Compliance_file_name):
 
     if Compliance_file_name:
+        row_count = ws.max_row
+        column_count = ws.max_column
         file_row = []
         for row in range(5,row_count+1):
             file_row.append(row)
