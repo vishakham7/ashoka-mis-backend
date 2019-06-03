@@ -516,8 +516,8 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
 
                                     img = Image(image_file)
 
-                                    img.height=200
-                                    img.width =200
+                                    img.height=120
+                                    img.width =120
                                    
                                     if img:
                                         c2e = cm_to_EMU
@@ -745,7 +745,7 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
                                         ws.cell(row=new_row, column=7).font = font2
 
                                 
-                        if new[-1]=="xlsx" or new[-1]=="docx" or new[-1]=="doc" or new[-1]=="pdf":
+                        if new[-1]=="xlsx" or new[-1]=="docx" or new[-1]=="doc" or new[-1]=="pdf" or new[-1]=="svg":
                             ws.cell(row=new_row, column=7).hyperlink = aa[j]
                             ws.cell(row=new_row, column=7).value = file_name
                         
@@ -892,7 +892,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
     if type == 'Issue' and photo=="without photo" and status==None:
 
         ws5.title = "Inspection Reportssssss"
-        ws5['A1'] = "Inspection Report with Photogragh"
+        ws5['A1'] = "Inspection Report without Photogragh"
         ws5['A2'] = "Project Name"
         ws5['B2'] = project.name
         fieldnames = ["Ref.No.", "Chainage","" , "Direction", "Description of Issue",
@@ -926,7 +926,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
         ws2 = wb.active
     
         ws2.title = "Manitenance Report"
-        ws2['A1'] = "Maintenance Report"
+        ws2['A1'] = "Maintenance Report with Photograph"
         ws2['A2'] = "Project Name"
         ws2['B2'] = project.name
         
@@ -983,7 +983,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
     if type=='Issue' and name=="Compliance" and photo=="without photo" and status:
     
         ws4.title = "Manitenance Report"
-        ws4['A1'] = "Maintenance Report"
+        ws4['A1'] = "Maintenance Report without Photograph"
         ws4['A2'] = "Project Name"
         ws4['B2'] = project.name
         fieldnames = ["Ref.No.", "Chainage","", "Direction", "Description of Issue",
