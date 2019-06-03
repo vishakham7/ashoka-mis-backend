@@ -1154,18 +1154,22 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                 file_name ="" 
                 files = []
 
-                file_new = issue.attachments.filter(project__id=issue.project.id, description="").values_list('description','attached_file')
-                if file_new:
-                    for i in file_new:
-                        
-                        files.extend(i)
-                        #     for j in len(file):
-                        #         files.append(file[j])
-                    for j in files:
-                        file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
-                else:
-                    file_name=""
-
+                file_new = issue.attachments.filter(project__id=issue.project.id, description="")
+                for i in file_new:
+                    if i.description =="":
+                        print("--------------------------")
+                        print(i.attached_file)
+                        # files.extend(i.attached_file)
+                        files.extend(i.attached_file)
+                
+                print(files)
+                for j in files:
+                    print("--------------file------------")
+                    print(j)
+                    file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
+            else:
+                file_name=""
+               
             Raised_date = datetime.strftime(issue.created_date.date(),"%d-%m-%Y")
             issue_data = [[
                 issue.ref,
@@ -1277,12 +1281,12 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                     Compliance_files = []
                     Compliance_file = issue.attachments.filter(project_id=issue.project.id, description="Compliances").values_list('attached_file')
                     
-                    for k in Compliance_file:
-                        Compliance_files.extend(k)
-                    #     for j in len(file):
-                    #         files.append(file[j])
-                    for l in files:
-                        Compliance_file_name = os.path.join(settings.MEDIA_URL,str(l)) +'\n' + Compliance_file_name
+                    # for k in Compliance_file:
+                    #     Compliance_files.extend(k)
+                    # #     for j in len(file):
+                    # #         files.append(file[j])
+                    # for l in files:
+                    #     Compliance_file_name = os.path.join(settings.MEDIA_URL,str(l)) +'\n' + Compliance_file_name
                 else:
                     Compliance_file_name = ""
 
