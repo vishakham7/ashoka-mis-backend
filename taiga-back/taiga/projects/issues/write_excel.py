@@ -30,7 +30,7 @@ from taiga.users.models import User
 # from PIL import Image
 
 
-def style(ws,fieldnames, issue,file_name=None):
+def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
     font = Font(name='Calibri',
                 size=11,
                 bold=True,
@@ -270,8 +270,332 @@ def style(ws,fieldnames, issue,file_name=None):
 
                                     img = Image(image_file)
 
+                                    img.height=200
+                                    img.width =200
+                                   
+                                    if img:
+                                        c2e = cm_to_EMU
+                                        p2e = pixels_to_EMU
+
+                                        h, w = img.height, img.width
+                                        # Calculated number of cells width or height from cm into EMUs
+                                        # celh = [1,8,16]
+                                        # celw = [0.09,0.01,0.01]
+                                        # cellh = 0
+                                        # cellw = 0
+                                        cellh = lambda x: c2e((x * 8))
+                                        cellw = lambda x: c2e((x *0.01))
+                                        # cellw = cellzw
+                                        # print(cellw, cellh)
+                                        # Want to place image in row 5 (6 in excel), column 2 (C in excel)
+                                        # Also offset by half a column.
+                                        column = 5
+                                        # colof = [28000]
+                                        coloffset = cellh(0.5)
+                                        # coloffset = 2880000
+                                        row = new_row-1
+                                        rowoffset = cellw(0.03)
+                                        rowpp = [107,197]
+                                
+
+                                        print(coloffset, rowoffset)
+                                        size = XDRPositiveSize2D(p2e(h), p2e(w))
+                                        marker = AnchorMarker(col=column, colOff=coloffset, row=row, rowOff=rowoffset)
+                                        img.anchor = OneCellAnchor(_from=marker, ext=size)
+                                        
+                                        ws.add_image(img)
+                                        
+                                        # ws.cell(row=new_row, column=6).value = "<img src='"+ aa[1] + "' height=100 width=70/><br>"
+
+                                        # ws.cell(row=new_row, column=6).font = font2
+                                http = urllib3.PoolManager()
+                                r = http.request('GET',aa[0])
+                                image_file = io.BytesIO(r.data)
+                                
+                                if image_file:
+
+                                    img = Image(image_file)
+
                                     img.height=120
                                     img.width =120
+                                   
+                                    if img:
+                                        c2e = cm_to_EMU
+                                        p2e = pixels_to_EMU
+
+                                        h, w = img.height, img.width
+                                        # Calculated number of cells width or height from cm into EMUs
+                                        # celh = [1,8,16]
+                                        # celw = [0.09,0.01,0.01]
+                                        # cellh = 0
+                                        # cellw = 0
+                                        cellh = lambda x: c2e((x * 16))
+                                        cellw = lambda x: c2e((x *0.01))
+                                        # cellw = cellzw
+                                        # print(cellw, cellh)
+                                        # Want to place image in row 5 (6 in excel), column 2 (C in excel)
+                                        # Also offset by half a column.
+                                        column = 5
+                                        # colof = [28000]
+                                        coloffset = cellh(0.5)
+                                        # coloffset = 2880000
+                                        row = new_row-1
+                                        rowoffset = cellw(0.03)
+                                        rowpp = [107,197]
+                                
+
+                                        print(coloffset, rowoffset)
+                                        size = XDRPositiveSize2D(p2e(h), p2e(w))
+                                        marker = AnchorMarker(col=column, colOff=coloffset, row=row, rowOff=rowoffset)
+                                        img.anchor = OneCellAnchor(_from=marker, ext=size)
+                                        
+                                        ws.add_image(img)
+                                        
+                                        ws.cell(row=new_row, column=6).value = "<img src='"+ aa[2] + "' height=100 width=70/><br><img src='"+ aa[1] + "' height=100 width=70/><br><img src='"+ aa[0] + "' height=100 width=70/>"
+
+                                        ws.cell(row=new_row, column=6).font = font2
+                            if len(aa) == 3:
+                                print("00000000000000000000000000")
+                                print(len(aa))
+                                http = urllib3.PoolManager()
+                                r = http.request('GET',aa[0])
+                                image_file = io.BytesIO(r.data)
+                                
+                                if image_file:
+
+                                    img = Image(image_file)
+
+                                    img.height=120
+                                    img.width =120
+                                   
+                                    if img:
+                                        c2e = cm_to_EMU
+                                        p2e = pixels_to_EMU
+
+                                        h, w = img.height, img.width
+                                        # Calculated number of cells width or height from cm into EMUs
+                                        # celh = [1,8,16]
+                                        # celw = [0.09,0.01,0.01]
+                                        # cellh = 0
+                                        # cellw = 0
+                                        cellh = lambda x: c2e((x * 1))
+                                        cellw = lambda x: c2e((x *0.09))
+                                        # cellw = cellzw
+                                        # print(cellw, cellh)
+                                        # Want to place image in row 5 (6 in excel), column 2 (C in excel)
+                                        # Also offset by half a column.
+                                        column = 5
+                                        # colof = [28000]
+                                        coloffset = cellh(0.5)
+                                        # coloffset = 2880000
+                                        row = new_row-1
+                                        rowoffset = cellw(0.03)
+                                        rowpp = [107,197]
+                                
+
+                                        print(coloffset, rowoffset)
+                                        size = XDRPositiveSize2D(p2e(h), p2e(w))
+                                        marker = AnchorMarker(col=column, colOff=coloffset, row=row, rowOff=rowoffset)
+                                        img.anchor = OneCellAnchor(_from=marker, ext=size)
+                                        
+                                        ws.add_image(img)
+                                        
+                                        # ws.cell(row=new_row, column=6).value = "<img src='"+ aa[1] + "' height=100 width=70/><br>"
+
+                                        # ws.cell(row=new_row, column=6).font = font2
+                                http = urllib3.PoolManager()
+                                r = http.request('GET',aa[1])
+                                image_file = io.BytesIO(r.data)
+                                
+                                if image_file:
+
+                                    img = Image(image_file)
+
+                                    img.height=120
+                                    img.width =120
+                                   
+                                    if img:
+                                        c2e = cm_to_EMU
+                                        p2e = pixels_to_EMU
+
+                                        h, w = img.height, img.width
+                                        # Calculated number of cells width or height from cm into EMUs
+                                        # celh = [1,8,16]
+                                        # celw = [0.09,0.01,0.01]
+                                        # cellh = 0
+                                        # cellw = 0
+                                        cellh = lambda x: c2e((x * 8))
+                                        cellw = lambda x: c2e((x *0.01))
+                                        # cellw = cellzw
+                                        # print(cellw, cellh)
+                                        # Want to place image in row 5 (6 in excel), column 2 (C in excel)
+                                        # Also offset by half a column.
+                                        column = 5
+                                        # colof = [28000]
+                                        coloffset = cellh(0.5)
+                                        # coloffset = 2880000
+                                        row = new_row-1
+                                        rowoffset = cellw(0.03)
+                                        rowpp = [107,197]
+                                
+
+                                        print(coloffset, rowoffset)
+                                        size = XDRPositiveSize2D(p2e(h), p2e(w))
+                                        marker = AnchorMarker(col=column, colOff=coloffset, row=row, rowOff=rowoffset)
+                                        img.anchor = OneCellAnchor(_from=marker, ext=size)
+                                        
+                                        ws.add_image(img)
+                                        
+                                        ws.cell(row=new_row, column=6).value = "<img src='"+ aa[1] + "' height=100 width=70/><br><img src='"+ aa[0] + "' height=100 width=70/><br>"
+
+                                        ws.cell(row=new_row, column=6).font = font2
+                                    
+                            if len(aa) == 2:
+                                http = urllib3.PoolManager()
+                                r = http.request('GET',aa[0])
+                                image_file = io.BytesIO(r.data)
+                                
+                                if image_file:
+
+                                    img = Image(image_file)
+
+                                    img.height=120
+                                    img.width =120
+                                   
+                                    if img:
+                                        c2e = cm_to_EMU
+                                        p2e = pixels_to_EMU
+
+                                        h, w = img.height, img.width
+                                        # Calculated number of cells width or height from cm into EMUs
+                                        # celh = [1,8,16]
+                                        # celw = [0.09,0.01,0.01]
+                                        # cellh = 0
+                                        # cellw = 0
+                                        cellh = lambda x: c2e((x * 1))
+                                        cellw = lambda x: c2e((x *0.09))
+                                        # cellw = cellzw
+                                        # print(cellw, cellh)
+                                        # Want to place image in row 5 (6 in excel), column 2 (C in excel)
+                                        # Also offset by half a column.
+                                        column = 5
+                                        # colof = [28000]
+                                        coloffset = cellh(0.5)
+                                        # coloffset = 2880000
+                                        row = new_row-1
+                                        rowoffset = cellw(0.03)
+                                        rowpp = [107,197]
+                                
+
+                                        print(coloffset, rowoffset)
+                                        size = XDRPositiveSize2D(p2e(h), p2e(w))
+                                        marker = AnchorMarker(col=column, colOff=coloffset, row=row, rowOff=rowoffset)
+                                        img.anchor = OneCellAnchor(_from=marker, ext=size)
+                                        
+                                        ws.add_image(img)
+                                        
+                                        ws.cell(row=new_row, column=6).value = "<img src='"+ aa[0] + "' height=100 width=70/><br>"
+
+                                        ws.cell(row=new_row, column=6).font = font2
+
+                                
+                        if new[-1]=="xlsx" or new[-1]=="docx" or new[-1]=="doc" or new[-1]=="pdf":
+                            ws.cell(row=new_row, column=6).hyperlink = aa[j]
+                            ws.cell(row=new_row, column=6).value = file_name
+
+
+    if Compliance_file_name:
+        file_row = []
+        for row in range(5,row_count+1):
+            file_row.append(row)
+        l=[]
+        for i in range(len(file_row)):
+            if len(file_row)==(row_count-4):
+                l.append(file_row[i])
+        
+        file_name = []
+        split = []
+        aaa=[]
+        val = []
+        n=""
+        hh=""
+        for new_row in l:
+            ws.row_dimensions[new_row].height = 140
+            ws.column_dimensions[get_column_letter(6)].width = 50
+            file = ws.cell(row=new_row, column=6).value
+            if file:
+                split = file.split('\n')
+                if split:
+                    aaa.append(split)
+                for aa in aaa:
+
+                    for j in range(len(aa)-1):
+                        
+                        new = aa[j].split('.')
+                        doc_name = new[-2].split('/')
+                        file_name = doc_name[-1]+'.'+new[-1]
+        
+                        name = ws.cell(row=new_row, column=6).value
+                        n += name
+                        
+                        if new[-1]=="jpeg" or new[-1]=="png" or new[-1]=="jpg":
+                            if len(aa) == 4:
+                                http = urllib3.PoolManager()
+                                r = http.request('GET',aa[0])
+                                image_file = io.BytesIO(r.data)
+                                
+                                if image_file:
+
+                                    img = Image(image_file)
+
+                                    img.height=120
+                                    img.width =120
+                                   
+                                    if img:
+                                        c2e = cm_to_EMU
+                                        p2e = pixels_to_EMU
+
+                                        h, w = img.height, img.width
+                                        # Calculated number of cells width or height from cm into EMUs
+                                        # celh = [1,8,16]
+                                        # celw = [0.09,0.01,0.01]
+                                        # cellh = 0
+                                        # cellw = 0
+                                        cellh = lambda x: c2e((x * 1))
+                                        cellw = lambda x: c2e((x *0.09))
+                                        # cellw = cellzw
+                                        # print(cellw, cellh)
+                                        # Want to place image in row 5 (6 in excel), column 2 (C in excel)
+                                        # Also offset by half a column.
+                                        column = 5
+                                        # colof = [28000]
+                                        coloffset = cellh(0.5)
+                                        # coloffset = 2880000
+                                        row = new_row-1
+                                        rowoffset = cellw(0.03)
+                                        rowpp = [107,197]
+                                
+
+                                        print(coloffset, rowoffset)
+                                        size = XDRPositiveSize2D(p2e(h), p2e(w))
+                                        marker = AnchorMarker(col=column, colOff=coloffset, row=row, rowOff=rowoffset)
+                                        img.anchor = OneCellAnchor(_from=marker, ext=size)
+                                        
+                                        ws.add_image(img)
+                                        
+                                        # ws.cell(row=new_row, column=6).value = "<img src='"+ aa[0] + "' height=100 width=70/><br>"
+
+                                        # ws.cell(row=new_row, column=6).font = font2
+                                http = urllib3.PoolManager()
+                                r = http.request('GET',aa[1])
+                                image_file = io.BytesIO(r.data)
+                                
+                                if image_file:
+
+                                    img = Image(image_file)
+
+                                    img.height=200
+                                    img.width =200
                                    
                                     if img:
                                         c2e = cm_to_EMU
@@ -685,7 +1009,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
         ws2['B2'] = project.name
         
         fieldnames = ["Ref.No.", "Chainage","", "Direction", "Description of Issue",
-                          "Photograph During Inspection", "Asset Type", "Performance Parameter",
+                          "Photograph During Inspection","Photograph During Maintenance", "Asset Type", "Performance Parameter",
                           "Issue Raised On", "Issue Raised By",
                           "Issue Raised To" , "Max Time limit for Rectification/Repair",
                           "", "Action Taken",
@@ -710,28 +1034,29 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
         ws2.merge_cells('I3:I4')
         ws2.merge_cells('J3:J4')
         ws2.merge_cells('K3:K4')
-        # ws2.merge_cells('L3:L4')
-        ws2.merge_cells('L3:M3')
-        n1 = ws2.cell(row=4,column=12)
-        n2 = ws2.cell(row=4,column=13)
+        ws2.merge_cells('L3:L4')
+        ws2.merge_cells('M3:N3')
+        n1 = ws2.cell(row=4,column=13)
+        n2 = ws2.cell(row=4,column=14)
         n1.value = "Timeline\n (As per  Schedule F)"
         n2.value = "Target Date\n(As per  Schedule F)"
         # ws2.merge_cells('M3:M4')
         # ws2.merge_cells('N3:N4')
-        ws2.merge_cells('N3:P3')
-        n1 = ws2.cell(row=4,column=14)
-        n2 = ws2.cell(row=4,column=15)
-        n3 = ws2.cell(row=4,column=16)
+        ws2.merge_cells('O3:Q3')
+        n1 = ws2.cell(row=4,column=15)
+        n2 = ws2.cell(row=4,column=16)
+        n3 = ws2.cell(row=4,column=17)
         n1.value = "Status\n(Open/Closed/Under Rectification)"
         n2.value = "Issue Closed On Date\n(If Closed)"
         n3.value = "Complianced\n (Yes/No)"
 
-        ws2.merge_cells('Q3:Q4')
+        # ws2.merge_cells('Q3:Q4')
         ws2.merge_cells('R3:R4')
         ws2.merge_cells('S3:S4')
         ws2.merge_cells('T3:T4')
         ws2.merge_cells('U3:U4')
-        # ws2.merge_cells('V3:V4')
+        ws2.merge_cells('V3:V4')
+
 
     if type=='Issue' and name=="Compliance" and photo=="without photo" and status:
     
@@ -992,168 +1317,184 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
     
 
         if issue.type.name=='Issue' and name=="Compliance" and photo=="with photo" and status:
-            for issue in queryset:
-                qqq = issue.watchers
-                watchers = []
-                new_watcher_list =  ""
-                watcher_username =""
-                if issue.assigned_to:
-                    watcher_username = '1. '+issue.assigned_to.full_name 
-                for i in qqq:
-                    sql = User.objects.get(id=int(i))
-                    watchers.append(sql.full_name)
-                for j in range(len(watchers)):
-                    watcher_username = str(j+2)+'. '+watchers[j] +','+ watcher_username
+            # for issue in queryset:
+            qqq = issue.watchers
+            watchers = []
+            new_watcher_list =  ""
+            watcher_username =""
+            if issue.assigned_to:
+                watcher_username = '1. '+issue.assigned_to.full_name 
+            for i in qqq:
+                sql = User.objects.get(id=int(i))
+                watchers.append(sql.full_name)
+            for j in range(len(watchers)):
+                watcher_username = str(j+2)+'. '+watchers[j] +','+ watcher_username
+            
+            split = watcher_username.split(',')
+
+            for i in range(len(split)):
+                new_watcher_list = split[i]+'\n' + new_watcher_list
+            a = issue.created_date.date()
+            b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
+            timeline = b-a
+            target_date = datetime.strftime(b,"%d-%m-%Y")
+            
+            if issue.attachments:
+                file_name = "" 
+                files = []
+                file = issue.attachments.filter(project_id=issue.project.id).values_list('attached_file')
+                for i in file:
+                    files.extend(i)
+                #     for j in len(file):
+                #         files.append(file[j])
+                for j in files:
+                    file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
+
+
+                Compliance_file_name = "" 
+                Compliance_files = []
+                Compliance_file = issue.attachments.filter(project_id=issue.project.id).values_list('attached_file')
+                for k in Compliance_file:
+                    Compliance_files.extend(k)
+                #     for j in len(file):
+                #         files.append(file[j])
+                for l in files:
+                    Compliance_file_name = os.path.join(settings.MEDIA_URL,str(l)) +'\n' + Compliance_file_name
+            else:
+                file_name=""
+                Compliance_file_name = ""
+
+
+
+            status_name = []
+            status_names =  project.issues.filter(status__id__in=status)
+            new_status_name =[]
+            for name in status_names:
                 
-                split = watcher_username.split(',')
-
-                for i in range(len(split)):
-                    new_watcher_list = split[i]+'\n' + new_watcher_list
-                a = issue.created_date.date()
-                b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
-                timeline = b-a
-                target_date = datetime.strftime(b,"%d-%m-%Y")
-                if issue.attachments:
-                    file_name = "" 
-                    files = []
-                    file = issue.attachments.filter(project_id=issue.project.id).values_list('attached_file')
-                    for i in file:
-                        files.extend(i)
-                    #     for j in len(file):
-                    #         files.append(file[j])
-                    for j in files:
-                        file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
-                else:
-                    file_name=""
-                status_name = []
-                status_names =  project.issues.filter(status__id__in=status)
-                new_status_name =[]
-                for name in status_names:
+                if str(name.status) == 'Closed':
+                    new_status_name.append('Open')
+                    # new_status_name += 'Open'
+                     
+                elif str(name.status) == 'Maintenance Closed':
+                    # new_status_name += 'Closed'
+                    new_status_name.append('Closed')
                     
-                    if str(name.status) == 'Closed':
-                        new_status_name.append('Open')
-                        # new_status_name += 'Open'
-                         
-                    elif str(name.status) == 'Maintenance Closed':
-                        # new_status_name += 'Closed'
-                        new_status_name.append('Closed')
-                        
-                    elif str(name.status) == 'Maintenance Pending':
-                        # new_status_name += 'Pending'
-                        new_status_name.append('Pending')
-                if new_status_name:
-                    new =""
-                    for i in new_status_name:
-                        new = i
+                elif str(name.status) == 'Maintenance Pending':
+                    # new_status_name += 'Pending'
+                    new_status_name.append('Pending')
+            if new_status_name:
+                new =""
+                for i in new_status_name:
+                    new = i
 
 
-                issue_data = [[
-                        issue.ref,
-                        # issue.project.name,
-                        issue.chainage_from,
-                        issue.chainage_to,
-                        issue.chainage_side,
-                        issue.description,
-                        file_name,
-                        issue.issue_category,
-                        issue.issue_subcategory,
-                        issue.created_date.date(),
-                        issue.owner.full_name if issue.owner else None,
-                        new_watcher_list,
-                        timeline,
-                        target_date,
-                        'new' if issue.status else None,
-                        issue.finished_date if status_name=='Closed' else None,
-                        'Yes' if issue.compliance_is_update==True else 'No',
-                        issue.assigned_to.full_name if issue.assigned_to else None,
-                        issue.compliance_description,
-                        issue.attachments.name,
-                        "",
-                        'new' if issue.status else None,
-                    ]]
-                for data in issue_data:
-                    ws2.append(data)
+            issue_data = [[
+                    issue.ref,
+                    # issue.project.name,
+                    issue.chainage_from,
+                    issue.chainage_to,
+                    issue.chainage_side,
+                    issue.description,
+                    file_name,
+                    Compliance_file_name,
+                    issue.issue_category,
+                    issue.issue_subcategory,
+                    issue.created_date.date(),
+                    issue.owner.full_name if issue.owner else None,
+                    new_watcher_list,
+                    timeline,
+                    target_date,
+                    'new' if issue.status else None,
+                    issue.finished_date if status_name=='Closed' else None,
+                    'Yes' if issue.compliance_is_update==True else 'No',
+                    issue.assigned_to.full_name if issue.assigned_to else None,
+                    issue.compliance_description,
+                    issue.attachments.name,
+                    "",
+                    'new' if issue.status else None,
+                ]]
+            for data in issue_data:
+                ws2.append(data)
             wb.save("table.xlsx")
             wb.close()
 
             wb = load_workbook('table.xlsx')
             ws2 = wb['Manitenance Report']
-            style(ws2,fieldnames, file_name, issue)
+            style(ws2,fieldnames, file_name,Compliance_file_name, issue)
 
 
         if issue.type.name=='Issue' and name=="Compliance" and photo=="without photo" and status:
-            for issue in queryset:
-                qqq = issue.watchers
-                watchers = []
-                new_watcher_list =  ""
-                watcher_username =""
-                if issue.assigned_to:
-                    watcher_username = '1. '+issue.assigned_to.full_name 
-                for i in qqq:
-                    sql = User.objects.get(id=int(i))
-                    watchers.append(sql.full_name)
-                for j in range(len(watchers)):
-                    watcher_username = str(j+2)+'. '+watchers[j] +','+ watcher_username
-                
-                split = watcher_username.split(',')
+            qqq = issue.watchers
+            watchers = []
+            new_watcher_list =  ""
+            watcher_username =""
+            if issue.assigned_to:
+                watcher_username = '1. '+issue.assigned_to.full_name 
+            for i in qqq:
+                sql = User.objects.get(id=int(i))
+                watchers.append(sql.full_name)
+            for j in range(len(watchers)):
+                watcher_username = str(j+2)+'. '+watchers[j] +','+ watcher_username
+            
+            split = watcher_username.split(',')
 
-                for i in range(len(split)):
-                    new_watcher_list = split[i]+'\n' + new_watcher_list
-                a = issue.created_date.date()
-                b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
-                timeline = b-a
-                target_date = datetime.strftime(b,"%d-%m-%Y")
+            for i in range(len(split)):
+                new_watcher_list = split[i]+'\n' + new_watcher_list
+            a = issue.created_date.date()
+            b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
+            timeline = b-a
+            target_date = datetime.strftime(b,"%d-%m-%Y")
+            
+            status_name = []
+            status_names =  project.issues.filter(status__id__in=status)
+            new_status_name =[]
+            for name in status_names:
                 
-                status_name = []
-                status_names =  project.issues.filter(status__id__in=status)
-                new_status_name =[]
-                for name in status_names:
+                if str(name.status) == 'Closed':
+                    new_status_name.append('Open')
+                    # new_status_name += 'Open'
+                     
+                elif str(name.status) == 'Maintenance Closed':
+                    # new_status_name += 'Closed'
+                    new_status_name.append('Closed')
                     
-                    if str(name.status) == 'Closed':
-                        new_status_name.append('Open')
-                        # new_status_name += 'Open'
-                         
-                    elif str(name.status) == 'Maintenance Closed':
-                        # new_status_name += 'Closed'
-                        new_status_name.append('Closed')
-                        
-                    elif str(name.status) == 'Maintenance Pending':
-                        # new_status_name += 'Pending'
-                        new_status_name.append('Pending')
-                if new_status_name:
-                    new =""
-                    for i in new_status_name:
-                        new = i
-                issue_data = [[
-                        issue.ref,
-                        issue.chainage_from,
-                        issue.chainage_to,
-                        issue.chainage_side,
-                        issue.description,
-                        issue.issue_category,
-                        issue.issue_subcategory,
-                        issue.created_date.date(),
-                        issue.owner.full_name if issue.owner else None,
-                        new_watcher_list,
-                        timeline,
-                        target_date,
-                        "new" if issue.status else None,
-                        issue.finished_date if status_name=='Closed' else None,
-                        'Yes' if issue.compliance_is_update==True else 'No',
-                        issue.assigned_to.full_name if issue.assigned_to else None,
-                        issue.compliance_description,
-                        issue.attachments.name,
-                        "",
-                        "new" if issue.status else None,
-                    ]]
-                for data in issue_data:
-                    ws4.append(data)
-            wb.save("table.xlsx")
-            wb.close()
+                elif str(name.status) == 'Maintenance Pending':
+                    # new_status_name += 'Pending'
+                    new_status_name.append('Pending')
+            if new_status_name:
+                new =""
+                for i in new_status_name:
+                    new = i
+            issue_data = [[
+                    issue.ref,
+                    issue.chainage_from,
+                    issue.chainage_to,
+                    issue.chainage_side,
+                    issue.description,
+                    issue.issue_category,
+                    issue.issue_subcategory,
+                    issue.created_date.date(),
+                    issue.owner.full_name if issue.owner else None,
+                    new_watcher_list,
+                    timeline,
+                    target_date,
+                    "new" if issue.status else None,
+                    issue.finished_date if status_name=='Closed' else None,
+                    'Yes' if issue.compliance_is_update==True else 'No',
+                    issue.assigned_to.full_name if issue.assigned_to else None,
+                    issue.compliance_description,
+                    issue.attachments.name,
+                    "",
+                    "new" if issue.status else None,
+                ]]
+            for data in issue_data:
+                ws4.append(data)
+        wb.save("table.xlsx")
+        wb.close()
 
-            wb = load_workbook('table.xlsx')
-            ws4 = wb['Manitenance Report']
-            style(ws4,fieldnames, issue)
+        wb = load_workbook('table.xlsx')
+        ws4 = wb['Manitenance Report']
+        style(ws4,fieldnames, issue)
         
 
         if issue.type.name == 'Investigation' and photo=="with photo":
