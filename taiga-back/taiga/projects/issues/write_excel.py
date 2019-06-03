@@ -1153,16 +1153,20 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
             if issue.attachments:
                 file_name = "" 
                 files = []
-                file = issue.attachments.filter(project_id=issue.project.id, description="").values_list('attached_file')
-                for i in file:
-                    files.extend(i)
-                #     for j in len(file):
-                #         files.append(file[j])
-                for j in files:
-                    file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
-            else:
-                file_name=""
-               
+                file = issue.attachments.filter(project_id=issue.project.id).values_list('attached_file')
+                description = issue.attachments.filter(project_id=issue.project.id, description="")
+                attachment_description = "" 
+                for desc in description:
+                    attachment_description = desc
+                if attachment_description == "":
+                    for i in file:
+                        files.extend(i)
+                    for j in files:
+                        file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
+                else:
+                    file_name=""
+            
+            print(file_name)
             Raised_date = datetime.strftime(issue.created_date.date(),"%d-%m-%Y")
             issue_data = [[
                 issue.ref,
