@@ -608,9 +608,7 @@ class IssueViewSet(
         status_id = []
         # PDF or Excel
 
-        print("=======user==============")
-        print(request.user.email)
-
+       
         doc_type = request.QUERY_PARAMS.get('doc_type', None)
         uuid = request.QUERY_PARAMS.get("uuid", None)
         start_date = request.QUERY_PARAMS.get('start_date', None)

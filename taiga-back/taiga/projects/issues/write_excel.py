@@ -67,14 +67,14 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
     dd = Font(underline='single', color='000000FF')
     row_count = ws.max_row
     column_count = ws.max_column
-    for cell in ws['2:2']:
-        cell.font = font
+    # for cell in ws['2:2']:
+    #     cell.font = font
 
-    for cell2 in ws['3:3']:
+    for cell2 in ws['8:8']:
         cell2.fill = fill
         cell2.font = font
 
-    for cell3 in ws['4:4']:
+    for cell3 in ws['9:9']:
         cell3.fill = fill
         cell3.font = font
 
@@ -103,14 +103,16 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
 
     #////////////////////////// working images
     if file_name:
+        print("------------files------------------")
         file_row = []
-        for row in range(5,row_count+1):
+        l = []
+        for row in range(10,row_count+1):
             file_row.append(row)
-        l=[]
+        
         for i in range(len(file_row)):
             if len(file_row)==(row_count-9):
                 l.append(file_row[i])
-        
+        print(l)
         file_name = []
         split = []
         aaa=[]
@@ -118,6 +120,8 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
         n=""
         hh=""
         for new_row in l:
+            print("-----------row---------------")
+            print(new_row)
             ws.row_dimensions[new_row].height = 140
             ws.column_dimensions[get_column_letter(6)].width = 50
             file = ws.cell(row=new_row, column=6).value
@@ -439,7 +443,7 @@ def comp(ws,Compliance_file_name):
         row_count = ws.max_row
         column_count = ws.max_column
         file_row = []
-        for row in range(5,row_count+1):
+        for row in range(10,row_count+1):
             file_row.append(row)
         l=[]
         for i in range(len(file_row)):
@@ -883,11 +887,13 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
 
         ws1['B1'] = request.user.full_name
         ws1['B2'] = request.user.email
+        # ws1['B1'] = ""
+        # ws1['B2'] = ""
         ws1['B3'] = ""
         ws1['B4'] = project.name
         ws1['B5'] = asset if asset else "All"
         ws1['B6'] = performance if performance else "All"
-        ws1['B7'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
+        
         # ws1['B2'] = project.name
 
         fieldnames = ["Ref.No.", "Chainage","" , "Direction", "Description of Issue",
@@ -895,25 +901,25 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
                               "Issue Raised On", "Issue Raised By",
                               "Issue Raised To"]
         ws1.append(fieldnames)
-        ws1.merge_cells('A3:A4')
-        ws1.merge_cells('B3:c3')
+        ws1.merge_cells('A8:A9')
+        ws1.merge_cells('B8:C8')
         # ws1.merge_cells('C3:D3')
         # ws1.merge_cells('C4:D4')
-        n1 = ws1.cell(row=4,column=2)
-        n2 = ws1.cell(row=4,column=3)
+        n1 = ws1.cell(row=9,column=2)
+        n2 = ws1.cell(row=9,column=3)
         n1.value = "From (In Km)"
         n2.value = "To (In Km)"
-        ws1.merge_cells('D3:D4')
+        ws1.merge_cells('D8:D9')
         # n3 = ws1.cell(row=3,column=5)
         # n3.value="Direction"
-        ws1.merge_cells('E3:E4')
-        ws1.merge_cells('F3:F4')
-        ws1.merge_cells('G3:G4')
-        ws1.merge_cells('H3:H4')
-        ws1.merge_cells('I3:I4')
-        ws1.merge_cells('J3:J4')
-        ws1.merge_cells('K3:K4')
-        # ws1.merge_cells('L3:L4')
+        ws1.merge_cells('E8:E9')
+        ws1.merge_cells('F8:F9')
+        ws1.merge_cells('G8:G9')
+        ws1.merge_cells('H8:H9')
+        ws1.merge_cells('I8:I9')
+        ws1.merge_cells('J8:J9')
+        ws1.merge_cells('K8:K9')
+        ws1.merge_cells('L8:L9')
         
 
     if type == 'Issue' and photo=="without photo" and status==None:
