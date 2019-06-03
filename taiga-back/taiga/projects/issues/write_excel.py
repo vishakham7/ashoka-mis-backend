@@ -1547,7 +1547,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
         #  
         pd.set_option('display.max_colwidth', 500)   # FOR TABLE <th>
 
-        html = new.to_html(escape=False,header=False,border="0.5").replace('&lt;','<').replace('&gt;', '>')
+        html = new.to_html(border="0.5").replace('&lt;','<').replace('&gt;', '>')
         pisa_context = pisa.CreatePDF(html)
         response = pisa_context.dest.getvalue()
         return html
