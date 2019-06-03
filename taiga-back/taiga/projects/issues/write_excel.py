@@ -980,7 +980,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         wb = Workbook()
         ws2 = wb.active
     
-        ws2.title = "Manitenance Report "
+        ws2.title = "Manitenance Report"
         
         ws2['A1'] = "User Name:"
         ws2['A2'] = "User Id:"
