@@ -99,84 +99,6 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
                 column_widths += [len(row)]
         for i, column_width in enumerate(column_widths):
             ws.column_dimensions[get_column_letter(i+1)].width = column_width
-    
-
-# def new_file(ws,wb, file_name):
-#     wb = load_workbook('table.xlsx')
-#     row_count = ws.max_row
-#     column_count = ws.max_column
-#     # if file_name:
-#     #     file_row = []
-#     #     for row in range(5,row_count+1):
-#     #         file_row.append(row)
-#     #     l=[]
-#     #     for i in range(len(file_row)):
-#     #         if len(file_row)==(row_count-4):
-#     #             l.append(file_row[i])
-#     #     print(l)
-#     #     files = []
-#     #     for new_row in l:
-#     #         file = ws.cell(row=new_row,column=6).value
-#     #         if file:
-#     #             files.extend(file.split('\n'))
-#     #     print(files)
-        
-#     #     for i in range(len(files)-1):
-#     #         for i in range(len(files)-1):
-#     #             print(i)
-#     #             print(files[i])
-#     #             ws.cell(row=new_row, column=6).hyperlink = files[i]
-#     #             # ws.cell(row=new_row, column=6).value = file_name
-
-#     if file_name:
-#         file_row = []
-
-#         for row in range(5,row_count+1):
-#             file_row.append(row)
-#         l=[]
-#         for i in range(len(file_row)):
-#             if len(file_row)==(row_count-4):
-#                 l.append(file_row[i])
-        
-#         file_name = []
-#         split = []
-#         aaa=[]
-#         val = []
-#         n=""
-#         hh=[]
-
-#         for new_row in l:
-#             file = ws.cell(row=new_row, column=6).value
-#             if file:
-#                 split = file.split('\n')
-#                 if split:
-#                     aaa.extend(split)
-#         # for aa in aaa:
-
-#         for j in range(len(aaa)-1):
-#             print(aaa)
-#             print(aaa[j])
-#             # ws.cell(row=new_row, column=6).value = aaa[j]+"\n"
-            
-#             print("00000000000000000000")
-            
-#             new = aaa[j].split('.')
-#             doc_name = new[-2].split('/')
-#             file_name = doc_name[-1]+'.'+new[-1]
-
-#             name = ws.cell(row=new_row, column=6).value
-            
-#             n += name
-#             # if new[-1]=="jpeg":
-
-            
-#         print("------------name-----------")
-#         print(n)
-
-
-
-
-
 
 
     #////////////////////////// working images
@@ -521,8 +443,8 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
         hh=""
         for new_row in l:
             ws.row_dimensions[new_row].height = 140
-            ws.column_dimensions[get_column_letter(6)].width = 50
-            file = ws.cell(row=new_row, column=6).value
+            ws.column_dimensions[get_column_letter(7)].width = 50
+            file = ws.cell(row=new_row, column=7).value
             if file:
                 split = file.split('\n')
                 if split:
@@ -535,7 +457,7 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
                         doc_name = new[-2].split('/')
                         file_name = doc_name[-1]+'.'+new[-1]
         
-                        name = ws.cell(row=new_row, column=6).value
+                        name = ws.cell(row=new_row, column=7).value
                         n += name
                         
                         if new[-1]=="jpeg" or new[-1]=="png" or new[-1]=="jpg":
@@ -567,7 +489,7 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
                                         # print(cellw, cellh)
                                         # Want to place image in row 5 (6 in excel), column 2 (C in excel)
                                         # Also offset by half a column.
-                                        column = 5
+                                        column = 6
                                         # colof = [28000]
                                         coloffset = cellh(0.5)
                                         # coloffset = 2880000
@@ -613,7 +535,7 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
                                         # print(cellw, cellh)
                                         # Want to place image in row 5 (6 in excel), column 2 (C in excel)
                                         # Also offset by half a column.
-                                        column = 5
+                                        column = 6
                                         # colof = [28000]
                                         coloffset = cellh(0.5)
                                         # coloffset = 2880000
@@ -659,7 +581,7 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
                                         # print(cellw, cellh)
                                         # Want to place image in row 5 (6 in excel), column 2 (C in excel)
                                         # Also offset by half a column.
-                                        column = 5
+                                        column = 6
                                         # colof = [28000]
                                         coloffset = cellh(0.5)
                                         # coloffset = 2880000
@@ -708,7 +630,7 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
                                         # print(cellw, cellh)
                                         # Want to place image in row 5 (6 in excel), column 2 (C in excel)
                                         # Also offset by half a column.
-                                        column = 5
+                                        column = 6
                                         # colof = [28000]
                                         coloffset = cellh(0.5)
                                         # coloffset = 2880000
@@ -754,7 +676,7 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
                                         # print(cellw, cellh)
                                         # Want to place image in row 5 (6 in excel), column 2 (C in excel)
                                         # Also offset by half a column.
-                                        column = 5
+                                        column = 6
                                         # colof = [28000]
                                         coloffset = cellh(0.5)
                                         # coloffset = 2880000
@@ -770,9 +692,9 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
                                         
                                         ws.add_image(img)
                                         
-                                        ws.cell(row=new_row, column=6).value = "<img src='"+ aa[1] + "' height=100 width=70/><br><img src='"+ aa[0] + "' height=100 width=70/><br>"
+                                        ws.cell(row=new_row, column=7).value = "<img src='"+ aa[1] + "' height=100 width=70/><br><img src='"+ aa[0] + "' height=100 width=70/><br>"
 
-                                        ws.cell(row=new_row, column=6).font = font2
+                                        ws.cell(row=new_row, column=7).font = font2
                                     
                             if len(aa) == 2:
                                 http = urllib3.PoolManager()
@@ -802,7 +724,7 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
                                         # print(cellw, cellh)
                                         # Want to place image in row 5 (6 in excel), column 2 (C in excel)
                                         # Also offset by half a column.
-                                        column = 5
+                                        column = 6
                                         # colof = [28000]
                                         coloffset = cellh(0.5)
                                         # coloffset = 2880000
@@ -818,14 +740,14 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
                                         
                                         ws.add_image(img)
                                         
-                                        ws.cell(row=new_row, column=6).value = "<img src='"+ aa[0] + "' height=100 width=70/><br>"
+                                        ws.cell(row=new_row, column=7).value = "<img src='"+ aa[0] + "' height=100 width=70/><br>"
 
-                                        ws.cell(row=new_row, column=6).font = font2
+                                        ws.cell(row=new_row, column=7).font = font2
 
                                 
                         if new[-1]=="xlsx" or new[-1]=="docx" or new[-1]=="doc" or new[-1]=="pdf":
-                            ws.cell(row=new_row, column=6).hyperlink = aa[j]
-                            ws.cell(row=new_row, column=6).value = file_name
+                            ws.cell(row=new_row, column=7).hyperlink = aa[j]
+                            ws.cell(row=new_row, column=7).value = file_name
                         
                                     
                         # # if new[-1]=="svg":
