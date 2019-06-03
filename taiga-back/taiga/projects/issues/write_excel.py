@@ -1154,19 +1154,17 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                 file_name ="" 
                 files = []
 
-                file = issue.attachments.filter(project__id=issue.project.id).values_list('attached_file')
-                for i in file:
-                    files.extend(i)
-                #     for j in len(file):
-                #         files.append(file[j])
-                for j in files:
-                    file_name += os.path.join(settings.MEDIA_URL,str(j)) +"\n"
-                    
-            
-           
-                    # file_name.append(os.path.join(settings.MEDIA_URL,str(j)))
-            else:
-                file_name=""
+                file_new = issue.attachments.filter(project__id=issue.project.id, description="").values_list('description','attached_file')
+                if file_new:
+                    for i in file_new:
+                        if i[0]=="":
+                            files.extend(i)
+                        #     for j in len(file):
+                        #         files.append(file[j])
+                    for j in files:
+                        file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
+                else:
+                    file_name=""
 
             Raised_date = datetime.strftime(issue.created_date.date(),"%d-%m-%Y")
             issue_data = [[
@@ -1278,6 +1276,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                     Compliance_file_name = "" 
                     Compliance_files = []
                     Compliance_file = issue.attachments.filter(project_id=issue.project.id, description="Compliances").values_list('attached_file')
+                    
                     for k in Compliance_file:
                         Compliance_files.extend(k)
                     #     for j in len(file):
@@ -1286,8 +1285,6 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                         Compliance_file_name = os.path.join(settings.MEDIA_URL,str(l)) +'\n' + Compliance_file_name
                 else:
                     Compliance_file_name = ""
-
-
 
                 status_name = []
                 status_names =  project.issues.filter(status__id__in=status)
