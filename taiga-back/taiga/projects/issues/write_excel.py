@@ -1239,104 +1239,104 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
     
 
         if issue.type.name=='Issue' and name=="Compliance" and photo=="with photo" and status:
-            # for issue in queryset:
-            qqq = issue.watchers
-            watchers = []
-            new_watcher_list =  ""
-            watcher_username =""
-            if issue.assigned_to:
-                watcher_username = '1. '+issue.assigned_to.full_name 
-            for i in qqq:
-                sql = User.objects.get(id=int(i))
-                watchers.append(sql.full_name)
-            for j in range(len(watchers)):
-                watcher_username = str(j+2)+'. '+watchers[j] +','+ watcher_username
-            
-            split = watcher_username.split(',')
-
-            for i in range(len(split)):
-                new_watcher_list = split[i]+'\n' + new_watcher_list
-            a = issue.created_date.date()
-            b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
-            timeline = b-a
-            target_date = datetime.strftime(b,"%d-%m-%Y")
-            
-            if issue.attachments:
-                file_name = "" 
-                files = []
-                file = issue.attachments.filter(project_id=issue.project.id).values_list('attached_file')
-                for i in file:
-                    files.extend(i)
-                #     for j in len(file):
-                #         files.append(file[j])
-                for j in files:
-                    file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
-
-
-                Compliance_file_name = "" 
-                Compliance_files = []
-                Compliance_file = issue.attachments.filter(project_id=issue.project.id).values_list('attached_file')
-                for k in Compliance_file:
-                    Compliance_files.extend(k)
-                #     for j in len(file):
-                #         files.append(file[j])
-                for l in files:
-                    Compliance_file_name = os.path.join(settings.MEDIA_URL,str(l)) +'\n' + Compliance_file_name
-            else:
-                file_name=""
-                Compliance_file_name = ""
-
-
-
-            status_name = []
-            status_names =  project.issues.filter(status__id__in=status)
-            new_status_name =[]
-            for name in status_names:
+            for issue in queryset:
+                qqq = issue.watchers
+                watchers = []
+                new_watcher_list =  ""
+                watcher_username =""
+                if issue.assigned_to:
+                    watcher_username = '1. '+issue.assigned_to.full_name 
+                for i in qqq:
+                    sql = User.objects.get(id=int(i))
+                    watchers.append(sql.full_name)
+                for j in range(len(watchers)):
+                    watcher_username = str(j+2)+'. '+watchers[j] +','+ watcher_username
                 
-                if str(name.status) == 'Closed':
-                    new_status_name.append('Open')
-                    # new_status_name += 'Open'
-                     
-                elif str(name.status) == 'Maintenance Closed':
-                    # new_status_name += 'Closed'
-                    new_status_name.append('Closed')
+                split = watcher_username.split(',')
+
+                for i in range(len(split)):
+                    new_watcher_list = split[i]+'\n' + new_watcher_list
+                a = issue.created_date.date()
+                b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
+                timeline = b-a
+                target_date = datetime.strftime(b,"%d-%m-%Y")
+                
+                if issue.attachments:
+                    file_name = "" 
+                    files = []
+                    file = issue.attachments.filter(project_id=issue.project.id).values_list('attached_file')
+                    for i in file:
+                        files.extend(i)
+                    #     for j in len(file):
+                    #         files.append(file[j])
+                    for j in files:
+                        file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
+
+
+                    Compliance_file_name = "" 
+                    Compliance_files = []
+                    Compliance_file = issue.attachments.filter(project_id=issue.project.id).values_list('attached_file')
+                    for k in Compliance_file:
+                        Compliance_files.extend(k)
+                    #     for j in len(file):
+                    #         files.append(file[j])
+                    for l in files:
+                        Compliance_file_name = os.path.join(settings.MEDIA_URL,str(l)) +'\n' + Compliance_file_name
+                else:
+                    file_name=""
+                    Compliance_file_name = ""
+
+
+
+                status_name = []
+                status_names =  project.issues.filter(status__id__in=status)
+                new_status_name =[]
+                for name in status_names:
                     
-                elif str(name.status) == 'Maintenance Pending':
-                    # new_status_name += 'Pending'
-                    new_status_name.append('Pending')
-            if new_status_name:
-                new =""
-                for i in new_status_name:
-                    new = i
+                    if str(name.status) == 'Closed':
+                        new_status_name.append('Open')
+                        # new_status_name += 'Open'
+                         
+                    elif str(name.status) == 'Maintenance Closed':
+                        # new_status_name += 'Closed'
+                        new_status_name.append('Closed')
+                        
+                    elif str(name.status) == 'Maintenance Pending':
+                        # new_status_name += 'Pending'
+                        new_status_name.append('Pending')
+                if new_status_name:
+                    new =""
+                    for i in new_status_name:
+                        new = i
 
 
-            issue_data = [[
-                    issue.ref,
-                    # issue.project.name,
-                    issue.chainage_from,
-                    issue.chainage_to,
-                    issue.chainage_side,
-                    issue.description,
-                    file_name,
-                    Compliance_file_name,
-                    issue.issue_category,
-                    issue.issue_subcategory,
-                    issue.created_date.date(),
-                    issue.owner.full_name if issue.owner else None,
-                    new_watcher_list,
-                    timeline,
-                    target_date,
-                    'new' if issue.status else None,
-                    issue.finished_date if status_name=='Closed' else None,
-                    'Yes' if issue.compliance_is_update==True else 'No',
-                    issue.assigned_to.full_name if issue.assigned_to else None,
-                    issue.compliance_description,
-                    issue.attachments.name,
-                    "",
-                    'new' if issue.status else None,
-                ]]
-            for data in issue_data:
-                ws2.append(data)
+                issue_data = [[
+                        issue.ref,
+                        # issue.project.name,
+                        issue.chainage_from,
+                        issue.chainage_to,
+                        issue.chainage_side,
+                        issue.description,
+                        file_name,
+                        Compliance_file_name,
+                        issue.issue_category,
+                        issue.issue_subcategory,
+                        issue.created_date.date(),
+                        issue.owner.full_name if issue.owner else None,
+                        new_watcher_list,
+                        timeline,
+                        target_date,
+                        'new' if issue.status else None,
+                        issue.finished_date if status_name=='Closed' else None,
+                        'Yes' if issue.compliance_is_update==True else 'No',
+                        issue.assigned_to.full_name if issue.assigned_to else None,
+                        issue.compliance_description,
+                        issue.attachments.name,
+                        "",
+                        'new' if issue.status else None,
+                    ]]
+                for data in issue_data:
+                    ws2.append(data)
             wb.save("table.xlsx")
             wb.close()
 
@@ -1346,78 +1346,79 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
 
 
         if issue.type.name=='Issue' and name=="Compliance" and photo=="without photo" and status:
-            qqq = issue.watchers
-            watchers = []
-            new_watcher_list =  ""
-            watcher_username =""
-            if issue.assigned_to:
-                watcher_username = '1. '+issue.assigned_to.full_name 
-            for i in qqq:
-                sql = User.objects.get(id=int(i))
-                watchers.append(sql.full_name)
-            for j in range(len(watchers)):
-                watcher_username = str(j+2)+'. '+watchers[j] +','+ watcher_username
-            
-            split = watcher_username.split(',')
-
-            for i in range(len(split)):
-                new_watcher_list = split[i]+'\n' + new_watcher_list
-            a = issue.created_date.date()
-            b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
-            timeline = b-a
-            target_date = datetime.strftime(b,"%d-%m-%Y")
-            
-            status_name = []
-            status_names =  project.issues.filter(status__id__in=status)
-            new_status_name =[]
-            for name in status_names:
+            for issue in queryset:
+                qqq = issue.watchers
+                watchers = []
+                new_watcher_list =  ""
+                watcher_username =""
+                if issue.assigned_to:
+                    watcher_username = '1. '+issue.assigned_to.full_name 
+                for i in qqq:
+                    sql = User.objects.get(id=int(i))
+                    watchers.append(sql.full_name)
+                for j in range(len(watchers)):
+                    watcher_username = str(j+2)+'. '+watchers[j] +','+ watcher_username
                 
-                if str(name.status) == 'Closed':
-                    new_status_name.append('Open')
-                    # new_status_name += 'Open'
-                     
-                elif str(name.status) == 'Maintenance Closed':
-                    # new_status_name += 'Closed'
-                    new_status_name.append('Closed')
-                    
-                elif str(name.status) == 'Maintenance Pending':
-                    # new_status_name += 'Pending'
-                    new_status_name.append('Pending')
-            if new_status_name:
-                new =""
-                for i in new_status_name:
-                    new = i
-            issue_data = [[
-                    issue.ref,
-                    issue.chainage_from,
-                    issue.chainage_to,
-                    issue.chainage_side,
-                    issue.description,
-                    issue.issue_category,
-                    issue.issue_subcategory,
-                    issue.created_date.date(),
-                    issue.owner.full_name if issue.owner else None,
-                    new_watcher_list,
-                    timeline,
-                    target_date,
-                    "new" if issue.status else None,
-                    issue.finished_date if status_name=='Closed' else None,
-                    'Yes' if issue.compliance_is_update==True else 'No',
-                    issue.assigned_to.full_name if issue.assigned_to else None,
-                    issue.compliance_description,
-                    issue.attachments.name,
-                    "",
-                    "new" if issue.status else None,
-                ]]
-            for data in issue_data:
-                ws4.append(data)
-        wb.save("table.xlsx")
-        wb.close()
+                split = watcher_username.split(',')
 
-        wb = load_workbook('table.xlsx')
-        ws4 = wb['Manitenance Report']
-        style(ws4,fieldnames, issue)
-        
+                for i in range(len(split)):
+                    new_watcher_list = split[i]+'\n' + new_watcher_list
+                a = issue.created_date.date()
+                b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
+                timeline = b-a
+                target_date = datetime.strftime(b,"%d-%m-%Y")
+                
+                status_name = []
+                status_names =  project.issues.filter(status__id__in=status)
+                new_status_name =[]
+                for name in status_names:
+                    
+                    if str(name.status) == 'Closed':
+                        new_status_name.append('Open')
+                        # new_status_name += 'Open'
+                         
+                    elif str(name.status) == 'Maintenance Closed':
+                        # new_status_name += 'Closed'
+                        new_status_name.append('Closed')
+                        
+                    elif str(name.status) == 'Maintenance Pending':
+                        # new_status_name += 'Pending'
+                        new_status_name.append('Pending')
+                if new_status_name:
+                    new =""
+                    for i in new_status_name:
+                        new = i
+                issue_data = [[
+                        issue.ref,
+                        issue.chainage_from,
+                        issue.chainage_to,
+                        issue.chainage_side,
+                        issue.description,
+                        issue.issue_category,
+                        issue.issue_subcategory,
+                        issue.created_date.date(),
+                        issue.owner.full_name if issue.owner else None,
+                        new_watcher_list,
+                        timeline,
+                        target_date,
+                        "new" if issue.status else None,
+                        issue.finished_date if status_name=='Closed' else None,
+                        'Yes' if issue.compliance_is_update==True else 'No',
+                        issue.assigned_to.full_name if issue.assigned_to else None,
+                        issue.compliance_description,
+                        issue.attachments.name,
+                        "",
+                        "new" if issue.status else None,
+                    ]]
+                for data in issue_data:
+                    ws4.append(data)
+            wb.save("table.xlsx")
+            wb.close()
+
+            wb = load_workbook('table.xlsx')
+            ws4 = wb['Manitenance Report']
+            style(ws4,fieldnames, issue)
+            
 
         if issue.type.name == 'Investigation' and photo=="with photo":
             issue_data = [[
