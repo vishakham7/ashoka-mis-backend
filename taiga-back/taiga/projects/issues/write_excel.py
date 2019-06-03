@@ -1151,21 +1151,14 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
             for i in range(len(split)):
                 new_watcher_list = split[i]+'\n' + new_watcher_list
             if issue.attachments:
-                file_name ="" 
+                file_name = "" 
                 files = []
-
-                file_new = issue.attachments.filter(project__id=issue.project.id, description="")
-                for i in file_new:
-                    if i.description =="":
-                        print("--------------------------")
-                        print(i.attached_file)
-                        # files.extend(i.attached_file)
-                        files.extend(i.attached_file)
-                
-                print(files)
+                file = issue.attachments.filter(project_id=issue.project.id, description="").values_list('attached_file')
+                for i in file:
+                    files.extend(i)
+                #     for j in len(file):
+                #         files.append(file[j])
                 for j in files:
-                    print("--------------file------------")
-                    print(j)
                     file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
             else:
                 file_name=""
