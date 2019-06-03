@@ -427,6 +427,8 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
 
 
 def comp(ws,Compliance_file_name):
+    print("=================================file_name=======================")
+    print(Compliance_file_name)
     font2 = Font(name='Calibri',
                 size=11,
                 bold=True,
@@ -1274,22 +1276,25 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                     Compliance_files = []
 
                     file = issue.attachments.all().filter(project__id=issue.project.id,description="").values_list('attached_file')
-                    for i in file:
-                        files.extend(i)
+                    if file:
+                        for i in file:
+                            files.extend(i)
                     for j in files:
                         file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
                 
 
                     
                     Compliance_file = issue.attachments.all().filter(project__id=issue.project.id,description="Compliances").values_list('attached_file')
-                    for k in Compliance_file:
-                        Compliance_files.extend(k)
+                    if Compliance_file:
+                        for k in Compliance_file:
+                            Compliance_files.extend(k)
                     for l in Compliance_files:
                         Compliance_file_name = os.path.join(settings.MEDIA_URL,str(l)) +'\n' + Compliance_file_name
                 else:
                     file_name=""
                     Compliance_file_name=""
-
+                print("----------compliance_is_update---------")
+                print(Compliance_file_name)
                 status_name = []
                 status_names =  project.issues.filter(status__id__in=status)
                 new_status_name =[]
@@ -1339,13 +1344,13 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
                     ]]
                 for data in issue_data:
                     ws2.append(data)
-            wb.save("table.xlsx")
-            wb.close()
+                wb.save("table.xlsx")
+                wb.close()
 
-            wb = load_workbook('table.xlsx')
-            ws2 = wb['Manitenance Report']
-            style(ws2,fieldnames, file_name, issue)
-            comp(ws2,Compliance_file_name)
+                wb = load_workbook('table.xlsx')
+                ws2 = wb['Manitenance Report']
+                style(ws2,fieldnames, file_name, issue)
+                comp(ws2,Compliance_file_name)
 
         if issue.type.name=='Issue' and name=="Compliance" and photo=="without photo" and status:
             for issue in queryset:
