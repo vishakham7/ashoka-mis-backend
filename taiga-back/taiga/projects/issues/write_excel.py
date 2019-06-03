@@ -1541,7 +1541,7 @@ def write_excel(project, queryset, type, status,start_date, end_date,asset, perf
             style(ws4,fieldnames, issue)
 
     if doc_type=="pdf":
-        new = pd.read_excel('table.xlsx',na_filter=False,header=None, names="",border="0")
+        new = pd.read_excel('table.xlsx',na_filter=False, names="",border="0")
     
         # for i in wwww:
         #  
