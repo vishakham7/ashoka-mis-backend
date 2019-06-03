@@ -108,7 +108,7 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
             file_row.append(row)
         l=[]
         for i in range(len(file_row)):
-            if len(file_row)==(row_count-4):
+            if len(file_row)==(row_count-3):
                 l.append(file_row[i])
         
         file_name = []
