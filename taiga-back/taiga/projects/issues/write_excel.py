@@ -70,11 +70,11 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
     # for cell in ws['2:2']:
     #     cell.font = font
 
-    for cell2 in ws['8:8']:
+    for cell2 in ws['9:9']:
         cell2.fill = fill
         cell2.font = font
 
-    for cell3 in ws['9:9']:
+    for cell3 in ws['10:10']:
         cell3.fill = fill
         cell3.font = font
 
@@ -879,9 +879,10 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         ws1['A2'] = "User Id:"
         ws1['A3'] = "Role:"
         ws1['A4'] = "Project Name:"
-        ws1['A5'] = "Asset Type:"
-        ws1['A6'] = "Performance Parameter:"
-        ws1['A7'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
+        ws1['A5'] = "Report Name:"
+        ws1['A6'] = "Asset Type:"
+        ws1['A7'] = "Performance Parameter:"
+        ws1['A8'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
@@ -891,8 +892,10 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         # ws1['B2'] = ""
         ws1['B3'] = ""
         ws1['B4'] = project.name
-        ws1['B5'] = asset if asset else "All"
-        ws1['B6'] = performance if performance else "All"
+        ws1['B5'] = "Inspection Report with Photograph"
+       
+        ws1['B6'] = asset if asset else "All"
+        ws1['B7'] = performance if performance else "All"
         
         # ws1['B2'] = project.name
 
@@ -901,67 +904,105 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
                               "Issue Raised On", "Issue Raised By",
                               "Issue Raised To"]
         ws1.append(fieldnames)
-        ws1.merge_cells('A8:A9')
-        ws1.merge_cells('B8:C8')
+        ws1.merge_cells('A9:A10')
+        ws1.merge_cells('B9:C9')
         # ws1.merge_cells('C3:D3')
         # ws1.merge_cells('C4:D4')
-        n1 = ws1.cell(row=9,column=2)
-        n2 = ws1.cell(row=9,column=3)
+        n1 = ws1.cell(row=10,column=2)
+        n2 = ws1.cell(row=10,column=3)
         n1.value = "From (In Km)"
         n2.value = "To (In Km)"
-        ws1.merge_cells('D8:D9')
+        ws1.merge_cells('D9:D10')
         # n3 = ws1.cell(row=3,column=5)
         # n3.value="Direction"
-        ws1.merge_cells('E8:E9')
-        ws1.merge_cells('F8:F9')
-        ws1.merge_cells('G8:G9')
-        ws1.merge_cells('H8:H9')
-        ws1.merge_cells('I8:I9')
-        ws1.merge_cells('J8:J9')
-        ws1.merge_cells('K8:K9')
-        ws1.merge_cells('L8:L9')
+        ws1.merge_cells('E9:E10')
+        ws1.merge_cells('F9:F10')
+        ws1.merge_cells('G9:G10')
+        ws1.merge_cells('H9:H10')
+        ws1.merge_cells('I9:I10')
+        ws1.merge_cells('J9:J10')
+        ws1.merge_cells('K9:K10')
+        ws1.merge_cells('L9:L10')
         
 
     if type == 'Issue' and photo=="without photo" and status==None:
 
         ws5.title = "Inspection Reportssssss"
-        ws5['A1'] = "Inspection Report without Photogragh"
-        ws5['A2'] = "Project Name"
-        ws5['B2'] = project.name
+        ws5['A1'] = "User Name:"
+        ws5['A2'] = "User Id:"
+        ws5['A3'] = "Role:"
+        ws5['A4'] = "Project Name:"
+        ws5['A5'] = "Report Name:"
+        ws5['A6'] = "Asset Type:"
+        ws5['A7'] = "Performance Parameter:"
+        ws5['A8'] = "Date:\n From: "+start_date+ '\n To: ' +end_date
+        # ws1['A1'] = "Inspection Report with Photogragh"
+        # ws1['A2'] = "Project Name"
+
+        ws1['B1'] = request.user.full_name
+        ws1['B2'] = request.user.email
+        # ws1['B1'] = ""
+        # ws1['B2'] = ""
+        ws5['B3'] = ""
+        ws5['B4'] = project.name
+        ws5['B5'] = "Inspection Report without Photograph"
+       
+        ws5['B6'] = asset if asset else "All"
+        ws5['B7'] = performance if performance else "All"
+
+
         fieldnames = ["Ref.No.", "Chainage","" , "Direction", "Description of Issue",
                               "Asset Type", "Performance Parameter",
                               "Issue Raised On", "Issue Raised By",
                               "Issue Raised To"]
         ws5.append(fieldnames)
     
-        ws1.append(fieldnames)
-        ws1.merge_cells('A3:A4')
-        ws1.merge_cells('B3:c3')
+        ws5.merge_cells('A9:A10')
+        ws5.merge_cells('B9:C9')
         # ws1.merge_cells('C3:D3')
         # ws1.merge_cells('C4:D4')
-        n1 = ws1.cell(row=4,column=2)
-        n2 = ws1.cell(row=4,column=3)
+        n1 = ws5.cell(row=10,column=2)
+        n2 = ws5.cell(row=10,column=3)
         n1.value = "From (In Km)"
         n2.value = "To (In Km)"
-        ws1.merge_cells('D3:D4')
+        ws5.merge_cells('D9:D10')
         # n3 = ws1.cell(row=3,column=5)
         # n3.value="Direction"
-        ws1.merge_cells('E3:E4')
-        ws1.merge_cells('F3:F4')
-        ws1.merge_cells('G3:G4')
-        ws1.merge_cells('H3:H4')
-        ws1.merge_cells('I3:I4')
-        ws1.merge_cells('J3:J4')
+        ws5.merge_cells('E9:E10')
+        ws5.merge_cells('F9:F10')
+        ws5.merge_cells('G9:G10')
+        ws5.merge_cells('H9:H10')
+        ws5.merge_cells('I9:I10')
+        ws5.merge_cells('J9:J10')
         # ws1.merge_cells('L3:L4')
     if type == 'Issue' and name=="Compliance" and photo=="with photo" and status:
 
         wb = Workbook()
         ws2 = wb.active
     
-        ws2.title = "Manitenance Report"
-        ws2['A1'] = "Maintenance Report with Photograph"
-        ws2['A2'] = "Project Name"
-        ws2['B2'] = project.name
+        ws2.title = "Manitenance Report "
+        
+        ws2['A1'] = "User Name:"
+        ws2['A2'] = "User Id:"
+        ws2['A3'] = "Role:"
+        ws2['A4'] = "Project Name:"
+        ws2['A5'] = "Report Name:"
+        ws2['A6'] = "Asset Type:"
+        ws2['A7'] = "Performance Parameter:"
+        ws2['A8'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
+        # ws1['A1'] = "Inspection Report with Photogragh"
+        # ws1['A2'] = "Project Name"
+
+        ws2['B1'] = request.user.full_name
+        ws2['B2'] = request.user.email
+        # ws1['B1'] = ""
+        # ws1['B2'] = ""
+        ws2['B3'] = ""
+        ws2['B4'] = project.name
+        ws2['B5'] = "Manitenance Report with Photograph"
+       
+        ws2['B6'] = asset if asset else "All"
+        ws2['B7'] = performance if performance else "All"
         
         fieldnames = ["Ref.No.", "Chainage","", "Direction", "Description of Issue",
                           "Photograph During Inspection","Photograph During Maintenance", "Asset Type", "Performance Parameter",
@@ -971,54 +1012,73 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
                           "", "", "Issue Closed By","Description Of Compliance",
                           "Photograph Post Compliance", "Remark", "Current Status"]
         ws2.append(fieldnames)
-        ws2.merge_cells('A3:A4')
-        ws2.merge_cells('B3:C3')
+        ws2.merge_cells('A9:A10')
+        ws2.merge_cells('B9:C9')
         # ws2.merge_cells('C3:D3')
         # ws1.merge_cells('C4:D4')
-        n1 = ws2.cell(row=4,column=2)
-        n2 = ws2.cell(row=4,column=3)
+        n1 = ws2.cell(row=10,column=2)
+        n2 = ws2.cell(row=10,column=3)
         n1.value = "From (In Km)"
         n2.value = "To (In Km)"
-        ws2.merge_cells('D3:D4')
+        ws2.merge_cells('D9:D10')
         # n3 = ws1.cell(row=3,column=5)
         # n3.value="Direction"
-        ws2.merge_cells('E3:E4')
-        ws2.merge_cells('F3:F4')
-        ws2.merge_cells('G3:G4')
-        ws2.merge_cells('H3:H4')
-        ws2.merge_cells('I3:I4')
-        ws2.merge_cells('J3:J4')
-        ws2.merge_cells('K3:K4')
-        ws2.merge_cells('L3:L4')
-        ws2.merge_cells('M3:N3')
-        n1 = ws2.cell(row=4,column=13)
-        n2 = ws2.cell(row=4,column=14)
+        ws2.merge_cells('E9:E10')
+        ws2.merge_cells('F9:F10')
+        ws2.merge_cells('G9:G10')
+        ws2.merge_cells('H9:H10')
+        ws2.merge_cells('I9:I10')
+        ws2.merge_cells('J9:J10')
+        ws2.merge_cells('K9:K10')
+        ws2.merge_cells('L9:L10')
+        ws2.merge_cells('M9:N9')
+        n1 = ws2.cell(row=10,column=13)
+        n2 = ws2.cell(row=10,column=14)
         n1.value = "Timeline\n (As per  Schedule F)"
         n2.value = "Target Date\n(As per  Schedule F)"
         # ws2.merge_cells('M3:M4')
         # ws2.merge_cells('N3:N4')
-        ws2.merge_cells('O3:Q3')
-        n1 = ws2.cell(row=4,column=15)
-        n2 = ws2.cell(row=4,column=16)
-        n3 = ws2.cell(row=4,column=17)
+        ws2.merge_cells('O9:Q9')
+        n1 = ws2.cell(row=10,column=15)
+        n2 = ws2.cell(row=10,column=16)
+        n3 = ws2.cell(row=10,column=17)
         n1.value = "Status\n(Open/Closed/Under Rectification)"
         n2.value = "Issue Closed On Date\n(If Closed)"
         n3.value = "Complianced\n (Yes/No)"
 
         # ws2.merge_cells('Q3:Q4')
-        ws2.merge_cells('R3:R4')
-        ws2.merge_cells('S3:S4')
-        ws2.merge_cells('T3:T4')
-        ws2.merge_cells('U3:U4')
-        ws2.merge_cells('V3:V4')
+        ws2.merge_cells('R9:R10')
+        ws2.merge_cells('S9:S10')
+        ws2.merge_cells('T9:T10')
+        ws2.merge_cells('U9:U10')
+        ws2.merge_cells('V9:V10')
 
 
     if type=='Issue' and name=="Compliance" and photo=="without photo" and status:
     
         ws4.title = "Manitenance Report"
-        ws4['A1'] = "Maintenance Report without Photograph"
-        ws4['A2'] = "Project Name"
-        ws4['B2'] = project.name
+        ws4['A1'] = "User Name:"
+        ws4['A2'] = "User Id:"
+        ws4['A3'] = "Role:"
+        ws4['A4'] = "Project Name:"
+        ws4['A5'] = "Report Name:"
+        ws4['A6'] = "Asset Type:"
+        ws4['A7'] = "Performance Parameter:"
+        ws4['A8'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
+        # ws1['A1'] = "Inspection Report with Photogragh"
+        # ws1['A2'] = "Project Name"
+
+        ws4['B1'] = request.user.full_name
+        ws4['B2'] = request.user.email
+        # ws1['B1'] = ""
+        # ws1['B2'] = ""
+        ws4['B3'] = ""
+        ws4['B4'] = project.name
+        ws4['B5'] = "Manitenance Report with Photograph"
+       
+        ws4['B6'] = asset if asset else "All"
+        ws4['B7'] = performance if performance else "All"
+        
         fieldnames = ["Ref.No.", "Chainage","", "Direction", "Description of Issue",
                           "Asset Type", "Performance Parameter",
                           "Issue Raised On", "Issue Raised By",
@@ -1027,139 +1087,195 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
                           "", "", "Issue Closed By","Description Of Compliance",
                           "Photograph Post Compliance", "Remark", "Current Status"]
         ws4.append(fieldnames)
-        ws4.merge_cells('A3:A4')
-        ws4.merge_cells('B3:C3')
+        ws4.merge_cells('A9:A10')
+        ws4.merge_cells('B9:C9')
         # ws2.merge_cells('C3:D3')
         # ws1.merge_cells('C4:D4')
-        n1 = ws4.cell(row=4,column=2)
-        n2 = ws4.cell(row=4,column=3)
+        n1 = ws4.cell(row=10,column=2)
+        n2 = ws4.cell(row=10,column=3)
         n1.value = "From (In Km)"
         n2.value = "To (In Km)"
-        ws4.merge_cells('D3:D4')
+        ws4.merge_cells('D9:D10')
         # n3 = ws1.cell(row=3,column=5)
         # n3.value="Direction"
-        ws4.merge_cells('E3:E4')
-        ws4.merge_cells('F3:F4')
-        ws4.merge_cells('G3:G4')
-        ws4.merge_cells('H3:H4')
-        ws4.merge_cells('I3:I4')
-        ws4.merge_cells('J3:J4')
+        ws4.merge_cells('E9:E10')
+        ws4.merge_cells('F9:F10')
+        ws4.merge_cells('G9:G10')
+        ws4.merge_cells('H9:H10')
+        ws4.merge_cells('I9:I10')
+        ws4.merge_cells('J9:J10')
         # ws4.merge_cells('K3:K4')
         # ws2.merge_cells('L3:L4')
-        ws4.merge_cells('K3:L3')
-        n1 = ws4.cell(row=4,column=11)
-        n2 = ws4.cell(row=4,column=12)
+        ws4.merge_cells('K9:L9')
+        n1 = ws4.cell(row=10,column=11)
+        n2 = ws4.cell(row=10,column=12)
         n1.value = "Timeline\n (As per  Schedule F)"
         n2.value = "Target Date\n(As per  Schedule F)"
         # ws2.merge_cells('M3:M4')
         # ws2.merge_cells('N3:N4')
-        ws4.merge_cells('M3:O3')
-        n1 = ws4.cell(row=4,column=13)
-        n2 = ws4.cell(row=4,column=14)
-        n3 = ws4.cell(row=4,column=15)
+        ws4.merge_cells('M9:O9')
+        n1 = ws4.cell(row=10,column=13)
+        n2 = ws4.cell(row=10,column=14)
+        n3 = ws4.cell(row=10,column=15)
         n1.value = "Status\n(Open/Closed/Under Rectification)"
         n2.value = "Issue Closed On Date\n(If Closed)"
         n3.value = "Complianced\n (Yes/No)"
-        ws4.merge_cells('P3:P4')
-        ws4.merge_cells('Q3:Q4')
-        ws4.merge_cells('R3:R4')
-        ws4.merge_cells('S3:S4')
-        ws4.merge_cells('T3:T4')
+        ws4.merge_cells('P9:P10')
+        ws4.merge_cells('Q9:Q10')
+        ws4.merge_cells('R9:R10')
+        ws4.merge_cells('S9:S10')
+        ws4.merge_cells('T9:T10')
 
 
     if type == 'Investigation' and photo=="with photo":
         
         ws3.title = "Test Report"
-        ws3['A1'] = "Test Report"
-        ws3['A2'] = "Project Name"
-        ws3['B2'] = project.name
+        ws3['A1'] = "User Name:"
+        ws3['A2'] = "User Id:"
+        ws3['A3'] = "Role:"
+        ws3['A4'] = "Project Name:"
+        ws3['A5'] = "Report Name:"
+        ws3['A6'] = "Asset Type:"
+        ws3['A7'] = "Performance Parameter:"
+        ws3['A8'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
+        # ws1['A1'] = "Inspection Report with Photogragh"
+        # ws1['A2'] = "Project Name"
+
+        ws3['B1'] = request.user.full_name
+        ws3['B2'] = request.user.email
+        # ws1['B1'] = ""
+        # ws1['B2'] = ""
+        ws3['B3'] = ""
+        ws3['B4'] = project.name
+        ws3['B5'] = "Manitenance Report with Photograph"
+       
+        ws3['B6'] = asset if asset else "All"
+        ws3['B7'] = performance if performance else "All"
+        
         fieldnames = ["Ref.No.","Description of Test/ Investigation", "Chainage","", "Direction",
                           "Asset Type", "Performance Parameter",
                           "Name of Test", "Testing Method", "Standard References for testing",
                           "Test Carried Out Date", "Testing Carried Out By(Name)"]
         
         ws3.append(fieldnames)
-        ws3.merge_cells('A3:A4')
-        ws3.merge_cells('B3:B4')
-        ws3.merge_cells('C3:D3')
+        ws3.merge_cells('A9:A10')
+        ws3.merge_cells('B9:B10')
+        ws3.merge_cells('C9:D9')
         # ws1.merge_cells('C4:D4')
-        n1 = ws3.cell(row=4,column=3)
-        n2 = ws3.cell(row=4,column=4)
+        n1 = ws3.cell(row=10,column=3)
+        n2 = ws3.cell(row=10,column=4)
         n1.value = "From (In Km)"
         n2.value = "To (In Km)"
         # ws1.merge_cells('D3:D4')
         # n3 = ws1.cell(row=3,column=5)
         # n3.value="Direction"
-        ws3.merge_cells('E3:E4')
-        ws3.merge_cells('F3:F4')
-        ws3.merge_cells('G3:G4')
-        ws3.merge_cells('H3:H4')
-        ws3.merge_cells('I3:I4')
-        ws3.merge_cells('J3:J4')
-        ws3.merge_cells('K3:K4')
-        ws3.merge_cells('L3:L4')
+        ws3.merge_cells('E9:E10')
+        ws3.merge_cells('F9:F10')
+        ws3.merge_cells('G9:G10')
+        ws3.merge_cells('H9:H10')
+        ws3.merge_cells('I9:I10')
+        ws3.merge_cells('J9:J10')
+        ws3.merge_cells('K9:K10')
+        ws3.merge_cells('L9:L10')
   
     if type == 'Investigation' and photo=="without photo":
         
         ws6.title = "Test Report"
-        ws6['A1'] = ""
-        ws6['A2'] = "Test Report"
+        ws6['A1'] = "User Name:"
+        ws6['A2'] = "User Id:"
+        ws6['A3'] = "Role:"
+        ws6['A4'] = "Project Name:"
+        ws6['A5'] = "Report Name:"
+        ws6['A6'] = "Asset Type:"
+        ws6['A7'] = "Performance Parameter:"
+        ws6['A8'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
+        # ws1['A1'] = "Inspection Report with Photogragh"
+        # ws1['A2'] = "Project Name"
+
+        ws6['B1'] = request.user.full_name
+        ws6['B2'] = request.user.email
+        # ws1['B1'] = ""
+        # ws1['B2'] = ""
+        ws6['B3'] = ""
+        ws6['B4'] = project.name
+        ws6['B5'] = "Manitenance Report with Photograph"
+       
+        ws6['B6'] = asset if asset else "All"
+        ws6['B7'] = performance if performance else "All"
         fieldnames = ["Ref.No.","Description of Test/ Investigation", "Chainage","", "Direction",
                           "Asset Type", "Performance Parameter",
                           "Name of Test", "Testing Method", "Standard References for testing",
                           "Test Carried Out Date", "Testing Carried Out By(Name)"]
         
-        ws3.append(fieldnames)
-        ws3.merge_cells('A3:A4')
-        ws3.merge_cells('B3:B4')
-        ws3.merge_cells('C3:D3')
+        ws6.append(fieldnames)
+        ws6.merge_cells('A9:A10')
+        ws6.merge_cells('B9:B10')
+        ws6.merge_cells('C9:D9')
         # ws1.merge_cells('C4:D4')
-        n1 = ws3.cell(row=4,column=3)
-        n2 = ws3.cell(row=4,column=4)
+        n1 = ws6.cell(row=10,column=3)
+        n2 = ws6.cell(row=10,column=4)
         n1.value = "From (In Km)"
         n2.value = "To (In Km)"
         # ws1.merge_cells('D3:D4')
         # n3 = ws1.cell(row=3,column=5)
         # n3.value="Direction"
-        ws3.merge_cells('E3:E4')
-        ws3.merge_cells('F3:F4')
-        ws3.merge_cells('G3:G4')
-        ws3.merge_cells('H3:H4')
-        ws3.merge_cells('I3:I4')
-        ws3.merge_cells('J3:J4')
-        ws3.merge_cells('K3:K4')
-        ws3.merge_cells('L3:L4')
+        ws6.merge_cells('E9:E10')
+        ws6.merge_cells('F9:F10')
+        ws6.merge_cells('G9:G10')
+        ws6.merge_cells('H9:H10')
+        ws6.merge_cells('I9:I10')
+        ws6.merge_cells('J9:J10')
+        ws6.merge_cells('K9:K10')
+        ws6.merge_cells('L9:L10')
+  
 
 
 
     if type == 'Accident':
        
         ws4.title = "Summary of Accident"
-        ws4['A1'] = "Summary of Accident Report"
-        ws4['A2'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
-        ws4['B2'] = "Project Name"
-        ws4['C2'] = project.name
+        ws4['A1'] = "User Name:"
+        ws4['A2'] = "User Id:"
+        ws4['A3'] = "Role:"
+        ws4['A4'] = "Project Name:"
+        ws4['A5'] = "Report Name:"
+        ws4['A6'] = "Asset Type:"
+        ws4['A7'] = "Performance Parameter:"
+        ws4['A8'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
+        # ws1['A1'] = "Inspection Report with Photogragh"
+        # ws1['A2'] = "Project Name"
+
+        ws4['B1'] = request.user.full_name
+        ws4['B2'] = request.user.email
+        # ws1['B1'] = ""
+        # ws1['B2'] = ""
+        ws4['B3'] = ""
+        ws4['B4'] = project.name
+        ws4['B5'] = "Manitenance Report with Photograph"
+       
+        ws4['B6'] = asset if asset else "All"
+        ws4['B7'] = performance if performance else "All"
         
 
         fieldnames = ["Ref.No.", "Description","Up to previous month","","During this month","",
                         "Up to this month", ""]
 
         ws4.append(fieldnames)
-        ws4.merge_cells('A3:A4')
-        ws4.merge_cells('B3:B4')
-        ws4.merge_cells('C3:D3')
-        n1 = ws4.cell(row=4,column=3)
-        n2 = ws4.cell(row=4,column=4)
+        ws4.merge_cells('A9:A10')
+        ws4.merge_cells('B9:B10')
+        ws4.merge_cells('C9:D9')
+        n1 = ws4.cell(row=10,column=3)
+        n2 = ws4.cell(row=10,column=4)
         n1.value = "No of Accidents"
         n2.value = "No of Peoples affected"
-        ws4.merge_cells('E3:F3')
-        n1 = ws4.cell(row=4,column=5)
-        n2 = ws4.cell(row=4,column=6)
+        ws4.merge_cells('E9:F9')
+        n1 = ws4.cell(row=10,column=5)
+        n2 = ws4.cell(row=10,column=6)
         n1.value = "No of Accidents"
         n2.value = "No of Peoples affected"
-        ws4.merge_cells('G3:H3')
-        n1 = ws4.cell(row=4,column=7)
-        n2 = ws4.cell(row=4,column=8)
+        ws4.merge_cells('G9:H9')
+        n1 = ws4.cell(row=10,column=7)
+        n2 = ws4.cell(row=10,column=8)
         n1.value = "No of Accidents"
         n2.value = "No of Peoples affected"
     
