@@ -987,8 +987,8 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
-        # ws1['B1'] = request.user.full_name
-        # ws1['B2'] = request.user.email
+        ws1['B1'] = request.user.full_name
+        ws1['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
         ws1['B3'] = ""
