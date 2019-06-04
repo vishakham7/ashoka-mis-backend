@@ -955,6 +955,8 @@ def accident_detail(ws,fieldnames):
 def write_excel(request, project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name,accident_report_type):
 
     # role = Membership.objects.get(user=request.user, project=project)
+    print("-------------------------")
+    print(request.user)
     
     wb = Workbook()
     ws1 = wb.active
