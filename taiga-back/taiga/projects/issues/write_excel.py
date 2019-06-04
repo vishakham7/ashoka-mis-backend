@@ -955,12 +955,12 @@ def accident_detail(ws,fieldnames):
 def write_excel(request, project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name,accident_report_type):
 
     # role = Membership.objects.get(user=request.user, project=project)
-    print("-------------------------")
-    print(request.user.id)
-    user = ""
-    u = User.objects.filter(pk=request.user.id)
-    if u:
-        user = User.objects.get(pk=request.user.id)
+    # print("-------------------------")
+    # print(request.user.id)
+    # user = ""
+    # u = User.objects.filter(pk=request.user.id)
+    # if u:
+    #     user = User.objects.get(pk=request.user.id)
     
     wb = Workbook()
     ws1 = wb.active
@@ -993,8 +993,8 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
-        ws1['B1'] = user.full_name
-        ws1['B2'] = user.email
+        ws1['B1'] = "Administrator"
+        ws1['B2'] = "admin@gmail.com"
         # ws1['B1'] = ""
         # ws1['B2'] = ""
         ws1['B3'] = ""
@@ -1046,8 +1046,8 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
-        ws1['B1'] = request.user.full_name
-        ws1['B2'] = request.user.email
+        ws1['B1'] = "Administrator"
+        ws1['B2'] = "admin@gmail.com"
         # ws1['B1'] = ""
         # ws1['B2'] = ""
         ws5['B3'] = ""
@@ -1100,8 +1100,8 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
-        ws2['B1'] = request.user.full_name
-        ws2['B2'] = request.user.email
+        ws2['B1'] = "Administrator"
+        ws2['B2'] = "admin@gmail.com"
         # ws1['B1'] = ""
         # ws1['B2'] = ""
         ws2['B3'] = ""
@@ -1175,8 +1175,8 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
-        ws4['B1'] = request.user.full_name
-        ws4['B2'] = request.user.email
+        ws4['B1'] = "Administrator"
+        ws4['B2'] = "admin@gmail.com"
         # ws1['B1'] = ""
         # ws1['B2'] = ""
         ws4['B3'] = ""
@@ -1248,8 +1248,8 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
-        ws3['B1'] = request.user.full_name
-        ws3['B2'] = request.user.email
+        ws3['B1'] = "Administrator"
+        ws3['B2'] = "admin@gmail.com"
         # ws1['B1'] = ""
         # ws1['B2'] = ""
         ws3['B3'] = ""
@@ -1300,8 +1300,8 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
-        ws6['B1'] = request.user.full_name
-        ws6['B2'] = request.user.email
+        ws6['B1'] = "Administrator"
+        ws6['B2'] = "admin@gmail.com"
         # ws1['B1'] = ""
         # ws1['B2'] = ""
         ws6['B3'] = ""
@@ -1355,8 +1355,8 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
-        ws4['B1'] = request.user.full_name
-        ws4['B2'] = request.user.email
+        ws4['B1'] = "Administrator"
+        ws4['B2'] = "admin@gmail.com"
         # ws1['B1'] = ""
         # ws1['B2'] = ""
         ws4['B3'] = ""
