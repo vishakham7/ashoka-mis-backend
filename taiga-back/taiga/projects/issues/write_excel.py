@@ -1654,7 +1654,6 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
                         'Yes' if issue.compliance_is_update==True else 'No',
                         issue.assigned_to.full_name if issue.assigned_to else None,
                         issue.compliance_description,
-                        issue.attachments.name,
                         "",
                         'new' if issue.status else None,
                     ]]
@@ -1730,7 +1729,6 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
                         'Yes' if issue.compliance_is_update==True else 'No',
                         issue.assigned_to.full_name if issue.assigned_to else None,
                         issue.compliance_description,
-                        issue.attachments.name,
                         "",
                         "new" if issue.status else None,
                     ]]
