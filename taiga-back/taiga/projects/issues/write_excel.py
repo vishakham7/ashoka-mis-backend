@@ -1112,7 +1112,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
                           "Issue Raised To" , "Max Time limit for Rectification/Repair",
                           "", "Action Taken",
                           "", "", "Issue Closed By","Description Of Compliance",
-                          "Photograph Post Compliance", "Remark", "Current Status"]
+                          "Remark", "Current Status"]
         ws2.append(fieldnames)
         ws2.merge_cells('A9:A10')
         ws2.merge_cells('B9:C9')
@@ -1153,7 +1153,6 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         ws2.merge_cells('S9:S10')
         ws2.merge_cells('T9:T10')
         ws2.merge_cells('U9:U10')
-        ws2.merge_cells('V9:V10')
 
 
     if type=='Issue' and name=="Compliance" and photo=="without photo" and status:
@@ -1188,7 +1187,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
                           "Issue Raised To" , "Max Time limit for Rectification/Repair",
                           "", "Action Taken",
                           "", "", "Issue Closed By","Description Of Compliance",
-                          "Photograph Post Compliance", "Remark", "Current Status"]
+                           "Remark", "Current Status"]
         ws4.append(fieldnames)
         ws4.merge_cells('A9:A10')
         ws4.merge_cells('B9:C9')
@@ -1227,7 +1226,6 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         ws4.merge_cells('Q9:Q10')
         ws4.merge_cells('R9:R10')
         ws4.merge_cells('S9:S10')
-        ws4.merge_cells('T9:T10')
 
 
     if type == 'Investigation' and photo=="with photo":
