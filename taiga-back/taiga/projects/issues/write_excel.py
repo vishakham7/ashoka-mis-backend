@@ -957,8 +957,11 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
     # role = Membership.objects.get(user=request.user, project=project)
     print("-------------------------")
     print(request.user.id)
-    user = User.objects.get(id=request.user.id)
-    print(user.full_name)
+    user = ""
+    u = User.objects.filter(pk=request.user.id)
+    if u:
+        user = User.objects.get(pk=request.user.id)
+    
     wb = Workbook()
     ws1 = wb.active
     ws2 = wb.active
