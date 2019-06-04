@@ -925,8 +925,8 @@ def accident_detail(ws,fieldnames):
 
 def write_excel(request, project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name,accident_report_type):
 
-    if request.user:
-        role = Membership.objects.get(user=request.user, project=project)
+    # if request.user:
+    #     role = Membership.objects.get(user=request.user, project=project)
     
     wb = Workbook()
     ws1 = wb.active
@@ -1318,11 +1318,11 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
-        # ws4['B1'] = request.user.full_name
-        # ws4['B2'] = request.user.email
+        ws4['B1'] = request.user.full_name
+        ws4['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws4['B3'] = role.role
+        ws4['B3'] = ""
         ws4['B4'] = project.name
         ws4['B5'] = "Manitenance Report with Photograph"
        
