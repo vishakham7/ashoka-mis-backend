@@ -631,7 +631,7 @@ class IssueViewSet(
         # print(project.roles.filter(project=project))
         print("-------------------------")
         # print(project.owner)
-        owner_membership = Membership.objects.get(user=48,project=project)
+        owner_membership = Membership.objects.get(user=request.user,project=project)
         
         # print(owner_membership.role.slug)
         if asset and performance:
