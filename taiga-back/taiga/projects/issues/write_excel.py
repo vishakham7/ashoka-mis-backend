@@ -893,8 +893,8 @@ def accident_detail(ws,fieldnames):
     #     cell2.fill = fill
     #     cell2.font = font
 
-    for cell3 in ws['4:4']:
-        cell3.fill = fill
+    # for cell3 in ws['4:4']:
+    #     cell3.fill = fill
         # cell3.font = font
         # cell3.alignment = Alignment(wrap_text=True,)
 
@@ -924,10 +924,10 @@ def accident_detail(ws,fieldnames):
                             
 
 def write_excel(request, project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name,accident_report_type):
-    # print(project.name)
-    # role = Membership.objects.get(user=request.user, project=project)
-    # print("============================")
-    # print(role.role)
+
+    if request.user:
+        role = Membership.objects.get(user=request.user, project=project)
+    
     wb = Workbook()
     ws1 = wb.active
     ws2 = wb.active
@@ -1322,7 +1322,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         # ws4['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws4['B3'] = ""
+        ws4['B3'] = role.role
         ws4['B4'] = project.name
         ws4['B5'] = "Manitenance Report with Photograph"
        
