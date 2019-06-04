@@ -1322,7 +1322,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         ws4['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws4['B3'] = role.role
+        ws4['B3'] = role.role.slug
         ws4['B4'] = project.name
         ws4['B5'] = "Manitenance Report with Photograph"
        
