@@ -920,7 +920,7 @@ def accident_detail(ws,fieldnames):
 
                             
 
-def write_excel(request, owner_membership, project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name,accident_report_type):
+def write_excel(request, project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name,accident_report_type):
     # print(project.name)
 
     wb = Workbook()
@@ -958,7 +958,7 @@ def write_excel(request, owner_membership, project, queryset, type, status,start
         # ws1['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws1['B3'] = owner_membership.role.slug
+        ws1['B3'] = ""
         ws1['B4'] = project.name
         ws1['B5'] = "Inspection Report with Photograph"
        
@@ -1011,7 +1011,7 @@ def write_excel(request, owner_membership, project, queryset, type, status,start
         ws1['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws5['B3'] = owner_membership.role.slug
+        ws5['B3'] = ""
         ws5['B4'] = project.name
         ws5['B5'] = "Inspection Report without Photograph"
        
@@ -1065,7 +1065,7 @@ def write_excel(request, owner_membership, project, queryset, type, status,start
         ws2['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws2['B3'] = owner_membership.role.slug
+        ws2['B3'] = ""
         ws2['B4'] = project.name
         ws2['B5'] = "Manitenance Report with Photograph"
        
@@ -1140,7 +1140,7 @@ def write_excel(request, owner_membership, project, queryset, type, status,start
         ws4['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws4['B3'] = owner_membership.role.slug
+        ws4['B3'] = ""
         ws4['B4'] = project.name
         ws4['B5'] = "Manitenance Report with Photograph"
        
@@ -1213,7 +1213,7 @@ def write_excel(request, owner_membership, project, queryset, type, status,start
         ws3['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws3['B3'] = owner_membership.role.slug
+        ws3['B3'] = ""
         ws3['B4'] = project.name
         ws3['B5'] = "Manitenance Report with Photograph"
        
@@ -1264,7 +1264,7 @@ def write_excel(request, owner_membership, project, queryset, type, status,start
         ws6['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws6['B3'] = owner_membership.role.slug
+        ws6['B3'] = ""
         ws6['B4'] = project.name
         ws6['B5'] = "Manitenance Report with Photograph"
        
@@ -1317,7 +1317,7 @@ def write_excel(request, owner_membership, project, queryset, type, status,start
         # ws4['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws4['B3'] = owner_membership.role.slug
+        ws4['B3'] = ""
         ws4['B4'] = project.name
         ws4['B5'] = "Manitenance Report with Photograph"
        
