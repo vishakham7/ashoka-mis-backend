@@ -103,7 +103,6 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
 
     #////////////////////////// working images
     if file_name:
-        print("------------files------------------")
         file_row = []
         l = []
         for row in range(10,row_count+1):
@@ -112,7 +111,6 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
         for i in range(len(file_row)):
             if len(file_row)==(row_count-9):
                 l.append(file_row[i])
-        print(l)
         file_name = []
         split = []
         aaa=[]
@@ -120,8 +118,6 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
         n=""
         hh=""
         for new_row in l:
-            print("-----------row---------------")
-            print(new_row)
             ws.row_dimensions[new_row].height = 140
             ws.column_dimensions[get_column_letter(6)].width = 50
             file = ws.cell(row=new_row, column=6).value
@@ -428,7 +424,6 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
                         if new[-1]=="xlsx" or new[-1]=="docx" or new[-1]=="doc" or new[-1]=="pdf" or new[-1]=="mp3":
                             ws.cell(row=new_row, column=6).hyperlink = aa[j]
                             ws.cell(row=new_row, column=6).value = file_name
-
 
 def comp(ws,Compliance_file_name):
     font2 = Font(name='Calibri',
@@ -850,10 +845,82 @@ def comp(ws,Compliance_file_name):
                         #     # ws.cell(row=new_row, column=7).hyperlink = nnn
 
                         # n =""
-        
+def accident_detail(ws,fieldnames):
+    font = Font(name='Calibri',
+                size=11,
+                bold=True,
+                italic=False,
+                vertAlign=None,
+                underline='none',
+                strike=False,
+                color='FF000000')
+    font2 = Font(name='Calibri',
+                size=11,
+                bold=True,
+                italic=False,
+                vertAlign=None,
+                underline='none',
+                strike=False,
+                color='FFFFFF')
+    color = Font(name='Calibri',
+                size=11,
+                bold=False,
+                italic=False,
+                vertAlign=None,
+                underline='none',
+                strike=False,
+                color='696969')
+    border = Border(
+            left=Side(border_style=BORDER_THIN, color='FF000000'),
+            right=Side(border_style=BORDER_THIN, color='FF000000'),
+            top=Side(border_style=BORDER_THIN, color='FF000000'),
+            bottom=Side(border_style=BORDER_THIN, color='FF000000')
+        )
+    fill=PatternFill(start_color = '00C0C0C0',
+            end_color = '00C0C0C0',
+            fill_type = 'solid')
+
+
+    row_count = ws.max_row
+    column_count = ws.max_column
+    for cell in ws['2:2']:
+        cell.font = font
+
+    # for cell2 in ws['9:9']:
+    #     cell2.fill = fill
+    #     cell2.font = font
+
+    for cell3 in ws['4:4']:
+        cell3.fill = fill
+        # cell3.font = font
+        # cell3.alignment = Alignment(wrap_text=True,)
+
+    for i in range(4,5):
+        ws.row_dimensions[i].height = 50
+
+    # ws.row_dimensions[2].height = 40
+    # ws.row_dimensions[1].height = 40
+    
+    for row in ws:
+        for cell1 in row:
+            cell1.border = border
+            cell1.alignment = Alignment(wrap_text=True, horizontal='center', vertical='center')
+    
+    column_widths = []
+    for row in fieldnames:
+        for i in range(len(row)):
+            if len(column_widths) > i:
+                if len(row) > column_widths[i]:
+                    column_widths[i] = len(row)
+            else:
+                column_widths += [len(row)]
+        for i, column_width in enumerate(column_widths):
+            ws.column_dimensions[get_column_letter(i+1)].width = column_width
+
+
                             
 
-def write_excel(request, project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name):
+def write_excel(request, owner_membership, project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name,accident_report_type):
     # print(project.name)
 
     wb = Workbook()
@@ -863,6 +930,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
     ws4 = wb.active
     ws5 = wb.active
     ws6 = wb.active
+    ws8 = wb.active
     queryset = queryset.prefetch_related("attachments",
                                          "generated_user_stories",
                                          "custom_attributes_values")
@@ -886,11 +954,11 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
-        ws1['B1'] = request.user.full_name
-        ws1['B2'] = request.user.email
+        # ws1['B1'] = request.user.full_name
+        # ws1['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws1['B3'] = ""
+        ws1['B3'] = owner_membership.role.slug
         ws1['B4'] = project.name
         ws1['B5'] = "Inspection Report with Photograph"
        
@@ -943,7 +1011,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         ws1['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws5['B3'] = ""
+        ws5['B3'] = owner_membership.role.slug
         ws5['B4'] = project.name
         ws5['B5'] = "Inspection Report without Photograph"
        
@@ -997,7 +1065,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         ws2['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws2['B3'] = ""
+        ws2['B3'] = owner_membership.role.slug
         ws2['B4'] = project.name
         ws2['B5'] = "Manitenance Report with Photograph"
        
@@ -1072,7 +1140,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         ws4['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws4['B3'] = ""
+        ws4['B3'] = owner_membership.role.slug
         ws4['B4'] = project.name
         ws4['B5'] = "Manitenance Report with Photograph"
        
@@ -1145,7 +1213,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         ws3['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws3['B3'] = ""
+        ws3['B3'] = owner_membership.role.slug
         ws3['B4'] = project.name
         ws3['B5'] = "Manitenance Report with Photograph"
        
@@ -1196,7 +1264,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         ws6['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws6['B3'] = ""
+        ws6['B3'] = owner_membership.role.slug
         ws6['B4'] = project.name
         ws6['B5'] = "Manitenance Report with Photograph"
        
@@ -1231,7 +1299,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
 
 
 
-    if type == 'Accident':
+    if type == 'Accident' and accident_report_type== "Summary":
        
         ws4.title = "Summary of Accident"
         ws4['A1'] = "User Name:"
@@ -1245,11 +1313,11 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
-        ws4['B1'] = request.user.full_name
-        ws4['B2'] = request.user.email
+        # ws4['B1'] = request.user.full_name
+        # ws4['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws4['B3'] = ""
+        ws4['B3'] = owner_membership.role.slug
         ws4['B4'] = project.name
         ws4['B5'] = "Manitenance Report with Photograph"
        
@@ -1279,9 +1347,51 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         n1.value = "No of Accidents"
         n2.value = "No of Peoples affected"
     
-    wwww = []  
+    if type == 'Accident' and accident_report_type== "Detail":
+        ws8.title = "Summary of Accident"
         
+        fieldnames = ["Sr. No","Date","Time of Accident","Accident Location","Nature of Accident",
+                        "Classification of Accident","Causes","Road Feature","Road Condition",
+                        "Intersection type and control","Weather Condition","Vehicle Responsible",
+                        "Fatal","Grievous","Minor","Non Injured","No. of Animals killed if any",
+                        "Help provided by Ambulance/ RPV/ Crane"]
+
+
+        
+        ws8.merge_cells('A2:R2')
+        n2 = ws8.cell(row=2,column=1)
+        n2.value = "ACCIDENT DATA FROM "+start_date+" TO "+end_date
+        
+
+        ws8.merge_cells('A3:C3')
+        n1 = ws8.cell(row=3,column=1)
+        n1.value = "Legends as per Foot Note"
+        n1 = ws8.cell(row=3,column=4)
+        n1.value = "a"
+        n1 = ws8.cell(row=3,column=5)
+        n1.value = "b"
+        n1 = ws8.cell(row=3,column=6)
+        n1.value = "c"
+        n1 = ws8.cell(row=3,column=7)
+        n1.value = "d"
+        n1 = ws8.cell(row=3,column=8)
+        n1.value = "e"
+        n1 = ws8.cell(row=3,column=9)
+        n1.value = "f"
+        n1 = ws8.cell(row=3,column=10)
+        n1.value = "g"
+        n1 = ws8.cell(row=3,column=11)
+        n1.value = "h"
+
+        ws8.merge_cells('M3:P3')
+        n1 = ws8.cell(row=3,column=13)
+        n1.value = "No. of affected person"
+        ws8.append(fieldnames)
+
+
+    count = 0
     for issue in queryset:
+        count += 1
         if issue.type.name=='Issue'  and photo=="with photo" and status==None:
             qqq = issue.watchers
             watchers = []
@@ -1617,7 +1727,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
             ws6 = wb['Test Report']
             style(ws6,fieldnames, issue)
 
-        if issue.type.name == 'Accident':
+        if issue.type.name == 'Accident' and accident_report_type== "Summary":
             
             last_day_of_prev_month = date.today().replace(day=1) - timedelta(days=1)
             first_date_of_previos_month = date.today().replace(day=1) - timedelta(days=last_day_of_prev_month.day)
@@ -1676,16 +1786,63 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
             ws4 = wb['Summary of Accident']
             style(ws4,fieldnames, issue)
 
+        if issue.type.name == 'Accident' and accident_report_type== "Detail":
+            
+            animals_killed_cuurent_month = project.issues.filter(created_date__date__range=[start_date,end_date],type__name='Accident').values_list('animals_killed', flat=True)
+            animal_list_current_month = list(animals_killed_cuurent_month)
+            new_list_current = []
+            if animals_killed_cuurent_month:
+                for i in animal_list_current_month:
+                    if i:
+                        new_list_current.append(int(i))
+
+            print(count)        
+            issue_data = [[
+               count,
+               issue.accident_date,
+               issue.accident_time,
+               issue.chainage_from,
+               issue.accident_nature,
+               issue.accident_classification,
+               issue.accident_causes,
+               issue.road_feature,
+               issue.road_condition,
+               issue.intersection_type,
+               issue.weather_condition,
+               issue.vehicle_responsible,
+               issue.affected_persons_fatal,
+               issue.affected_persons_grievous,
+               issue.affected_persons_minor,
+               issue.affected_persons_non_injured,
+               sum(new_list_current),
+               issue.help_provided
+
+            ]]
+
+            
+            for data in issue_data:
+                ws8.append(data)
+
+
+            wb.save("table.xlsx")
+            wb.close()
+
+            wb = load_workbook('table.xlsx')
+        
+            ws8 = wb['Summary of Accident']
+            accident_detail(ws8,fieldnames)
+    
     if doc_type=="pdf":
-        new = pd.read_excel('table.xlsx',na_filter=False,header=None, names="",nrwos=500)
+        new = pd.read_excel('table.xlsx',na_filter=False,header=None, names="",skip = 0)
     
         # for i in wwww:
         #  
         pd.set_option('display.max_colwidth', 500)   # FOR TABLE <th>
 
-        html = new.to_html(escape=False,index=False,header=False,border="0.5").replace('&lt;','<').replace('&gt;', '>')
+        html = new.to_html(escape=False,index=False,header=False).replace('&lt;','<').replace('&gt;', '>').replace(r'\n', '<br>').replace('table','table style="border-collapse: collapse"')
         pisa_context = pisa.CreatePDF(html)
         response = pisa_context.dest.getvalue()
+        # print(html)
         return html
         # return response
 

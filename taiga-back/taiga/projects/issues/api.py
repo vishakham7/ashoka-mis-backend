@@ -38,7 +38,7 @@ from taiga.projects.issues.models import Issue
 from taiga.users.models import User
 from taiga.projects.notifications.mixins import WatchedResourceMixin, WatchersViewSetMixin
 from taiga.projects.occ import OCCResourceMixin
-from taiga.projects.models import Project
+from taiga.projects.models import Project, Membership
 from taiga.projects.tagging.api import TaggedResourceMixin
 from taiga.projects.votes.mixins.viewsets import VotedResourceMixin, VotersViewSetMixin
 
@@ -608,7 +608,7 @@ class IssueViewSet(
         status_id = []
         # PDF or Excel
 
-       
+        
         doc_type = request.QUERY_PARAMS.get('doc_type', None)
         uuid = request.QUERY_PARAMS.get("uuid", None)
         start_date = request.QUERY_PARAMS.get('start_date', None)
@@ -619,6 +619,8 @@ class IssueViewSet(
         performance = request.QUERY_PARAMS.get('performance_cat', None)
         photo = request.QUERY_PARAMS.get('photo', None)
         name = request.QUERY_PARAMS.get('type_name', None)
+        accident_report_type = request.QUERY_PARAMS.get('accident_report_type', None)
+
         if status:
             status = status.split(',')
         if uuid is None:
@@ -626,6 +628,12 @@ class IssueViewSet(
 
         project = get_object_or_404(Project, issues_csv_uuid=uuid)
 
+        # print(project.roles.filter(project=project))
+        print("-------------------------")
+        # print(project.owner)
+        owner_membership = Membership.objects.get(user=48,project=project)
+        
+        # print(owner_membership.role.slug)
         if asset and performance:
             if status:
                 queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type,status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
@@ -648,7 +656,7 @@ class IssueViewSet(
             queryset = project.issues.filter(type__name=type,created_date__date__range=[start_date, end_date]).order_by('ref')
         
 
-        data = write_excel.write_excel(request, project, queryset, type, status, start_date, end_date,asset,performance,photo,doc_type,name)
+        data = write_excel.write_excel(request,owner_membership, project, queryset, type, status, start_date, end_date,asset,performance,photo,doc_type,name,accident_report_type)
         
 
         if doc_type=="excel":
