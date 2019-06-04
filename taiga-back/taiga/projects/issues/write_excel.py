@@ -983,7 +983,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         ws1['A5'] = "Report Name:"
         ws1['A6'] = "Asset Type:"
         ws1['A7'] = "Performance Parameter:"
-        ws1['A8'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
+        ws1['A8'] = "From Date: "+start_date
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
@@ -997,7 +997,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
        
         ws1['B6'] = asset if asset else "All"
         ws1['B7'] = performance if performance else "All"
-        
+        ws1['B8'] = "To Date: "+end_date
         # ws1['B2'] = project.name
 
         fieldnames = ["Ref.No.", "Chainage","" , "Direction", "Description of Issue",
@@ -1036,7 +1036,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         ws5['A5'] = "Report Name:"
         ws5['A6'] = "Asset Type:"
         ws5['A7'] = "Performance Parameter:"
-        ws5['A8'] = "Date:\n From: "+start_date+ '\n To: ' +end_date
+        ws5['A8'] = "From Date: "+start_date
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
@@ -1050,7 +1050,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
        
         ws5['B6'] = asset if asset else "All"
         ws5['B7'] = performance if performance else "All"
-
+        ws5['A8'] ="To Date: "+ end_date
 
         fieldnames = ["Ref.No.", "Chainage","" , "Direction", "Description of Issue",
                               "Asset Type", "Performance Parameter",
@@ -1090,7 +1090,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         ws2['A5'] = "Report Name:"
         ws2['A6'] = "Asset Type:"
         ws2['A7'] = "Performance Parameter:"
-        ws2['A8'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
+        ws2['A8'] = "From Date: "+start_date
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
@@ -1104,7 +1104,8 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
        
         ws2['B6'] = asset if asset else "All"
         ws2['B7'] = performance if performance else "All"
-        
+        ws2['B8'] = "To Date: "+end_date
+
         fieldnames = ["Ref.No.", "Chainage","", "Direction", "Description of Issue",
                           "Photograph During Inspection","Photograph During Maintenance", "Asset Type", "Performance Parameter",
                           "Issue Raised On", "Issue Raised By",
@@ -1165,7 +1166,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         ws4['A5'] = "Report Name:"
         ws4['A6'] = "Asset Type:"
         ws4['A7'] = "Performance Parameter:"
-        ws4['A8'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
+        ws4['A8'] = "From Date: "+start_date
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
@@ -1179,7 +1180,8 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
        
         ws4['B6'] = asset if asset else "All"
         ws4['B7'] = performance if performance else "All"
-        
+        ws4['B8'] = "To Date: "+end_date
+
         fieldnames = ["Ref.No.", "Chainage","", "Direction", "Description of Issue",
                           "Asset Type", "Performance Parameter",
                           "Issue Raised On", "Issue Raised By",
@@ -1238,7 +1240,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         ws3['A5'] = "Report Name:"
         ws3['A6'] = "Asset Type:"
         ws3['A7'] = "Performance Parameter:"
-        ws3['A8'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
+        ws3['A8'] = "From Date: "+start_date
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
@@ -1252,7 +1254,8 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
        
         ws3['B6'] = asset if asset else "All"
         ws3['B7'] = performance if performance else "All"
-        
+        ws3['B8'] = "To Date: "+end_date
+
         fieldnames = ["Ref.No.","Description of Test/ Investigation", "Chainage","", "Direction",
                           "Asset Type", "Performance Parameter",
                           "Name of Test", "Testing Method", "Standard References for testing",
@@ -1289,7 +1292,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         ws6['A5'] = "Report Name:"
         ws6['A6'] = "Asset Type:"
         ws6['A7'] = "Performance Parameter:"
-        ws6['A8'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
+        ws6['A8'] = "From Date: "+start_date
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
@@ -1303,6 +1306,8 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
        
         ws6['B6'] = asset if asset else "All"
         ws6['B7'] = performance if performance else "All"
+        ws6['B8'] = "To Date: "+end_date
+
         fieldnames = ["Ref.No.","Description of Test/ Investigation", "Chainage","", "Direction",
                           "Asset Type", "Performance Parameter",
                           "Name of Test", "Testing Method", "Standard References for testing",
@@ -1342,7 +1347,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         ws4['A5'] = "Report Name:"
         ws4['A6'] = "Asset Type:"
         ws4['A7'] = "Performance Parameter:"
-        ws4['A8'] = "Date:\n From: "+start_date+ '\t To: ' +end_date
+        ws4['A8'] = "From Date: "+start_date
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
@@ -1356,7 +1361,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
        
         ws4['B6'] = asset if asset else "All"
         ws4['B7'] = performance if performance else "All"
-        
+        ws4['B8'] = "To Date: "+end_date
 
         fieldnames = ["Ref.No.", "Description","Up to previous month","","During this month","",
                         "Up to this month", ""]
