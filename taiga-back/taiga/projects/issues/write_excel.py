@@ -29,6 +29,9 @@ from openpyxl.drawing.xdr import XDRPoint2D, XDRPositiveSize2D
 from taiga.users.models import User
 # from PIL import Image
 
+from taiga.projects.models import Membership
+
+
 
 def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
     font = Font(name='Calibri',
@@ -922,7 +925,9 @@ def accident_detail(ws,fieldnames):
 
 def write_excel(request, project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name,accident_report_type):
     # print(project.name)
-
+    role = Membership.objects.get(user=request.user, project=project)
+    print("============================")
+    print(role.role)
     wb = Workbook()
     ws1 = wb.active
     ws2 = wb.active
@@ -1317,7 +1322,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         # ws4['B2'] = request.user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws4['B3'] = ""
+        ws4['B3'] = role.role
         ws4['B4'] = project.name
         ws4['B5'] = "Manitenance Report with Photograph"
        
@@ -1348,7 +1353,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         n2.value = "No of Peoples affected"
     
     if type == 'Accident' and accident_report_type== "Detail":
-        ws8.title = "Summary of Accident"
+        ws8.title = "Detail of Accident"
         
         fieldnames = ["Sr. No","Date","Time of Accident","Accident Location","Nature of Accident",
                         "Classification of Accident","Causes","Road Feature","Road Condition",
@@ -1829,7 +1834,7 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
 
             wb = load_workbook('table.xlsx')
         
-            ws8 = wb['Summary of Accident']
+            ws8 = wb['Detail of Accident']
             accident_detail(ws8,fieldnames)
     
     if doc_type=="pdf":
