@@ -1193,7 +1193,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         # ws1['B2'] = ""
         ws4['B3'] = ""
         ws4['B4'] = project.name
-        ws4['B5'] = "Manitenance Report with Photograph"
+        ws4['B5'] = "Manitenance Report without Photograph"
        
         ws4['B6'] = asset if asset else "All"
         ws4['B7'] = performance if performance else "All"
@@ -1266,7 +1266,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         # ws1['B2'] = ""
         ws3['B3'] = ""
         ws3['B4'] = project.name
-        ws3['B5'] = "Manitenance Report with Photograph"
+        ws3['B5'] = "Test and Investigation Report"
        
         ws3['B6'] = asset if asset else "All"
         ws3['B7'] = performance if performance else "All"
@@ -1318,7 +1318,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         # ws1['B2'] = ""
         ws6['B3'] = ""
         ws6['B4'] = project.name
-        ws6['B5'] = "Manitenance Report with Photograph"
+        ws6['B5'] = "Test and Investigation Report"
        
         ws6['B6'] = asset if asset else "All"
         ws6['B7'] = performance if performance else "All"
@@ -1373,7 +1373,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         # ws1['B2'] = ""
         ws4['B3'] = ""
         ws4['B4'] = project.name
-        ws4['B5'] = "Manitenance Report with Photograph"
+        ws4['B5'] = "Summary of Accident Report"
        
         ws4['B6'] = asset if asset else "All"
         ws4['B7'] = performance if performance else "All"
