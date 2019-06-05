@@ -993,10 +993,10 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
-        # ws1['B1'] = "Administrator"
-        # ws1['B2'] = "admin@gmail.com"
-        ws1['B1'] = user.full_name
-        ws1['B2'] = user.email
+        ws1['B1'] = "Administrator"
+        ws1['B2'] = "admin@gmail.com"
+        # ws1['B1'] = ""
+        # ws1['B2'] = ""
         ws1['B3'] = ""
         ws1['B4'] = project.name
         ws1['B5'] = "Inspection Report with Photograph"
