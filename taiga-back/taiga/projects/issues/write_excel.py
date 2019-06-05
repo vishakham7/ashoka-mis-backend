@@ -1469,7 +1469,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         n1.value = "f"
         n1 = ws8.cell(row=12,column=10)
         n1.value = "g"
-        n1 = ws8.cell(row=12,column=12)
+        n1 = ws8.cell(row=12,column=11)
         n1.value = "h"
 
         ws8.merge_cells('M12:P12')
