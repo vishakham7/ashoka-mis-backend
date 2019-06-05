@@ -628,6 +628,10 @@ class IssueViewSet(
 
         project = get_object_or_404(Project, issues_csv_uuid=uuid)
 
+        user = User.objects.get(pk=request.user.id)
+        print(self)
+        print(request)
+        # user._cached_liked_ids()
         # print(project.roles.filter(project=project))
         # print("-------------------------")
         # # print(project.owner)
@@ -656,7 +660,7 @@ class IssueViewSet(
             queryset = project.issues.filter(type__name=type,created_date__date__range=[start_date, end_date]).order_by('ref')
         
 
-        data = write_excel.write_excel(request, project, queryset, type, status, start_date, end_date,asset,performance,photo,doc_type,name,accident_report_type)
+        data = write_excel.write_excel(self,request, project, queryset, type, status, start_date, end_date,asset,performance,photo,doc_type,name,accident_report_type)
         
 
         if doc_type=="excel":

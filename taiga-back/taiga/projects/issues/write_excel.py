@@ -952,16 +952,16 @@ def accident_detail(ws,fieldnames):
 
                             
 
-def write_excel(request, project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name,accident_report_type):
+def write_excel(self,request, project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name,accident_report_type):
 
     # role = Membership.objects.get(user=request.user, project=project)
     # print("-------------------------")
-    # print(request.user.id)
-    # user = ""
-    # u = User.objects.filter(pk=request.user.id)
-    # if u:
-    #     user = User.objects.get(pk=request.user.id)
-    
+    user_id = self.request.user.id
+    user = ""
+    u = User.objects.filter(id=user_id)
+    if u:
+        user = User.objects.get(id=user_id)
+    print(user.full_name)
     wb = Workbook()
     ws1 = wb.active
     ws2 = wb.active
@@ -993,10 +993,10 @@ def write_excel(request, project, queryset, type, status,start_date, end_date,as
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
-        ws1['B1'] = "Administrator"
-        ws1['B2'] = "admin@gmail.com"
-        # ws1['B1'] = ""
-        # ws1['B2'] = ""
+        # ws1['B1'] = "Administrator"
+        # ws1['B2'] = "admin@gmail.com"
+        ws1['B1'] = user.full_name
+        ws1['B2'] = user.email
         ws1['B3'] = ""
         ws1['B4'] = project.name
         ws1['B5'] = "Inspection Report with Photograph"
