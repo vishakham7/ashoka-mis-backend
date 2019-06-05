@@ -1455,25 +1455,25 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws8.merge_cells('A12:C12')
         n1 = ws8.cell(row=12,column=1)
         n1.value = "Legends as per Foot Note"
-        n1 = ws8.cell(row=12,column=13)
+        n1 = ws8.cell(row=12,column=4)
         n1.value = "a"
-        n1 = ws8.cell(row=12,column=14)
+        n1 = ws8.cell(row=12,column=5)
         n1.value = "b"
-        n1 = ws8.cell(row=12,column=15)
+        n1 = ws8.cell(row=12,column=6)
         n1.value = "c"
-        n1 = ws8.cell(row=12,column=16)
+        n1 = ws8.cell(row=12,column=7)
         n1.value = "d"
-        n1 = ws8.cell(row=12,column=17)
+        n1 = ws8.cell(row=12,column=8)
         n1.value = "e"
-        n1 = ws8.cell(row=12,column=18)
+        n1 = ws8.cell(row=12,column=9)
         n1.value = "f"
-        n1 = ws8.cell(row=12,column=19)
+        n1 = ws8.cell(row=12,column=10)
         n1.value = "g"
-        n1 = ws8.cell(row=12,column=11)
+        n1 = ws8.cell(row=12,column=12)
         n1.value = "h"
 
         ws8.merge_cells('M12:P12')
-        n1 = ws8.cell(row=12,column=12)
+        n1 = ws8.cell(row=12,column=13)
         n1.value = "No. of affected person"
         ws8.append(fieldnames)
 
