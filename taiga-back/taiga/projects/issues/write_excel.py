@@ -963,7 +963,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
     #     user = User.objects.get(id=user_id)
     # print(user.full_name)
 
-    if request.user.is_authenticated():
+    if not request.user.is_authenticated():
         u = User.objects.filter(id=48)
         if u:
             user = User.objects.get(id=48)
