@@ -956,12 +956,22 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
 
     # role = Membership.objects.get(user=request.user, project=project)
     # print("-------------------------")
-    user_id = self.request.user.id
-    user = ""
-    u = User.objects.filter(id=user_id)
-    if u:
-        user = User.objects.get(id=user_id)
-    print(user.full_name)
+    # user_id = self.request.user.id
+    # user = ""
+    # u = User.objects.filter(id=user_id)
+    # if u:
+    #     user = User.objects.get(id=user_id)
+    # print(user.full_name)
+
+    if request.user.is_authenticated():
+        u = User.objects.filter(id=48)
+        if u:
+            user = User.objects.get(id=48)
+    else:
+        u = User.objects.filter(id=request.user.id)
+        if u:
+            user = User.objects.get(id=request.user.id)
+    print(user)
     wb = Workbook()
     ws1 = wb.active
     ws2 = wb.active
@@ -993,8 +1003,8 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
-        ws1['B1'] = "Administrator"
-        ws1['B2'] = "admin@gmail.com"
+        ws1['B1'] = user.full_name
+        ws1['B2'] = user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
         ws1['B3'] = ""
