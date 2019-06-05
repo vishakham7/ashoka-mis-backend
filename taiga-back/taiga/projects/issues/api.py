@@ -637,7 +637,7 @@ class IssueViewSet(
                     queryset = project.issues.filter(asset_name=asset,test_name=performance,type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
                 else:
                     queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
-        if asset:
+        elif asset and not performance:
             if status:
                 queryset = project.issues.filter(issue_category=asset,type__name=type,status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
 
