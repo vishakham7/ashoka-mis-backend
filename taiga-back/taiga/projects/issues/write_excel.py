@@ -972,7 +972,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         u = User.objects.filter(id=request.user.id)
         if u:
             user = User.objects.get(id=request.user.id)
-            # role = Membership.objects.get(user=request.user, project=project)
+           
     
     wb = Workbook()
     ws1 = wb.active
@@ -1261,7 +1261,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         # ws1['A2'] = "Project Name"
 
         ws3['B1'] = user.full_name
-        ws3['B2'] = uer.email
+        ws3['B2'] = user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
         ws3['B3'] = ""
