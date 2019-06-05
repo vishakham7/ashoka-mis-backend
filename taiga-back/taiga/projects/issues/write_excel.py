@@ -1439,11 +1439,11 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         n7 = ws8.cell(row=7,column=1)
         n7.value = "f. 1. Straight road, 2. Slight Curve, 3. Curve, 4. Flat Road, 5. Gentle incline, 6. Steep incline, 7. Hump, 8. Dip"
 
-        ws8.merge_cells('A7:H7')
+        ws8.merge_cells('A8:H8')
         n8 = ws8.cell(row=8,column=1)
         n8.value = "g. 1. T-junction, 2. Y-junction, 3. Four arm junction, 4. Staggered junction, 5. Junction with more than 4 arms, 6. Round about junction, 7. Manned Rail crossing. 9. Unmanned Rail crossing"
 
-        ws8.merge_cells('A8:H8')
+        ws8.merge_cells('A9:H9')
         n9 = ws8.cell(row=9,column=1)
         n9.value = "h. 1. Fine, 2. Mist/Fog, 3. Cloudy, 4-Light rain, 5. Heavy rain, 6. Hail/sleet, 7. Snow, 8. Strong Wind, 9. Dust Storm, 10. Very Hot, 11. Very Cold, 12. Other extraordinary weather condition."
        
