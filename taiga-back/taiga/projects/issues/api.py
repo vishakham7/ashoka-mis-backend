@@ -628,16 +628,6 @@ class IssueViewSet(
 
         project = get_object_or_404(Project, issues_csv_uuid=uuid)
 
-        user = User.objects.get(pk=request.user.id)
-        print(self)
-        print(request)
-        # user._cached_liked_ids()
-        # print(project.roles.filter(project=project))
-        # print("-------------------------")
-        # # print(project.owner)
-        # owner_membership = Membership.objects.get(user=request.user,project=project)
-        
-        # print(owner_membership.role.slug)
         if asset and performance:
             if status:
                 queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type,status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
