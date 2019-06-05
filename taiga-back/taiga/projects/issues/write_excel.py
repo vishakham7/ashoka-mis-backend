@@ -967,14 +967,13 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         u = User.objects.filter(id=48)
         if u:
             user = User.objects.get(id=48)
-            role = "Admin"
+           
     else:
         u = User.objects.filter(id=request.user.id)
         if u:
             user = User.objects.get(id=request.user.id)
             # role = Membership.objects.get(user=request.user, project=project)
-    print(role.role.slug)
-    print(user)
+    
     wb = Workbook()
     ws1 = wb.active
     ws2 = wb.active
