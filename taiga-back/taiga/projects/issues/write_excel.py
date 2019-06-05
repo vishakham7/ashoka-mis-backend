@@ -1361,9 +1361,9 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws4['A3'] = "Role:"
         ws4['A4'] = "Project Name:"
         ws4['A5'] = "Report Name:"
-        ws4['A6'] = "Asset Type:"
-        ws4['A7'] = "Performance Parameter:"
-        ws4['A8'] = "From Date: "+start_date
+        ws4['A6'] = "From Date: "+start_date
+        ws4['A7'] = ""
+        ws4['A8'] = ""
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
@@ -1375,9 +1375,9 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws4['B4'] = project.name
         ws4['B5'] = "Summary of Accident Report"
        
-        ws4['B6'] = asset if asset else "All"
-        ws4['B7'] = performance if performance else "All"
-        ws4['B8'] = "To Date: "+end_date
+        ws4['B6'] = "To Date: "+end_date
+        ws4['B7'] = ""
+        ws4['B8'] = ""
 
         fieldnames = ["Ref.No.", "Description","Up to previous month","","During this month","",
                         "Up to this month", ""]
