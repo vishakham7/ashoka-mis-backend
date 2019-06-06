@@ -630,24 +630,24 @@ class IssueViewSet(
 
         if asset and performance:
             if status:
-                queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type,status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
+                queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type,status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('created_date')
 
             else:
                 if type=="Investigation":
-                    queryset = project.issues.filter(asset_name=asset,test_name=performance,type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
+                    queryset = project.issues.filter(asset_name=asset,test_name=performance,type__name=type, created_date__date__range=[start_date, end_date]).order_by('created_date')
                 else:
-                    queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
+                    queryset = project.issues.filter(issue_category=asset,issue_subcategory=performance,type__name=type, created_date__date__range=[start_date, end_date]).order_by('created_date')
         elif asset and not performance:
             if status:
-                queryset = project.issues.filter(issue_category=asset,type__name=type,status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('ref')
+                queryset = project.issues.filter(issue_category=asset,type__name=type,status__id__in=status, created_date__date__range=[start_date, end_date]).order_by('created_date')
 
             else:
                 if type=="Investigation":
-                    queryset = project.issues.filter(asset_name=asset,type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
+                    queryset = project.issues.filter(asset_name=asset,type__name=type, created_date__date__range=[start_date, end_date]).order_by('created_date')
                 else:
-                    queryset = project.issues.filter(issue_category=asset,type__name=type, created_date__date__range=[start_date, end_date]).order_by('ref')
+                    queryset = project.issues.filter(issue_category=asset,type__name=type, created_date__date__range=[start_date, end_date]).order_by('created_date')
         else:
-            queryset = project.issues.filter(type__name=type,created_date__date__range=[start_date, end_date]).order_by('ref')
+            queryset = project.issues.filter(type__name=type,created_date__date__range=[start_date, end_date]).order_by('created_date')
         
 
         data = write_excel.write_excel(self,request, project, queryset, type, status, start_date, end_date,asset,performance,photo,doc_type,name,accident_report_type)
