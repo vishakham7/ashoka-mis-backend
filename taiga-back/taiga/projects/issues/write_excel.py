@@ -1021,7 +1021,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         u = User.objects.filter(id=request.user.id)
         if u:
             user = User.objects.get(id=request.user.id)
-           
+
     
     wb = Workbook()
     ws1 = wb.active
@@ -1058,7 +1058,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws1['B2'] = user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws1['B3'] = "Admin" if user.custom_role==1 else "User"
+        ws1['B3'] = "Admin" if user.custom_role=="1" else "User"
         ws1['B4'] = project.name
         ws1['B5'] = "Inspection Report with Photograph"
        
@@ -1111,7 +1111,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws1['B2'] = user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws5['B3'] = "Admin" if user.custom_role==1 else "User"
+        ws5['B3'] = "Admin" if user.custom_role=="1" else "User"
         ws5['B4'] = project.name
         ws5['B5'] = "Inspection Report without Photograph"
        
@@ -1165,7 +1165,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws2['B2'] = user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws2['B3'] = "Admin" if user.custom_role==1 else "User"
+        ws2['B3'] = "Admin" if user.custom_role=="1" else "User"
         ws2['B4'] = project.name
         ws2['B5'] = "Manitenance Report with Photograph"
        
@@ -1240,7 +1240,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws4['B2'] = user.full_name
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws4['B3'] = "Admin" if user.custom_role==1 else "User"
+        ws4['B3'] = "Admin" if user.custom_role=="1" else "User"
         ws4['B4'] = project.name
         ws4['B5'] = "Manitenance Report without Photograph"
        
@@ -1313,7 +1313,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws3['B2'] = user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws3['B3'] = "Admin" if user.custom_role==1 else "User"
+        ws3['B3'] = "Admin" if user.custom_role=="1" else "User"
         ws3['B4'] = project.name
         ws3['B5'] = "Test and Investigation Report"
        
@@ -1365,7 +1365,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws6['B2'] = user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws6['B3'] = "Admin" if user.custom_role==1 else "User"
+        ws6['B3'] = "Admin" if user.custom_role=="1" else "User"
         ws6['B4'] = project.name
         ws6['B5'] = "Test and Investigation Report"
        
@@ -1403,7 +1403,9 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
 
 
     if type == 'Accident' and accident_report_type== "Summary":
-       
+        # print(user.full_name)
+        # print(user.custom_role)
+        # print("Admin" if user.custom_role=="1" else "User")
         ws4.title = "Summary of Accident"
         ws4['A1'] = "User Name:"
         ws4['A2'] = "User Id:"
@@ -1420,7 +1422,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws4['B2'] = user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws4['B3'] = "Admin" if user.custom_role==1 else "User"
+        ws4['B3'] = "Admin" if user.custom_role=="1" else "User"
         ws4['B4'] = project.name
         ws4['B5'] = "Summary of Accident Report"
        
@@ -1451,6 +1453,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         n2.value = "No of Peoples affected"
     
     if type == 'Accident' and accident_report_type== "Detail":
+        
         ws8.title = "Detail of Accident"
         
         fieldnames = ["Sr. No","Date","Time of Accident","Accident Location","Nature of Accident",
