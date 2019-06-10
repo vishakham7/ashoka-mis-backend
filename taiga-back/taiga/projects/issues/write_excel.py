@@ -874,10 +874,10 @@ def accident_detail(ws,fieldnames):
                 strike=False,
                 color='696969')
     border = Border(
-            left=Side(border_style=BORDER_MEDIUM, color='FF000000'),
-            right=Side(border_style=BORDER_MEDIUM, color='FF000000'),
-            top=Side(border_style=BORDER_MEDIUM, color='FF000000'),
-            bottom=Side(border_style=BORDER_MEDIUM, color='FF000000')
+            left=Side(border_style=BORDER_THIN, color='FF000000'),
+            right=Side(border_style=BORDER_THIN, color='FF000000'),
+            top=Side(border_style=BORDER_THIN, color='FF000000'),
+            bottom=Side(border_style=BORDER_THIN, color='FF000000')
         )
     fill=PatternFill(start_color = '00C0C0C0',
             end_color = '00C0C0C0',
@@ -886,7 +886,7 @@ def accident_detail(ws,fieldnames):
 
     row_count = ws.max_row
     column_count = ws.max_column
-    for cell in ws['1:1']:
+    for cell in ws['9:9']:
         cell.font = font
 
     # for cell2 in ws['9:9']:
@@ -894,21 +894,7 @@ def accident_detail(ws,fieldnames):
     #     cell2.font = font
 
     
-    # for cell3 in ws['6:6']:
-    #     cell3.alignment = Alignment(horizontal='left',)
-
-    # for cell3 in ws['6:6']:
-    #     cell3.alignment = Alignment(horizontal='left',)
-    # for cell3 in ws['6:6']:
-    #     cell3.alignment = Alignment(horizontal='left',)
-    # for cell3 in ws['6:6']:
-    #     cell3.alignment = Alignment(horizontal='left',)
-    # for cell3 in ws['6:6']:
-    #     cell3.alignment = Alignment(horizontal='left',)
-    # for cell3 in ws['6:6']:
-    #     cell3.alignment = Alignment(horizontal='left',)
-    # for cell3 in ws['6:6']:
-    #     cell3.alignment = Alignment(horizontal='left',)
+   
 
     
     
@@ -958,10 +944,29 @@ def accident_footnote(ws, count):
     
     max_row = c[0]+3
     row = max_row+1
-    print("===========row===========")
-    print(row)
+    
 
+    for cell3 in ws[row+1:row+1]:
+        cell3.alignment = Alignment(horizontal='left',)
 
+    for cell3 in ws[row+2:row+2]:
+        cell3.alignment = Alignment(horizontal='left',)
+    for cell3 in ws[row+3:row+3]:
+        cell3.alignment = Alignment(horizontal='left',)
+    for cell3 in ws[row+4:row+4]:
+        cell3.alignment = Alignment(horizontal='left',)
+    for cell3 in ws[row+5:row+5]:
+        cell3.alignment = Alignment(horizontal='left',)
+    for cell3 in ws[row+6:row+6]:
+        cell3.alignment = Alignment(horizontal='left',)
+    for cell3 in ws[row+7:row+7]:
+        cell3.alignment = Alignment(horizontal='left',)
+    for cell3 in ws[row+8:row+8]:
+        cell3.alignment = Alignment(horizontal='left',)
+    for cell3 in ws[row+9:row+9]:
+        cell3.alignment = Alignment(horizontal='left',)
+
+    
 
 
     n1 = ws.cell(row=row+1,column=1)
@@ -1455,7 +1460,29 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
     if type == 'Accident' and accident_report_type== "Detail":
         
         ws8.title = "Detail of Accident"
-        
+        ws8['A1'] = "User Name:"
+        ws8['A2'] = "User Id:"
+        ws8['A3'] = "Role:"
+        ws8['A4'] = "Project Name:"
+        ws8['A5'] = "Report Name:"
+        ws8['A6'] = "From Date: "+start_date
+        ws8['A7'] = ""
+        ws8['A8'] = ""
+        # ws1['A1'] = "Inspection Report with Photogragh"
+        # ws1['A2'] = "Project Name"
+
+        ws8['B1'] = user.full_name
+        ws8['B2'] = user.email
+        # ws1['B1'] = ""
+        # ws1['B2'] = ""
+        ws8['B3'] = "Admin" if user.custom_role=="1" else "User"
+        ws8['B4'] = project.name
+        ws8['B5'] = "Summary of Accident Report"
+       
+        ws8['B6'] = "To Date: "+end_date
+        ws8['B7'] = ""
+        ws8['B8'] = ""
+
         fieldnames = ["Sr. No","Date","Time of Accident","Accident Location","Nature of Accident",
                         "Classification of Accident","Causes","Road Feature","Road Condition",
                         "Intersection type and control","Weather Condition","Vehicle Responsible",
@@ -1463,31 +1490,31 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
                         "Help provided by Ambulance/ RPV/ Crane"]
 
         
-        ws8.merge_cells('A1:R1')
-        n2 = ws8.cell(row=1,column=1)
+        ws8.merge_cells('A9:R9')
+        n2 = ws8.cell(row=9,column=1)
         n2.value = "ACCIDENT DATA FROM "+start_date+" TO "+end_date
-        ws8.merge_cells('A2:C2')
-        n1 = ws8.cell(row=2,column=1)
+        ws8.merge_cells('A10:C10')
+        n1 = ws8.cell(row=10,column=1)
         n1.value = "Legends as per Foot Note"
-        n1 = ws8.cell(row=2,column=4)
+        n1 = ws8.cell(row=10,column=4)
         n1.value = "a"
-        n1 = ws8.cell(row=2,column=5)
+        n1 = ws8.cell(row=10,column=5)
         n1.value = "b"
-        n1 = ws8.cell(row=2,column=6)
+        n1 = ws8.cell(row=10,column=6)
         n1.value = "c"
-        n1 = ws8.cell(row=2,column=7)
+        n1 = ws8.cell(row=10,column=7)
         n1.value = "d"
-        n1 = ws8.cell(row=2,column=8)
+        n1 = ws8.cell(row=10,column=8)
         n1.value = "e"
-        n1 = ws8.cell(row=2,column=9)
+        n1 = ws8.cell(row=10,column=9)
         n1.value = "f"
-        n1 = ws8.cell(row=2,column=10)
+        n1 = ws8.cell(row=10,column=10)
         n1.value = "g"
-        n1 = ws8.cell(row=2,column=11)
+        n1 = ws8.cell(row=10,column=11)
         n1.value = "h"
 
-        ws8.merge_cells('M2:P2')
-        n1 = ws8.cell(row=2,column=13)
+        ws8.merge_cells('M10:P10')
+        n1 = ws8.cell(row=10,column=13)
         n1.value = "No. of affected person"
         ws8.append(fieldnames)
 
@@ -1937,16 +1964,17 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         accident_footnote(ws8, count)
        
     if doc_type=="pdf":
-        new = pd.read_excel('table.xlsx',na_filter=False,header=None, names="",skip = 0)
+        new = pd.read_excel('table.xlsx',na_filter=False,index=False,header=None, names="",skip = 0)
     
         # for i in wwww:
         #  
+        print(new['Legends as per Foot Note'])
         pd.set_option('display.max_colwidth', 500)   # FOR TABLE <th>
 
-        html = new.to_html(escape=False,index=False,header=False).replace('&lt;','<').replace('&gt;', '>').replace(r'\n', '<br>').replace('table','table style="border-collapse: collapse"')
+        html = new.to_html(escape=False,index=False,header=False).replace('&lt;','<').replace('&gt;', '>').replace(r'\n', '<br>').replace('table','table style="border-collapse: collapse"').replace('tr','tr style="text-align: center;"')
         pisa_context = pisa.CreatePDF(html)
         response = pisa_context.dest.getvalue()
-        # print(html)
+        print(html)
         return html
         # return response
 
