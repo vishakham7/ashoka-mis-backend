@@ -13,7 +13,7 @@ from taiga.projects.votes.utils import attach_total_voters_to_queryset
 from taiga.projects.notifications.utils import attach_watchers_to_queryset
 from datetime import date, datetime, timedelta
 from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font
-from openpyxl.styles.borders import Border, Side, BORDER_THIN
+from openpyxl.styles.borders import Border, Side, BORDER_THIN, BORDER_THICK, BORDER_MEDIUM
 from openpyxl.utils import get_column_letter
 import pandas as pd
 from openpyxl.writer.excel import save_virtual_workbook
@@ -874,10 +874,10 @@ def accident_detail(ws,fieldnames):
                 strike=False,
                 color='696969')
     border = Border(
-            left=Side(border_style=BORDER_THIN, color='FF000000'),
-            right=Side(border_style=BORDER_THIN, color='FF000000'),
-            top=Side(border_style=BORDER_THIN, color='FF000000'),
-            bottom=Side(border_style=BORDER_THIN, color='FF000000')
+            left=Side(border_style=BORDER_MEDIUM, color='FF000000'),
+            right=Side(border_style=BORDER_MEDIUM, color='FF000000'),
+            top=Side(border_style=BORDER_MEDIUM, color='FF000000'),
+            bottom=Side(border_style=BORDER_MEDIUM, color='FF000000')
         )
     fill=PatternFill(start_color = '00C0C0C0',
             end_color = '00C0C0C0',
@@ -918,25 +918,25 @@ def accident_detail(ws,fieldnames):
             cell1.alignment = Alignment(wrap_text=True, horizontal='center', vertical='center')
     
 
-    for cell3 in ws['1:1']:
-        cell3.alignment = Alignment(horizontal='left',)
-    for cell3 in ws['2:2']:
-        cell3.alignment = Alignment(horizontal='left',)
+    # for cell3 in ws['1:1']:
+    #     cell3.alignment = Alignment(horizontal='left',)
+    # for cell3 in ws['2:2']:
+    #     cell3.alignment = Alignment(horizontal='left',)
     
-    for cell3 in ws['3:3']:
-        cell3.alignment = Alignment(horizontal='left',)
-    for cell3 in ws['4:4']:
-        cell3.alignment = Alignment(horizontal='left',)
-    for cell3 in ws['5:5']:
-        cell3.alignment = Alignment(horizontal='left',)
-    for cell3 in ws['6:6']:
-        cell3.alignment = Alignment(horizontal='left',)
-    for cell3 in ws['7:7']:
-        cell3.alignment = Alignment(horizontal='left',)
-    for cell3 in ws['8:8']:
-        cell3.alignment = Alignment(horizontal='left',)
-    for cell3 in ws['9:9']:
-        cell3.alignment = Alignment(horizontal='left',)
+    # for cell3 in ws['3:3']:
+    #     cell3.alignment = Alignment(horizontal='left',)
+    # for cell3 in ws['4:4']:
+    #     cell3.alignment = Alignment(horizontal='left',)
+    # for cell3 in ws['5:5']:
+    #     cell3.alignment = Alignment(horizontal='left',)
+    # for cell3 in ws['6:6']:
+    #     cell3.alignment = Alignment(horizontal='left',)
+    # for cell3 in ws['7:7']:
+    #     cell3.alignment = Alignment(horizontal='left',)
+    # for cell3 in ws['8:8']:
+    #     cell3.alignment = Alignment(horizontal='left',)
+    # for cell3 in ws['9:9']:
+    #     cell3.alignment = Alignment(horizontal='left',)
 
     column_widths = []
     for row in fieldnames:
@@ -949,8 +949,57 @@ def accident_detail(ws,fieldnames):
         for i, column_width in enumerate(column_widths):
             ws.column_dimensions[get_column_letter(i+1)].width = column_width
 
+def accident_footnote(ws, count):
+    max_row = count+3
+    row = max_row+1
 
-                            
+    c = []
+    c.append(count)
+    
+    max_row = c[0]+3
+    row = max_row+1
+    print("===========row===========")
+    print(row)
+
+
+
+
+    n1 = ws.cell(row=row+1,column=1)
+    n1.value = "Foot Note"
+
+    ws.merge_cells('A'+str(row+2)+':H'+str(row+2)+'')
+    n2 = ws.cell(row=row+2,column=1)
+    n2.value = "a. Urban/Rural and Details of surrounding Land use."
+
+    ws.merge_cells('A'+str(row+3)+':H'+str(row+3)+'')
+    n3 = ws.cell(row=row+3,column=1)
+    n3.value = "b. 1. Over turning. 2. Head on collision 3. Rear End collision 4. Collision Brush/Side Wipe. 5. Left Turn collision. 6. Skidding 7. Right Turn Collision 8. Others (Pl. Specific)"
+
+    ws.merge_cells('A'+str(row+4)+':H'+str(row+4)+'')
+    n4 = ws.cell(row=row+4,column=1)
+    n4.value = "c. 1. Fatal. 2. Grievous Injury 3. Minor Injured. 4. Non-Injury."
+
+    ws.merge_cells('A'+str(row+5)+':H'+str(row+5)+'')
+    n5 = ws.cell(row=row+5,column=1)
+    n5.value = "d. 1. Drunken driving, 2. Over speeding, 3. Vehicle out of control, 4. Fault of driver of motor vehicle/cyclist/pedestrian/passenger, 5. Defect in mechanical /electrical condition of motor vehicle, 6. Wrong side driving, 7. Tyre bust, 8. Rain, 9. Poor visibility(fog/dust) 10. Poor Road condition 11. Others (specify)"
+
+    ws.merge_cells('A'+str(row+6)+':H'+str(row+6)+'')
+    n6 = ws.cell(row=row+6,column=1)
+    n6.value = "e. 1. Single lane, 2. Two lanes, 3. Three lanes or more without central divider (median), 4. Four lanes or more with central divider."
+
+    ws.merge_cells('A'+str(row+7)+':H'+str(row+7)+'')
+    n7 = ws.cell(row=row+7,column=1)
+    n7.value = "f. 1. Straight road, 2. Slight Curve, 3. Curve, 4. Flat Road, 5. Gentle incline, 6. Steep incline, 7. Hump, 8. Dip"
+
+    ws.merge_cells('A'+str(row+8)+':H'+str(row+8)+'')
+    n8 = ws.cell(row=row+8,column=1)
+    n8.value = "g. 1. T-junction, 2. Y-junction, 3. Four arm junction, 4. Staggered junction, 5. Junction with more than 4 arms, 6. Round about junction, 7. Manned Rail crossing. 9. Unmanned Rail crossing"
+
+    ws.merge_cells('A'+str(row+9)+':H'+str(row+9)+'')
+    n9 = ws.cell(row=row+9,column=1)
+    n9.value = "h. 1. Fine, 2. Mist/Fog, 3. Cloudy, 4-Light rain, 5. Heavy rain, 6. Hail/sleet, 7. Snow, 8. Strong Wind, 9. Dust Storm, 10. Very Hot, 11. Very Cold, 12. Other extraordinary weather condition."
+   
+    
 
 def write_excel(self,request, project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name,accident_report_type):
 
@@ -1009,7 +1058,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws1['B2'] = user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws1['B3'] = ""
+        ws1['B3'] = "Admin" if user.custom_role==1 else "User"
         ws1['B4'] = project.name
         ws1['B5'] = "Inspection Report with Photograph"
        
@@ -1062,7 +1111,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws1['B2'] = user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws5['B3'] = ""
+        ws5['B3'] = "Admin" if user.custom_role==1 else "User"
         ws5['B4'] = project.name
         ws5['B5'] = "Inspection Report without Photograph"
        
@@ -1116,7 +1165,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws2['B2'] = user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws2['B3'] = ""
+        ws2['B3'] = "Admin" if user.custom_role==1 else "User"
         ws2['B4'] = project.name
         ws2['B5'] = "Manitenance Report with Photograph"
        
@@ -1191,7 +1240,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws4['B2'] = user.full_name
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws4['B3'] = ""
+        ws4['B3'] = "Admin" if user.custom_role==1 else "User"
         ws4['B4'] = project.name
         ws4['B5'] = "Manitenance Report without Photograph"
        
@@ -1264,7 +1313,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws3['B2'] = user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws3['B3'] = ""
+        ws3['B3'] = "Admin" if user.custom_role==1 else "User"
         ws3['B4'] = project.name
         ws3['B5'] = "Test and Investigation Report"
        
@@ -1316,7 +1365,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws6['B2'] = user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws6['B3'] = ""
+        ws6['B3'] = "Admin" if user.custom_role==1 else "User"
         ws6['B4'] = project.name
         ws6['B5'] = "Test and Investigation Report"
        
@@ -1371,7 +1420,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws4['B2'] = user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws4['B3'] = ""
+        ws4['B3'] = "Admin" if user.custom_role==1 else "User"
         ws4['B4'] = project.name
         ws4['B5'] = "Summary of Accident Report"
        
@@ -1410,70 +1459,32 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
                         "Fatal","Grievous","Minor","Non Injured","No. of Animals killed if any",
                         "Help provided by Ambulance/ RPV/ Crane"]
 
-
-
-        n1 = ws8.cell(row=1,column=1)
-        n1.value = "Foot Note"
-
-        ws8.merge_cells('A2:H2')
-        n2 = ws8.cell(row=2,column=1)
-        n2.value = "a. Urban/Rural and Details of surrounding Land use."
-
-        ws8.merge_cells('A3:H3')
-        n3 = ws8.cell(row=3,column=1)
-        n3.value = "b. 1. Over turning. 2. Head on collision 3. Rear End collision 4. Collision Brush/Side Wipe. 5. Left Turn collision. 6. Skidding 7. Right Turn Collision 8. Others (Pl. Specific)"
-
-        ws8.merge_cells('A4:H4')
-        n4 = ws8.cell(row=4,column=1)
-        n4.value = "c. 1. Fatal. 2. Grievous Injury 3. Minor Injured. 4. Non-Injury."
-
-        ws8.merge_cells('A5:H5')
-        n5 = ws8.cell(row=5,column=1)
-        n5.value = "d. 1. Drunken driving, 2. Over speeding, 3. Vehicle out of control, 4. Fault of driver of motor vehicle/cyclist/pedestrian/passenger, 5. Defect in mechanical /electrical condition of motor vehicle, 6. Wrong side driving, 7. Tyre bust, 8. Rain, 9. Poor visibility(fog/dust) 10. Poor Road condition 11. Others (specify)"
-
-        ws8.merge_cells('A6:H6')
-        n6 = ws8.cell(row=6,column=1)
-        n6.value = "e. 1. Single lane, 2. Two lanes, 3. Three lanes or more without central divider (median), 4. Four lanes or more with central divider."
-
-        ws8.merge_cells('A7:H7')
-        n7 = ws8.cell(row=7,column=1)
-        n7.value = "f. 1. Straight road, 2. Slight Curve, 3. Curve, 4. Flat Road, 5. Gentle incline, 6. Steep incline, 7. Hump, 8. Dip"
-
-        ws8.merge_cells('A8:H8')
-        n8 = ws8.cell(row=8,column=1)
-        n8.value = "g. 1. T-junction, 2. Y-junction, 3. Four arm junction, 4. Staggered junction, 5. Junction with more than 4 arms, 6. Round about junction, 7. Manned Rail crossing. 9. Unmanned Rail crossing"
-
-        ws8.merge_cells('A9:H9')
-        n9 = ws8.cell(row=9,column=1)
-        n9.value = "h. 1. Fine, 2. Mist/Fog, 3. Cloudy, 4-Light rain, 5. Heavy rain, 6. Hail/sleet, 7. Snow, 8. Strong Wind, 9. Dust Storm, 10. Very Hot, 11. Very Cold, 12. Other extraordinary weather condition."
-       
-        ws8.merge_cells('A11:R11')
-        n2 = ws8.cell(row=11,column=1)
-        n2.value = "ACCIDENT DATA FROM "+start_date+" TO "+end_date
         
-
-        ws8.merge_cells('A12:C12')
-        n1 = ws8.cell(row=12,column=1)
+        ws8.merge_cells('A1:R1')
+        n2 = ws8.cell(row=1,column=1)
+        n2.value = "ACCIDENT DATA FROM "+start_date+" TO "+end_date
+        ws8.merge_cells('A2:C2')
+        n1 = ws8.cell(row=2,column=1)
         n1.value = "Legends as per Foot Note"
-        n1 = ws8.cell(row=12,column=4)
+        n1 = ws8.cell(row=2,column=4)
         n1.value = "a"
-        n1 = ws8.cell(row=12,column=5)
+        n1 = ws8.cell(row=2,column=5)
         n1.value = "b"
-        n1 = ws8.cell(row=12,column=6)
+        n1 = ws8.cell(row=2,column=6)
         n1.value = "c"
-        n1 = ws8.cell(row=12,column=7)
+        n1 = ws8.cell(row=2,column=7)
         n1.value = "d"
-        n1 = ws8.cell(row=12,column=8)
+        n1 = ws8.cell(row=2,column=8)
         n1.value = "e"
-        n1 = ws8.cell(row=12,column=9)
+        n1 = ws8.cell(row=2,column=9)
         n1.value = "f"
-        n1 = ws8.cell(row=12,column=10)
+        n1 = ws8.cell(row=2,column=10)
         n1.value = "g"
-        n1 = ws8.cell(row=12,column=11)
+        n1 = ws8.cell(row=2,column=11)
         n1.value = "h"
 
-        ws8.merge_cells('M12:P12')
-        n1 = ws8.cell(row=12,column=13)
+        ws8.merge_cells('M2:P2')
+        n1 = ws8.cell(row=2,column=13)
         n1.value = "No. of affected person"
         ws8.append(fieldnames)
 
@@ -1883,7 +1894,6 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
                     if i:
                         new_list_current.append(int(i))
 
-            print(count)        
             issue_data = [[
                count,
                issue.accident_date,
@@ -1917,8 +1927,12 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             wb = load_workbook('table.xlsx')
         
             ws8 = wb['Detail of Accident']
+        
+
             accident_detail(ws8,fieldnames)
-    
+    if type =="Accident" and accident_report_type=="Detail":
+        accident_footnote(ws8, count)
+       
     if doc_type=="pdf":
         new = pd.read_excel('table.xlsx',na_filter=False,header=None, names="",skip = 0)
     

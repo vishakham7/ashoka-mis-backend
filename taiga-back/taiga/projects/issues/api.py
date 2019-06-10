@@ -151,29 +151,36 @@ def dashboard_graph_data(request, project_id=None):
     #         "month": "Jan",
     #         "count": 0
     #     })
+
+
     dummy_list_new = []
+    new_list = []
     if issue_identified_months:
         for i in new1:
             for month in issue_identified_months:
                 # if i not in issue_closed_months_list:
-                if month['month'].strftime("%b")==i and i not in dummy_list_new:
-                   
+                if month['month'].strftime("%b")==i:
+                    print("==============================")
+                    print(month['month'].strftime("%b"))
+                    print(i)
+                    print(month['month'].strftime("%b")==i)
                     issue_identified_months_list.append({
                         "month": month['month'].strftime("%b"),
                         "count": month['num_issues']
                     })
+
                     
                     dummy_list_new.append(i)
-                else:
 
-                    if i not in dummy_list_new:
+            if i not in dummy_list_new:
+                # print(month['month'].strftime("%b"))
+                # print(i)
+                issue_identified_months_list.append({
+                    "month": i,
+                    "count": 0
+                })
 
-                        issue_identified_months_list.append({
-                            "month": i,
-                            "count": 0
-                        })
 
-                        dummy_list_new.append(i)
     else:
         for i in new1:
             issue_identified_months_list.append({
@@ -181,9 +188,10 @@ def dashboard_graph_data(request, project_id=None):
                     "count": 0
                 })
 
+    print(issue_identified_months_list)
 
-    # print("--------------------------------------")
-    # print(issue_closed_months_list)
+    
+
 
     issue_closed_months = Issue.objects.filter(project_id = int(project_id), status__name = 'Closed', created_date__gte = time_threshold).extra(select=bymonth_select).values('month').annotate(num_issues=Count('id')).order_by('-month')
     
@@ -220,16 +228,15 @@ def dashboard_graph_data(request, project_id=None):
                     })
                     
                     dummy_list.append(i)
-                else:
 
-                    if i not in dummy_list:
+            if i not in dummy_list:
 
-                        issue_closed_months_list.append({
-                            "month": i,
-                            "count": 0
-                        })
+                issue_closed_months_list.append({
+                    "month": i,
+                    "count": 0
+                })
 
-                        dummy_list.append(i)
+                dummy_list.append(i)
     else:
         for i in new1:
             issue_closed_months_list.append({
@@ -289,16 +296,15 @@ def dashboard_graph_data(request, project_id=None):
                     })
                     
                     dummy_list_x.append(i)
-                else:
 
-                    if i not in dummy_list_x:
+            if i not in dummy_list_x:
 
-                        accident_months_list.append({
-                            "month": i,
-                            "count": 0
-                        })
+                accident_months_list.append({
+                    "month": i,
+                    "count": 0
+                })
 
-                        dummy_list_x.append(i)
+                dummy_list_x.append(i)
     else:
         for i in new1:
             accident_months_list.append({
@@ -306,17 +312,6 @@ def dashboard_graph_data(request, project_id=None):
                             "count": 0
                         })
 
-    # if accident_months:
-    #     for month in accident_months:
-    #         accident_months_list.append({
-    #             "month": month['month'].strftime("%b"),
-    #             "count": month['num_issues']
-    #         })
-    # else:
-    #     accident_months_list.append({
-    #         "month": "Jan",
-    #         "count": 0
-    #     })
 
 
     response_data = {}
@@ -325,6 +320,7 @@ def dashboard_graph_data(request, project_id=None):
     # print("-------------issue_closed_months_list----------------")
     # print(issue_closed_months_list)
 
+    # response_data['issue_identified'] = issue_identified_months_list 
     response_data['issue_identified'] = issue_identified_months_list 
     # print("-------------issue_identified----------------")
     # print(issue_identified_months_list)
