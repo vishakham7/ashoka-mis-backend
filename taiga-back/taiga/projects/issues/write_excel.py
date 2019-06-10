@@ -1968,7 +1968,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
     
         # for i in wwww:
         #  
-        print(new['Legends as per Foot Note'])
+        
         pd.set_option('display.max_colwidth', 500)   # FOR TABLE <th>
 
         html = new.to_html(escape=False,index=False,header=False).replace('&lt;','<').replace('&gt;', '>').replace(r'\n', '<br>').replace('table','table style="border-collapse: collapse"').replace('tr','tr style="text-align: center;"')
