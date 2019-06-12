@@ -28,7 +28,7 @@ from openpyxl.utils.units import pixels_to_EMU, cm_to_EMU
 from openpyxl.drawing.xdr import XDRPoint2D, XDRPositiveSize2D
 from taiga.users.models import User
 # from PIL import Image
-
+from bs4 import BeautifulSoup 
 from taiga.projects.models import Membership
 
 
@@ -1044,7 +1044,6 @@ def accident_report(ws, fieldnames):
 
 def write_excel(self,request, project, queryset, type, status,start_date, end_date,asset, performance, photo,doc_type,name,accident_report_type):
 
-    
     # print("-------------------------")
     # user_id = self.request.user.id
     # user = ""
@@ -1264,7 +1263,6 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
 
 
     if type=='Issue' and name=="Compliance" and photo=="without photo" and status:
-    
         ws4.title = "Manitenance Report"
         ws4['A1'] = "User Name:"
         ws4['A2'] = "User Id:"
@@ -1661,177 +1659,175 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
     
 
         if issue.type.name=='Issue' and name=="Compliance" and photo=="with photo" and status:
-            for issue in queryset:
-                qqq = issue.watchers
-                watchers = []
-                new_watcher_list =  ""
-                watcher_username =""
-                if issue.assigned_to:
-                    watcher_username = '1. '+issue.assigned_to.full_name 
-                for i in qqq:
-                    sql = User.objects.get(id=int(i))
-                    watchers.append(sql.full_name)
-                for j in range(len(watchers)):
-                    watcher_username = str(j+2)+'. '+watchers[j] +','+ watcher_username
-                
-                split = watcher_username.split(',')
+            qqq = issue.watchers
+            watchers = []
+            new_watcher_list =  ""
+            watcher_username =""
+            if issue.assigned_to:
+                watcher_username = '1. '+issue.assigned_to.full_name 
+            for i in qqq:
+                sql = User.objects.get(id=int(i))
+                watchers.append(sql.full_name)
+            for j in range(len(watchers)):
+                watcher_username = str(j+2)+'. '+watchers[j] +','+ watcher_username
+            
+            split = watcher_username.split(',')
 
-                for i in range(len(split)):
-                    new_watcher_list = split[i]+'\n' + new_watcher_list
-                a = issue.created_date.date()
-                b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
-                timeline = b-a
-                target_date = datetime.strftime(b,"%d-%m-%Y")
-                
-                if issue.attachments:
-                    file_name = "" 
-                    files = []
-                    Compliance_file_name = "" 
-                    Compliance_files = []
+            for i in range(len(split)):
+                new_watcher_list = split[i]+'\n' + new_watcher_list
+            a = issue.created_date.date()
+            b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
+            timeline = b-a
+            target_date = datetime.strftime(b,"%d-%m-%Y")
+            
+            if issue.attachments:
+                file_name = "" 
+                files = []
+                Compliance_file_name = "" 
+                Compliance_files = []
 
-                    file = issue.attachments.all().filter(project__id=issue.project.id,description="").values_list('attached_file')
-                    if file:
-                        for i in file:
-                            files.extend(i)
-                    for j in files:
-                        file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
-                
+                file = issue.attachments.all().filter(project__id=issue.project.id,description="").values_list('attached_file')
+                if file:
+                    for i in file:
+                        files.extend(i)
+                for j in files:
+                    file_name = os.path.join(settings.MEDIA_URL,str(j)) +'\n' + file_name
+            
 
+                
+                Compliance_file = issue.attachments.all().filter(project__id=issue.project.id,description="Compliances").values_list('attached_file')
+                if Compliance_file:
+                    for k in Compliance_file:
+                        Compliance_files.extend(k)
+                for l in Compliance_files:
+                    Compliance_file_name = os.path.join(settings.MEDIA_URL,str(l)) +'\n' + Compliance_file_name
+            else:
+                file_name=""
+                Compliance_file_name=""
+          
+            status_name = []
+            status_names =  project.issues.filter(status__id__in=status)
+            new_status_name =[]
+            for i in status_names:
+                
+                if str(i.status) == 'Closed':
+                    new_status_name.append('Open')
+                    # new_status_name += 'Open'
+                     
+                elif str(i.status) == 'Maintenance Closed':
+                    # new_status_name += 'Closed'
+                    new_status_name.append('Closed')
                     
-                    Compliance_file = issue.attachments.all().filter(project__id=issue.project.id,description="Compliances").values_list('attached_file')
-                    if Compliance_file:
-                        for k in Compliance_file:
-                            Compliance_files.extend(k)
-                    for l in Compliance_files:
-                        Compliance_file_name = os.path.join(settings.MEDIA_URL,str(l)) +'\n' + Compliance_file_name
-                else:
-                    file_name=""
-                    Compliance_file_name=""
-              
-                status_name = []
-                status_names =  project.issues.filter(status__id__in=status)
-                new_status_name =[]
-                for name in status_names:
-                    
-                    if str(name.status) == 'Closed':
-                        new_status_name.append('Open')
-                        # new_status_name += 'Open'
-                         
-                    elif str(name.status) == 'Maintenance Closed':
-                        # new_status_name += 'Closed'
-                        new_status_name.append('Closed')
-                        
-                    elif str(name.status) == 'Maintenance Pending':
-                        # new_status_name += 'Pending'
-                        new_status_name.append('Pending')
-                if new_status_name:
-                    new =""
-                    for i in new_status_name:
-                        new = i
+                elif str(i.status) == 'Maintenance Pending':
+                    # new_status_name += 'Pending'
+                    new_status_name.append('Pending')
+            if new_status_name:
+                new =""
+                for i in new_status_name:
+                    new = i
 
 
-                issue_data = [[
-                        issue.ref,
-                        # issue.project.name,
-                        issue.chainage_from,
-                        issue.chainage_to,
-                        issue.chainage_side,
-                        issue.description,
-                        file_name,
-                        Compliance_file_name,
-                        issue.issue_category,
-                        issue.issue_subcategory,
-                        issue.created_date.date(),
-                        issue.owner.full_name if issue.owner else None,
-                        new_watcher_list,
-                        timeline,
-                        target_date,
-                        'new' if issue.status else None,
-                        issue.finished_date if status_name=='Closed' else None,
-                        'Yes' if issue.compliance_is_update==True else 'No',
-                        issue.assigned_to.full_name if issue.assigned_to else None,
-                        issue.compliance_description,
-                        "",
-                        'new' if issue.status else None,
-                    ]]
-                for data in issue_data:
-                    ws2.append(data)
-                wb.save("table.xlsx")
-                wb.close()
+            issue_data = [[
+                    issue.ref,
+                    # issue.project.name,
+                    issue.chainage_from,
+                    issue.chainage_to,
+                    issue.chainage_side,
+                    issue.description,
+                    file_name,
+                    Compliance_file_name,
+                    issue.issue_category,
+                    issue.issue_subcategory,
+                    issue.created_date.date(),
+                    issue.owner.full_name if issue.owner else None,
+                    new_watcher_list,
+                    timeline,
+                    target_date,
+                    'new' if issue.status else None,
+                    issue.finished_date if status_name=='Closed' else None,
+                    'Yes' if issue.compliance_is_update==True else 'No',
+                    issue.assigned_to.full_name if issue.assigned_to else None,
+                    issue.compliance_description,
+                    "",
+                    'new' if issue.status else None,
+                ]]
+            for data in issue_data:
+                ws2.append(data)
+            wb.save("table.xlsx")
+            wb.close()
 
-                wb = load_workbook('table.xlsx')
-                ws2 = wb['Manitenance Report']
-                style(ws2,fieldnames, file_name, issue)
+            wb = load_workbook('table.xlsx')
+            ws2 = wb['Manitenance Report']
+            style(ws2,fieldnames, file_name, issue)
 
-                comp(ws2,Compliance_file_name)
-                wb.save("table.xlsx")
+            comp(ws2,Compliance_file_name)
+            wb.save("table.xlsx")
 
         if issue.type.name=='Issue' and name=="Compliance" and photo=="without photo" and status:
-            for issue in queryset:
-                qqq = issue.watchers
-                watchers = []
-                new_watcher_list =  ""
-                watcher_username =""
-                if issue.assigned_to:
-                    watcher_username = '1. '+issue.assigned_to.full_name 
-                for i in qqq:
-                    sql = User.objects.get(id=int(i))
-                    watchers.append(sql.full_name)
-                for j in range(len(watchers)):
-                    watcher_username = str(j+2)+'. '+watchers[j] +','+ watcher_username
-                
-                split = watcher_username.split(',')
+            qqq = issue.watchers
+            watchers = []
+            new_watcher_list =  ""
+            watcher_username =""
+            if issue.assigned_to:
+                watcher_username = '1. '+issue.assigned_to.full_name 
+            for i in qqq:
+                sql = User.objects.get(id=int(i))
+                watchers.append(sql.full_name)
+            for j in range(len(watchers)):
+                watcher_username = str(j+2)+'. '+watchers[j] +','+ watcher_username
+            
+            split = watcher_username.split(',')
 
-                for i in range(len(split)):
-                    new_watcher_list = split[i]+'\n' + new_watcher_list
-                a = issue.created_date.date()
-                b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
-                timeline = b-a
-                target_date = datetime.strftime(b,"%d-%m-%Y")
+            for i in range(len(split)):
+                new_watcher_list = split[i]+'\n' + new_watcher_list
+            a = issue.created_date.date()
+            b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
+            timeline = b-a
+            target_date = datetime.strftime(b,"%d-%m-%Y")
+            
+            status_name = []
+            status_names =  project.issues.filter(status__id__in=status)
+            new_status_name =[]
+            for n in status_names:
                 
-                status_name = []
-                status_names =  project.issues.filter(status__id__in=status)
-                new_status_name =[]
-                for name in status_names:
+                if str(n.status) == 'Closed':
+                    new_status_name.append('Open')
+                    # new_status_name += 'Open'
+                     
+                elif str(n.status) == 'Maintenance Closed':
+                    # new_status_name += 'Closed'
+                    new_status_name.append('Closed')
                     
-                    if str(name.status) == 'Closed':
-                        new_status_name.append('Open')
-                        # new_status_name += 'Open'
-                         
-                    elif str(name.status) == 'Maintenance Closed':
-                        # new_status_name += 'Closed'
-                        new_status_name.append('Closed')
-                        
-                    elif str(name.status) == 'Maintenance Pending':
-                        # new_status_name += 'Pending'
-                        new_status_name.append('Pending')
-                if new_status_name:
-                    new =""
-                    for i in new_status_name:
-                        new = i
-                issue_data = [[
-                        issue.ref,
-                        issue.chainage_from,
-                        issue.chainage_to,
-                        issue.chainage_side,
-                        issue.description,
-                        issue.issue_category,
-                        issue.issue_subcategory,
-                        issue.created_date.date(),
-                        issue.owner.full_name if issue.owner else None,
-                        new_watcher_list,
-                        timeline,
-                        target_date,
-                        "new" if issue.status else None,
-                        issue.finished_date if status_name=='Closed' else None,
-                        'Yes' if issue.compliance_is_update==True else 'No',
-                        issue.assigned_to.full_name if issue.assigned_to else None,
-                        issue.compliance_description,
-                        "",
-                        "new" if issue.status else None,
-                    ]]
-                for data in issue_data:
-                    ws4.append(data)
+                elif str(n.status) == 'Maintenance Pending':
+                    # new_status_name += 'Pending'
+                    new_status_name.append('Pending')
+            if new_status_name:
+                new =""
+                for i in new_status_name:
+                    new = i
+            issue_data = [[
+                    issue.ref,
+                    issue.chainage_from,
+                    issue.chainage_to,
+                    issue.chainage_side,
+                    issue.description,
+                    issue.issue_category,
+                    issue.issue_subcategory,
+                    issue.created_date.date(),
+                    issue.owner.full_name if issue.owner else None,
+                    new_watcher_list,
+                    timeline,
+                    target_date,
+                    "new" if issue.status else None,
+                    issue.finished_date if status_name=='Closed' else None,
+                    'Yes' if issue.compliance_is_update==True else 'No',
+                    issue.assigned_to.full_name if issue.assigned_to else None,
+                    issue.compliance_description,
+                    "",
+                    "new" if issue.status else None,
+                ]]
+            for data in issue_data:
+                ws4.append(data)
             wb.save("table.xlsx")
             wb.close()
 
@@ -1839,7 +1835,6 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             ws4 = wb['Manitenance Report']
             style(ws4,fieldnames, issue)
             wb.save("table.xlsx")
-            
 
         if issue.type.name == 'Investigation' and photo=="with photo":
             issue_data = [[
@@ -2016,12 +2011,226 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         pd.set_option('display.max_colwidth', 500)   # FOR TABLE <th>
         
 
-        html = new.to_html(escape=False,index=False,header=False).replace('&lt;','<').replace('&gt;', '>').replace(r'\n', '<br>').replace('table','table style="border-collapse: collapse"')
-        pisa_context = pisa.CreatePDF(html)
+        html = new.to_html(escape=False,index=False,header=False).replace('&lt;','<').replace('&gt;', '>').replace(r'\n', '<br>').replace('table','table style="border-collapse: collapse"').replace('<td>','<td align="center">')
+        # .replace('<td>','<td align="center">')
+        soup = BeautifulSoup(html, features="lxml")
+        table = soup.find('table')
+        table_body = table.find('tbody')
+        # td = table_body.find('td')
+        
+        rows = table_body.find_all('tr')
+        data = []
+
+        for row in rows:
+            cols = row.find_all('td')
+            # row.find('td')['colspan'] = '2'
+           
+            data.append(cols)
+
+        if type=='Issue' and photo=="with photo" and status==None:
+            data[8][1]['colspan'] = "2"
+            data[8][2].decompose()
+
+        if type=='Issue' and photo=="without photo" and status==None:
+            data[8][1]['colspan'] = "2"
+            data[8][2].decompose()
+
+        if type == 'Issue' and name=="Compliance" and photo=="with photo" and status:
+            data[8][1]['colspan'] = "2"
+            data[8][2].decompose()
+
+            data[8][12]['colspan'] ="2"
+            data[8][13].decompose()
+
+            data[8][14]['colspan'] = "3"
+            data[8][15].decompose()
+            data[8][16].decompose()
+
+        if type == 'Issue' and name=="Compliance" and photo=="without photo" and status:
+            data[8][1]['colspan'] = "2"
+            data[8][2].decompose()
+
+            data[8][10]['colspan'] ="2"
+            data[8][11].decompose()
+
+            data[8][12]['colspan'] = "3"
+            data[8][13].decompose()
+            data[8][14].decompose()            
+
+
+
+        if type=="Investigation" and photo=="with photo":
+            data[8][2]['colspan'] ="2"
+            data[8][3].decompose()
+
+        if type=="Investigation" and photo=="without photo":
+            data[8][2]['colspan'] ="2"
+            data[8][3].decompose()
+
+
+        if type=="Accident" and accident_report_type== "Detail":
+
+
+            data[7][0]['colspan'] = "18"
+            data[7][1].decompose()
+            data[7][2].decompose()
+            data[7][3].decompose()
+            data[7][4].decompose()
+            data[7][5].decompose()
+            data[7][6].decompose()
+            data[7][7].decompose()
+            data[7][8].decompose()
+            data[7][9].decompose()
+            data[7][10].decompose()
+            data[7][11].decompose()
+            data[7][12].decompose()
+            data[7][13].decompose()
+            data[7][14].decompose()
+            data[7][15].decompose()
+            data[7][16].decompose()
+            data[7][17].decompose()
+
+            data[8][0]['colspan'] = "3"
+            data[8][1].decompose()
+            data[8][2].decompose()
+            
+            data[8][12]['colspan'] = "4"
+            data[8][13].decompose()
+            data[8][14].decompose()
+
+
+            data[25][0]['align'] = "left"
+            data[26][0]['align'] = "left"
+            data[26][0]['colspan'] = "2"
+            data[26][1].decompose()
+
+            data[27][0]['align'] = "left"
+            data[27][0]['colspan'] ="10"
+            data[27][1].decompose()
+            data[27][2].decompose()
+            data[27][3].decompose()
+            data[27][4].decompose()
+            data[27][5].decompose()
+            data[27][6].decompose()
+            data[27][7].decompose()
+            data[27][8].decompose()
+            data[27][9].decompose()
+            # data[27][10].decompose()
+            # data[27][11].decompose()
+
+            data[28][0]['align'] = "left"
+            data[28][0]['colspan'] ="10"
+            data[28][1].decompose()
+            data[28][2].decompose()
+            data[28][3].decompose()
+            data[28][4].decompose()
+            data[28][5].decompose()
+            data[28][6].decompose()
+            data[28][7].decompose()
+            data[28][8].decompose()
+            data[28][9].decompose()
+            # data[28][10].decompose()
+            # data[28][11].decompose()
+
+            data[29][0]['align'] = "left"
+            data[29][0]['colspan'] ="13"
+            data[29][1].decompose()
+            data[29][2].decompose()
+            data[29][3].decompose()
+            data[29][4].decompose()
+            data[29][5].decompose()
+            data[29][6].decompose()
+            data[29][7].decompose()
+            data[29][8].decompose()
+            data[29][9].decompose()
+            data[29][10].decompose()
+            data[29][11].decompose()
+            data[29][12].decompose()
+
+            data[30][0]['align'] = "left"
+            data[30][0]['colspan'] ="10"
+            data[30][1].decompose()
+            data[30][2].decompose()
+            data[30][3].decompose()
+            data[30][4].decompose()
+            data[30][5].decompose()
+            data[30][6].decompose()
+            data[30][7].decompose()
+            data[30][8].decompose()
+            data[30][9].decompose()
+            # data[30][10].decompose()
+
+            data[31][0]['align'] = "left"
+            data[31][0]['colspan'] ="10"
+            data[31][1].decompose()
+            data[31][2].decompose()
+            data[31][3].decompose()
+            data[31][4].decompose()
+            data[31][5].decompose()
+            data[31][6].decompose()
+            data[31][7].decompose()
+            data[31][8].decompose()
+            data[31][9].decompose()
+            # data[31][10].decompose()
+
+            data[32][0]['align'] = "left"
+            data[32][0]['colspan'] ="10"
+            data[32][1].decompose()
+            data[32][2].decompose()
+            data[32][3].decompose()
+            data[32][4].decompose()
+            data[32][5].decompose()
+            data[32][6].decompose()
+            data[32][7].decompose()
+            data[32][8].decompose()
+            data[32][9].decompose()
+            # data[32][10].decompose()
+
+            data[33][0]['align'] = "left"
+            data[33][0]['colspan'] ="10"
+            data[33][1].decompose()
+            data[33][2].decompose()
+            data[33][3].decompose()
+            data[33][4].decompose()
+            data[33][5].decompose()
+            data[33][6].decompose()
+            data[33][7].decompose()
+            data[33][8].decompose()
+            data[33][9].decompose()
+            data[33][10].decompose()
+
+
+
+
+        if type=="Accident" and accident_report_type=="Summary":
+            data[7][2]['colspan'] = "2"
+            data[7][3].decompose()
+            data[7][4]['colspan'] = "2"
+            data[7][5].decompose()
+            data[7][6]['colspan'] = "2"
+            data[7][7].decompose()
+
+
+
+        h = str(soup)
+
+        # print(h)
+            # cols = [ele.text.strip() for ele in cols]
+            # data.append([ele for ele in cols if ele])
+        
+#         for i in cols:
+#             print(i)
+# #         for i in data[8]:
+# #             i.name = 'p'
+
+# #         print(i)
+        # print("=======================")
+        # print(soup)
+        
+        pisa_context = pisa.CreatePDF(h)
         response = pisa_context.dest.getvalue()
-        # print(html)
-        return html
-        # return response]
+        return h
+        # return response
     
     return wb    
     
