@@ -668,9 +668,9 @@ class IssueViewSet(
                 response = HttpResponse(pdf, content_type='application/pdf')
                 response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
                 return response
-            # csv_response = HttpResponse(data, content_type='text/html; charset=utf-8')
-            # csv_response['Content-Disposition'] = 'attachment; filename="issues.html"'
-            # return csv_response
+                # csv_response = HttpResponse(data, content_type='text/html; charset=utf-8')
+                # csv_response['Content-Disposition'] = 'attachment; filename="issues.html"'
+                # return csv_response
            
         
 
