@@ -1658,6 +1658,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
     
 
         if issue.type.name=='Issue' and name=="Compliance" and photo=="with photo" and status:
+            
             qqq = issue.watchers
             watchers = []
             new_watcher_list =  ""
@@ -1742,13 +1743,13 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
                     new_watcher_list,
                     timeline,
                     target_date,
-                    'new' if issue.status else None,
+                    str(issue.status) if issue.status else None,
                     issue.finished_date if status_name=='Closed' else None,
                     'Yes' if issue.compliance_is_update==True else 'No',
                     issue.assigned_to.full_name if issue.assigned_to else None,
                     issue.compliance_description,
                     "",
-                    'new' if issue.status else None,
+                    str(issue.status) if issue.status else None,
                 ]]
             for data in issue_data:
                 ws2.append(data)
@@ -1817,13 +1818,13 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
                     new_watcher_list,
                     timeline,
                     target_date,
-                    "new" if issue.status else None,
+                    str(issue.status) if issue.status else None,
                     issue.finished_date if status_name=='Closed' else None,
                     'Yes' if issue.compliance_is_update==True else 'No',
                     issue.assigned_to.full_name if issue.assigned_to else None,
                     issue.compliance_description,
                     "",
-                    "new" if issue.status else None,
+                    str(issue.status) if issue.status else None,
                 ]]
             for data in issue_data:
                 ws4.append(data)
