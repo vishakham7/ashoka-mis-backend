@@ -2160,44 +2160,44 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             data[30][9].decompose()
             # data[30][10].decompose()
 
-            data[31][0]['align'] = "left"
-            data[31][0]['colspan'] ="10"
-            data[31][1].decompose()
-            data[31][2].decompose()
-            data[31][3].decompose()
-            data[31][4].decompose()
-            data[31][5].decompose()
-            data[31][6].decompose()
-            data[31][7].decompose()
-            data[31][8].decompose()
-            data[31][9].decompose()
-            # data[31][10].decompose()
+            # data[31][0]['align'] = "left"
+            # data[31][0]['colspan'] ="10"
+            # data[31][1].decompose()
+            # data[31][2].decompose()
+            # data[31][3].decompose()
+            # data[31][4].decompose()
+            # data[31][5].decompose()
+            # data[31][6].decompose()
+            # data[31][7].decompose()
+            # data[31][8].decompose()
+            # data[31][9].decompose()
+            # # data[31][10].decompose()
 
-            data[32][0]['align'] = "left"
-            data[32][0]['colspan'] ="10"
-            data[32][1].decompose()
-            data[32][2].decompose()
-            data[32][3].decompose()
-            data[32][4].decompose()
-            data[32][5].decompose()
-            data[32][6].decompose()
-            data[32][7].decompose()
-            data[32][8].decompose()
-            data[32][9].decompose()
-            # data[32][10].decompose()
+            # data[32][0]['align'] = "left"
+            # data[32][0]['colspan'] ="10"
+            # data[32][1].decompose()
+            # data[32][2].decompose()
+            # data[32][3].decompose()
+            # data[32][4].decompose()
+            # data[32][5].decompose()
+            # data[32][6].decompose()
+            # data[32][7].decompose()
+            # data[32][8].decompose()
+            # data[32][9].decompose()
+            # # data[32][10].decompose()
 
-            data[33][0]['align'] = "left"
-            data[33][0]['colspan'] ="10"
-            data[33][1].decompose()
-            data[33][2].decompose()
-            data[33][3].decompose()
-            data[33][4].decompose()
-            data[33][5].decompose()
-            data[33][6].decompose()
-            data[33][7].decompose()
-            data[33][8].decompose()
-            data[33][9].decompose()
-            data[33][10].decompose()
+            # data[33][0]['align'] = "left"
+            # data[33][0]['colspan'] ="10"
+            # data[33][1].decompose()
+            # data[33][2].decompose()
+            # data[33][3].decompose()
+            # data[33][4].decompose()
+            # data[33][5].decompose()
+            # data[33][6].decompose()
+            # data[33][7].decompose()
+            # data[33][8].decompose()
+            # data[33][9].decompose()
+            # data[33][10].decompose()
 
 
 
