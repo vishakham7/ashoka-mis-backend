@@ -1489,7 +1489,6 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         n2.value = "No of Peoples affected"
     
     if type == 'Accident' and accident_report_type== "Detail":
-        
         ws8.title = "Detail of Accident"
         ws8['A1'] = "User Name:"
         ws8['A2'] = "User Id:"
@@ -1953,7 +1952,6 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             wb.save("table.xlsx")
 
         if issue.type.name == 'Accident' and accident_report_type== "Detail":
-        
             animals_killed_cuurent_month = project.issues.filter(created_date__date__range=[start_date,end_date],type__name='Accident').values_list('animals_killed', flat=True)
             animal_list_current_month = list(animals_killed_cuurent_month)
             new_list_current = []
@@ -2000,9 +1998,9 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
     if type=="Accident" and accident_report_type== "Detail":
         wb = load_workbook('table.xlsx')
         
-        ws = wb['Detail of Accident']
+        ws8 = wb['Detail of Accident']
 
-        accident_report(ws, fieldnames)
+        accident_report(ws8, fieldnames)
         wb.save("table.xlsx")
           
     if doc_type=="pdf":
@@ -2067,9 +2065,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             data[8][2]['colspan'] ="2"
             data[8][3].decompose()
 
-
         if type=="Accident" and accident_report_type== "Detail":
-
 
             data[7][0]['colspan'] = "18"
             data[7][1].decompose()
@@ -2099,105 +2095,120 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             data[8][14].decompose()
 
 
-            data[25][0]['align'] = "left"
-            data[26][0]['align'] = "left"
-            data[26][0]['colspan'] = "2"
-            data[26][1].decompose()
+            print(data[-9])
 
-            data[27][0]['align'] = "left"
-            data[27][0]['colspan'] ="10"
-            data[27][1].decompose()
-            data[27][2].decompose()
-            data[27][3].decompose()
-            data[27][4].decompose()
-            data[27][5].decompose()
-            data[27][6].decompose()
-            data[27][7].decompose()
-            data[27][8].decompose()
-            data[27][9].decompose()
+            data[-9][0]['align'] = "left"
+            data[-9][0]['align'] = "left"
+            data[-9][0]['colspan'] = "2"
+            data[-9][1].decompose()
+
+            data[-8][0]['align'] = "left"
+            data[-8][0]['colspan'] ="10"
+            data[-8][1].decompose()
+            data[-8][2].decompose()
+            data[-8][3].decompose()
+            data[-8][4].decompose()
+            data[-8][5].decompose()
+            data[-8][6].decompose()
+            data[-8][7].decompose()
+            data[-8][8].decompose()
+            data[-8][9].decompose()
             # data[27][10].decompose()
             # data[27][11].decompose()
 
-            data[28][0]['align'] = "left"
-            data[28][0]['colspan'] ="10"
-            data[28][1].decompose()
-            data[28][2].decompose()
-            data[28][3].decompose()
-            data[28][4].decompose()
-            data[28][5].decompose()
-            data[28][6].decompose()
-            data[28][7].decompose()
-            data[28][8].decompose()
-            data[28][9].decompose()
+            data[-7][0]['align'] = "left"
+            data[-7][0]['colspan'] ="10"
+            data[-7][1].decompose()
+            data[-7][2].decompose()
+            data[-7][3].decompose()
+            data[-7][4].decompose()
+            data[-7][5].decompose()
+            data[-7][6].decompose()
+            data[-7][7].decompose()
+            data[-7][8].decompose()
+            data[-7][9].decompose()
             # data[28][10].decompose()
             # data[28][11].decompose()
 
-            data[29][0]['align'] = "left"
-            data[29][0]['colspan'] ="13"
-            data[29][1].decompose()
-            data[29][2].decompose()
-            data[29][3].decompose()
-            data[29][4].decompose()
-            data[29][5].decompose()
-            data[29][6].decompose()
-            data[29][7].decompose()
-            data[29][8].decompose()
-            data[29][9].decompose()
-            data[29][10].decompose()
-            data[29][11].decompose()
-            data[29][12].decompose()
+            data[-6][0]['align'] = "left"
+            data[-6][0]['colspan'] ="13"
+            data[-6][1].decompose()
+            data[-6][2].decompose()
+            data[-6][3].decompose()
+            data[-6][4].decompose()
+            data[-6][5].decompose()
+            data[-6][6].decompose()
+            data[-6][7].decompose()
+            data[-6][8].decompose()
+            data[-6][9].decompose()
+            data[-6][10].decompose()
+            data[-6][11].decompose()
+            data[-6][12].decompose()
 
-            data[30][0]['align'] = "left"
-            data[30][0]['colspan'] ="10"
-            data[30][1].decompose()
-            data[30][2].decompose()
-            data[30][3].decompose()
-            data[30][4].decompose()
-            data[30][5].decompose()
-            data[30][6].decompose()
-            data[30][7].decompose()
-            data[30][8].decompose()
-            data[30][9].decompose()
+            data[-5][0]['align'] = "left"
+            data[-5][0]['colspan'] ="10"
+            data[-5][1].decompose()
+            data[-5][2].decompose()
+            data[-5][3].decompose()
+            data[-5][4].decompose()
+            data[-5][5].decompose()
+            data[-5][6].decompose()
+            data[-5][7].decompose()
+            data[-5][8].decompose()
+            data[-5][9].decompose()
             # data[30][10].decompose()
 
-            # data[31][0]['align'] = "left"
-            # data[31][0]['colspan'] ="10"
-            # data[31][1].decompose()
-            # data[31][2].decompose()
-            # data[31][3].decompose()
-            # data[31][4].decompose()
-            # data[31][5].decompose()
-            # data[31][6].decompose()
-            # data[31][7].decompose()
-            # data[31][8].decompose()
-            # data[31][9].decompose()
-            # # data[31][10].decompose()
+            data[-4][0]['align'] = "left"
+            data[-4][0]['colspan'] ="10"
+            data[-4][1].decompose()
+            data[-4][2].decompose()
+            data[-4][3].decompose()
+            data[-4][4].decompose()
+            data[-4][5].decompose()
+            data[-4][6].decompose()
+            data[-4][7].decompose()
+            data[-4][8].decompose()
+            data[-4][9].decompose()
+            # data[31][10].decompose()
 
-            # data[32][0]['align'] = "left"
-            # data[32][0]['colspan'] ="10"
-            # data[32][1].decompose()
-            # data[32][2].decompose()
-            # data[32][3].decompose()
-            # data[32][4].decompose()
-            # data[32][5].decompose()
-            # data[32][6].decompose()
-            # data[32][7].decompose()
-            # data[32][8].decompose()
-            # data[32][9].decompose()
-            # # data[32][10].decompose()
+            data[-3][0]['align'] = "left"
+            data[-3][0]['colspan'] ="10"
+            data[-3][1].decompose()
+            data[-3][2].decompose()
+            data[-3][3].decompose()
+            data[-3][4].decompose()
+            data[-3][5].decompose()
+            data[-3][6].decompose()
+            data[-3][7].decompose()
+            data[-3][8].decompose()
+            data[-3][9].decompose()
+            # data[32][10].decompose()
 
-            # data[33][0]['align'] = "left"
-            # data[33][0]['colspan'] ="10"
-            # data[33][1].decompose()
-            # data[33][2].decompose()
-            # data[33][3].decompose()
-            # data[33][4].decompose()
-            # data[33][5].decompose()
-            # data[33][6].decompose()
-            # data[33][7].decompose()
-            # data[33][8].decompose()
-            # data[33][9].decompose()
-            # data[33][10].decompose()
+            data[-2][0]['align'] = "left"
+            data[-2][0]['colspan'] ="10"
+            data[-2][1].decompose()
+            data[-2][2].decompose()
+            data[-2][3].decompose()
+            data[-2][4].decompose()
+            data[-2][5].decompose()
+            data[-2][6].decompose()
+            data[-2][7].decompose()
+            data[-2][8].decompose()
+            data[-2][9].decompose()
+            # data[-2][10].decompose()
+
+            data[-1][0]['align'] = "left"
+            data[-1][0]['colspan'] ="10"
+            data[-1][1].decompose()
+            data[-1][2].decompose()
+            data[-1][3].decompose()
+            data[-1][4].decompose()
+            data[-1][5].decompose()
+            data[-1][6].decompose()
+            data[-1][7].decompose()
+            data[-1][8].decompose()
+            data[-1][9].decompose()
+            # data[-2][10].decompose()
 
 
 
