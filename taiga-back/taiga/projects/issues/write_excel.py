@@ -2027,14 +2027,85 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             data.append(cols)
 
         if type=='Issue' and photo=="with photo" and status==None:
+            
+            data[3][1]['colspan'] = "5"
+            data[3][2].decompose()
+            data[3][3].decompose()
+            data[3][4].decompose()
+            data[3][5].decompose()
+
             data[8][1]['colspan'] = "2"
             data[8][2].decompose()
 
+            data[8][0]['rowspan'] = "2"
+            data[9][0].decompose()
+
+            data[8][3]['rowspan'] = "2"
+            data[9][3].decompose()
+
+            data[8][4]['rowspan'] = "2"
+            data[9][4].decompose()
+
+            data[8][5]['rowspan'] = "2"
+            data[9][5].decompose()
+
+            data[8][6]['rowspan'] = "2"
+            data[9][6].decompose()
+            data[8][7]['rowspan'] = "2"
+            data[9][7].decompose()
+            data[8][8]['rowspan'] = "2"
+            data[9][8].decompose()
+            data[8][9]['rowspan'] = "2"
+            data[9][9].decompose()
+            data[8][10]['rowspan'] = "2"
+            data[9][10].decompose()
+
+        
         if type=='Issue' and photo=="without photo" and status==None:
+            data[3][1]['colspan'] = "5"
+            data[3][2].decompose()
+            data[3][3].decompose()
+            data[3][4].decompose()
+            data[3][5].decompose()
+
             data[8][1]['colspan'] = "2"
             data[8][2].decompose()
+
+            data[8][0]['rowspan'] = "2"
+            data[9][0].decompose()
+
+            data[8][3]['rowspan'] = "2"
+            data[9][3].decompose()
+
+            data[8][4]['rowspan'] = "2"
+            data[9][4].decompose()
+
+            data[8][5]['rowspan'] = "2"
+            data[9][5].decompose()
+
+            data[8][6]['rowspan'] = "2"
+            data[9][6].decompose()
+            data[8][7]['rowspan'] = "2"
+            data[9][7].decompose()
+            data[8][8]['rowspan'] = "2"
+            data[9][8].decompose()
+            data[8][9]['rowspan'] = "2"
+            data[9][9].decompose()
 
         if type == 'Issue' and name=="Compliance" and photo=="with photo" and status:
+            data[3][1]['colspan'] = "5"
+            data[3][2].decompose()
+            data[3][3].decompose()
+            data[3][4].decompose()
+            data[3][5].decompose()
+
+            data[4][1]['colspan'] = "3"
+            data[4][2].decompose()
+            data[4][3].decompose()
+            # data[4][4].decompose()
+            # data[4][5].decompose()
+
+
             data[8][1]['colspan'] = "2"
             data[8][2].decompose()
 
@@ -2045,7 +2116,60 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             data[8][15].decompose()
             data[8][16].decompose()
 
+            data[8][0]['rowspan'] = "2"
+            data[9][0].decompose()
+
+            data[8][3]['rowspan'] = "2"
+            data[9][3].decompose()
+
+            data[8][4]['rowspan'] = "2"
+            data[9][4].decompose()
+
+            data[8][5]['rowspan'] = "2"
+            data[9][5].decompose()
+
+            data[8][6]['rowspan'] = "2"
+            data[9][6].decompose()
+
+            data[8][7]['rowspan'] = "2"
+            data[9][7].decompose()
+
+            data[8][8]['rowspan'] = "2"
+            data[9][8].decompose()
+
+            data[8][9]['rowspan'] = "2"
+            data[9][9].decompose()
+
+            data[8][10]['rowspan'] = "2"
+            data[9][10].decompose()
+
+            data[8][11]['rowspan'] = "2"
+            data[9][11].decompose()
+
+            data[8][17]['rowspan'] = "2"
+            data[9][17].decompose()
+
+            data[8][18]['rowspan'] = "2"
+            data[9][18].decompose()
+
+            data[8][19]['rowspan'] = "2"
+            data[9][19].decompose()
+
+            data[8][20]['rowspan'] = "2"
+            data[9][20].decompose()
+
+
         if type == 'Issue' and name=="Compliance" and photo=="without photo" and status:
+            data[3][1]['colspan'] = "5"
+            data[3][2].decompose()
+            data[3][3].decompose()
+            data[3][4].decompose()
+            data[3][5].decompose()
+
+            data[4][1]['colspan'] = "3"
+            data[4][2].decompose()
+            data[4][3].decompose()
+
             data[8][1]['colspan'] = "2"
             data[8][2].decompose()
 
@@ -2056,17 +2180,132 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             data[8][13].decompose()
             data[8][14].decompose()            
 
+            data[8][0]['rowspan'] = "2"
+            data[9][0].decompose()
+
+            data[8][3]['rowspan'] = "2"
+            data[9][3].decompose()
+
+            data[8][4]['rowspan'] = "2"
+            data[9][4].decompose()
+
+            data[8][5]['rowspan'] = "2"
+            data[9][5].decompose()
+
+            data[8][6]['rowspan'] = "2"
+            data[9][6].decompose()
+
+            data[8][7]['rowspan'] = "2"
+            data[9][7].decompose()
+
+            data[8][8]['rowspan'] = "2"
+            data[9][8].decompose()
+
+            data[8][9]['rowspan'] = "2"
+            data[9][9].decompose()
+
+            data[8][15]['rowspan'] = "2"
+            data[9][15].decompose()
+
+            data[8][16]['rowspan'] = "2"
+            data[9][16].decompose()
+
+            data[8][17]['rowspan'] = "2"
+            data[9][17].decompose()
+
+            data[8][18]['rowspan'] = "2"
+            data[9][18].decompose()
 
 
         if type=="Investigation" and photo=="with photo":
+            data[3][1]['colspan'] = "5"
+            data[3][2].decompose()
+            data[3][3].decompose()
+            data[3][4].decompose()
+            data[3][5].decompose()
+
             data[8][2]['colspan'] ="2"
             data[8][3].decompose()
+
+            data[8][0]['rowspan'] = "2"
+            data[9][0].decompose()
+
+            data[8][1]['rowspan'] = "2"
+            data[9][1].decompose()
+
+            data[8][4]['rowspan'] = "2"
+            data[9][4].decompose()
+
+            data[8][5]['rowspan'] = "2"
+            data[9][5].decompose()
+
+            data[8][6]['rowspan'] = "2"
+            data[9][6].decompose()
+
+            data[8][7]['rowspan'] = "2"
+            data[9][7].decompose()
+
+            data[8][8]['rowspan'] = "2"
+            data[9][8].decompose()
+
+            data[8][9]['rowspan'] = "2"
+            data[9][9].decompose()
+
+            data[8][10]['rowspan'] = "2"
+            data[9][10].decompose()
+
+            data[8][11]['rowspan'] = "2"
+            data[9][11].decompose()
+
+            # data[8][12]['rowspan'] = "2"
+            # data[9][12].decompose()
 
         if type=="Investigation" and photo=="without photo":
+            data[3][1]['colspan'] = "5"
+            data[3][2].decompose()
+            data[3][3].decompose()
+            data[3][4].decompose()
+            data[3][5].decompose()
+
             data[8][2]['colspan'] ="2"
             data[8][3].decompose()
 
+            data[8][0]['rowspan'] = "2"
+            data[9][0].decompose()
+
+            data[8][1]['rowspan'] = "2"
+            data[9][1].decompose()
+
+            data[8][4]['rowspan'] = "2"
+            data[9][4].decompose()
+
+            data[8][5]['rowspan'] = "2"
+            data[9][5].decompose()
+
+            data[8][6]['rowspan'] = "2"
+            data[9][6].decompose()
+
+            data[8][7]['rowspan'] = "2"
+            data[9][7].decompose()
+
+            data[8][8]['rowspan'] = "2"
+            data[9][8].decompose()
+
+            data[8][9]['rowspan'] = "2"
+            data[9][9].decompose()
+
+            data[8][10]['rowspan'] = "2"
+            data[9][10].decompose()
+
+            data[8][11]['rowspan'] = "2"
+            data[9][11].decompose()
+
         if type=="Accident" and accident_report_type== "Detail":
+            data[3][1]['colspan'] = "3"
+            data[3][2].decompose()
+            data[3][3].decompose()
+            # data[3][4].decompose()
+            # data[3][5].decompose()
 
             data[7][0]['colspan'] = "18"
             data[7][1].decompose()
@@ -2215,6 +2454,12 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
 
 
         if type=="Accident" and accident_report_type=="Summary":
+            data[3][1]['colspan'] = "5"
+            data[3][2].decompose()
+            data[3][3].decompose()
+            data[3][4].decompose()
+            data[3][5].decompose()
+
             data[7][2]['colspan'] = "2"
             data[7][3].decompose()
             data[7][4]['colspan'] = "2"
@@ -2222,23 +2467,15 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             data[7][6]['colspan'] = "2"
             data[7][7].decompose()
 
+            data[7][0]['rowspan'] = "2"
+            data[8][0].decompose()
+
+            data[7][1]['rowspan'] = "2"
+            data[8][1].decompose()
 
 
         h = str(soup)
 
-        # print(h)
-            # cols = [ele.text.strip() for ele in cols]
-            # data.append([ele for ele in cols if ele])
-        
-#         for i in cols:
-#             print(i)
-# #         for i in data[8]:
-# #             i.name = 'p'
-
-# #         print(i)
-        # print("=======================")
-        # print(soup)
-        
         pisa_context = pisa.CreatePDF(h)
         response = pisa_context.dest.getvalue()
         return h
