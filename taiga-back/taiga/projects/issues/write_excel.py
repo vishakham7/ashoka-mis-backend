@@ -2093,19 +2093,160 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
                     pass
             else:
                 pass
-  
+
+            if issue.accident_classification:
+                c = 0
+                if issue.accident_classification=="Fatal":
+                    c = 1
+                elif issue.accident_classification=="Grievous Injury":
+                    c = 2
+                elif issue.accident_classification=="Minor Injured":
+                    c = 3
+                elif issue.accident_classification=="Non-Injury":
+                    c = 4
+                else:
+                    pass
+            else:
+                pass
+
+            if issue.accident_causes:
+                d = 0 
+                if issue.accident_causes == "Drunken driving":
+                    d = 1
+                elif issue.accident_causes == "Over speeding":
+                    d = 2
+                elif issue.accident_causes == "Vehicle out of control":
+                    d = 3
+                elif issue.accident_causes == "Fault of driver of motor vehicle/cyclist/pedestrian/passenger":
+                    d = 4
+                elif issue.accident_causes == "Defect in mechanical /electrical condition of motor vehicle":
+                    d = 5
+                elif issue.accident_causes == "Wrong side driving":
+                    d = 6 
+                elif issue.accident_causes == "Tyre bust":
+                    d = 7 
+                elif issue.accident_causes == "Rain":
+                    d = 8
+                elif issue.accident_causes == "Poor visibility(fog/dust)":
+                    d = 9
+                elif issue.accident_causes == "Poor Road condition":
+                    d = 10
+                elif issue.accident_causes == "Others":
+                    d = 11
+                else:
+                    pass
+            else:
+                pass
+
+            if issue.road_feature:
+                e = 0
+                if issue.road_feature=="Single lane":
+                    e = 1
+                elif issue.road_feature=="Two lanes":
+                    e = 2
+                elif issue.road_feature=="Three lanes or more without central divider (median)":
+                    e = 3
+                elif issue.road_feature=="Four lanes or more with central divider":
+                    e = 4
+                else:
+                    pass
+            else:
+                pass
+
+            if issue.road_condition:
+                f = 0
+                if issue.road_condition=="Straight road":
+                    f = 1
+                elif issue.road_condition=="Slight Curve":
+                    f = 2
+                elif issue.road_condition=="Curve":
+                    f = 3
+                elif issue.road_condition=="Flat Road":
+                    f = 4
+                elif issue.road_condition=="Gentle incline":
+                    f = 5
+                elif issue.road_condition=="Steep incline":
+                    f = 6
+                elif issue.road_condition=="Hump":
+                    f = 7
+                elif issue.road_condition=="Dip":
+                    f = 8
+                else:
+                    pass
+            else:
+                pass
+            
+            if issue.intersection_type:
+                g = 0
+                if issue.intersection_type=="T-junction":
+                    g = 1
+                elif issue.intersection_type=="Y-junction":
+                    g = 2
+                elif issue.intersection_type=="Four arm junction":
+                    g = 3
+                elif issue.intersection_type=="Staggered junction":
+                    g = 4
+                elif issue.intersection_type=="Junction with more than":
+                    g = 5
+                elif issue.intersection_type=="arms":
+                    g = 6
+                elif issue.intersection_type=="Round about junction":
+                    g = 7
+                elif issue.intersection_type=="Manned Rail crossing":
+                    g = 8
+                elif issue.intersection_type=="Unmanned Rail crossing":
+                    g = 9
+                else:
+                    pass
+            else:
+                pass
+            
+            if issue.weather_condition:
+                h = 0
+                if issue.weather_condition=="Fine":
+                    h = 1
+                elif issue.weather_condition=="Mist/Fog":
+                    h = 2
+                elif issue.weather_condition=="Cloudy":
+                    h = 3
+                elif issue.weather_condition=="Light rain":
+                    h = 4
+                elif issue.weather_condition=="Heavy rain":
+                    h = 5
+                elif issue.weather_condition=="Hail/sleet":
+                    h = 6
+                elif issue.weather_condition=="Snow":
+                    h = 7
+                elif issue.weather_condition=="Strong Wind":
+                    h = 8
+                elif issue.weather_condition=="Dust Storm":
+                    h = 9
+                elif issue.weather_condition=="Very Hot":
+                    h = 10
+                elif issue.weather_condition=="Very Cold":
+                    h = 11
+                elif issue.weather_condition=="Other extraordinary weather condition":
+                    h = 12
+                else:
+                    pass
+            else:
+                pass
+
+
+
+
             issue_data = [[
                count,
                issue.accident_date,
                issue.accident_time,
                issue.chainage_from,
                b if issue.accident_nature else None,
-               issue.accident_classification,
-               issue.accident_causes,
-               issue.road_feature,
-               issue.road_condition,
-               issue.intersection_type,
-               issue.weather_condition,
+               c if issue.accident_classification else None,
+               d if issue.accident_causes else None, 
+               e if issue.road_feature else None,
+               f if issue.road_condition else None,
+               g if issue.intersection_type else None,
+               h if issue.weather_condition else None,
                issue.vehicle_responsible,
                issue.affected_persons_fatal,
                issue.affected_persons_grievous,
