@@ -1098,6 +1098,14 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
     # if u:
     #     user = User.objects.get(id=user_id)
     # print(user.full_name)
+    
+    str_start_date = datetime.strptime(start_date,'%Y-%m-%d')
+    new_start_date = datetime.strftime(str_start_date,"%d-%m-%Y")
+
+    str_end_date = datetime.strptime(end_date,'%Y-%m-%d')
+    new_end_date = datetime.strftime(str_new_end_date,"%d-%m-%Y")
+    
+
 
     if not request.user.is_authenticated():
         u = User.objects.filter(id=48)
@@ -1137,7 +1145,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws1['A5'] = "Report Name:"
         ws1['A6'] = "Asset Type:"
         ws1['A7'] = "Performance Parameter:"
-        ws1['A8'] = "From Date: "+start_date
+        ws1['A8'] = "From Date: "+new_start_date
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
@@ -1156,7 +1164,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
 
         ws1['B6'] = asset if asset else "All"
         ws1['B7'] = performance if performance else "All"
-        ws1['B8'] = "To Date: "+end_date
+        ws1['B8'] = "To Date: "+new_end_date
         # ws1['B2'] = project.name
 
         fieldnames = ["Ref.No.", "Chainage","" , "Direction", "Description of Issue",
@@ -1194,7 +1202,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws5['A5'] = "Report Name:"
         ws5['A6'] = "Asset Type:"
         ws5['A7'] = "Performance Parameter:"
-        ws5['A8'] = "From Date: "+start_date
+        ws5['A8'] = "From Date: "+new_start_date
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
@@ -1214,7 +1222,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
 
         ws5['B6'] = asset if asset else "All"
         ws5['B7'] = performance if performance else "All"
-        ws5['B8'] ="To Date: "+ end_date
+        ws5['B8'] ="To Date: "+ new_end_date
 
         fieldnames = ["Ref.No.", "Chainage","" , "Direction", "Description of Issue",
                               "Asset Type", "Performance Parameter",
@@ -1254,7 +1262,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws2['A5'] = "Report Name:"
         ws2['A6'] = "Asset Type:"
         ws2['A7'] = "Performance Parameter:"
-        ws2['A8'] = "From Date: "+start_date
+        ws2['A8'] = "From Date: "+new_start_date
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
@@ -1274,7 +1282,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
 
         ws2['B6'] = asset if asset else "All"
         ws2['B7'] = performance if performance else "All"
-        ws2['B8'] = "To Date: "+end_date
+        ws2['B8'] = "To Date: "+new_end_date
 
         fieldnames = ["Ref.No.", "Chainage","", "Direction", "Description of Issue",
                           "Photograph During Inspection","Photograph During Maintenance", "Asset Type", "Performance Parameter",
@@ -1334,7 +1342,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws4['A5'] = "Report Name:"
         ws4['A6'] = "Asset Type:"
         ws4['A7'] = "Performance Parameter:"
-        ws4['A8'] = "From Date: "+start_date
+        ws4['A8'] = "From Date: "+new_start_date
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
@@ -1355,7 +1363,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
        
         ws4['B6'] = asset if asset else "All"
         ws4['B7'] = performance if performance else "All"
-        ws4['B8'] = "To Date: "+end_date
+        ws4['B8'] = "To Date: "+new_end_date
 
         fieldnames = ["Ref.No.", "Chainage","", "Direction", "Description of Issue",
                           "Asset Type", "Performance Parameter",
@@ -1414,7 +1422,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws3['A5'] = "Report Name:"
         ws3['A6'] = "Asset Type:"
         ws3['A7'] = "Performance Parameter:"
-        ws3['A8'] = "From Date: "+start_date
+        ws3['A8'] = "From Date: "+new_start_date
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
@@ -1435,7 +1443,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
        
         ws3['B6'] = asset if asset else "All"
         ws3['B7'] = performance if performance else "All"
-        ws3['B8'] = "To Date: "+end_date
+        ws3['B8'] = "To Date: "+new_end_date
 
         fieldnames = ["Ref.No.","Description of Test/ Investigation", "Chainage","", "Direction",
                           "Asset Type", "Performance Parameter",
@@ -1473,7 +1481,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws6['A5'] = "Report Name:"
         ws6['A6'] = "Asset Type:"
         ws6['A7'] = "Performance Parameter:"
-        ws6['A8'] = "From Date: "+start_date
+        ws6['A8'] = "From Date: "+new_start_date
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
 
@@ -1493,7 +1501,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
        
         ws6['B6'] = asset if asset else "All"
         ws6['B7'] = performance if performance else "All"
-        ws6['B8'] = "To Date: "+end_date
+        ws6['B8'] = "To Date: "+new_end_date
 
         fieldnames = ["Ref.No.","Description of Test/ Investigation", "Chainage","", "Direction",
                           "Asset Type", "Performance Parameter",
@@ -1525,16 +1533,13 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
 
 
     if type == 'Accident' and accident_report_type== "Summary":
-        # print(user.full_name)
-        # print(user.custom_role)
-        # print("Admin" if user.custom_role=="1" else "User")
         ws4.title = "Summary of Accident"
         ws4['A1'] = "User Name:"
         ws4['A2'] = "User Id:"
         ws4['A3'] = "Role:"
         ws4['A4'] = "Project Name:"
         ws4['A5'] = "Report Name:"
-        ws4['A6'] = "From Date: "+start_date
+        ws4['A6'] = "From Date: "+new_start_date
         ws4['A7'] = ""
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
@@ -1553,7 +1558,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         n2 = ws4.cell(row=5,column=2)
         n2.value = "Summary of Accident Report"
        
-        ws4['B6'] = "To Date: "+end_date
+        ws4['B6'] = "To Date: "+new_end_date
         ws4['B7'] = ""
         fieldnames = ["Ref.No.", "Description","Up to previous month","","During this month","",
                         "Up to this month", ""]
@@ -1584,7 +1589,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws8['A3'] = "Role:"
         ws8['A4'] = "Project Name:"
         ws8['A5'] = "Report Name:"
-        ws8['A6'] = "From Date: "+start_date
+        ws8['A6'] = "From Date: "+new_start_date
         ws8['A7'] = ""
         # ws1['A1'] = "Inspection Report with Photogragh"
         # ws1['A2'] = "Project Name"
@@ -1603,7 +1608,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         n2 = ws8.cell(row=5,column=2)
         n2.value = "Detail of Accident Report"
        
-        ws8['B6'] = "To Date: "+end_date
+        ws8['B6'] = "To Date: "+new_end_date
         ws8['B7'] = ""
         # ws8['A'] = "Foot Note"
 
@@ -1619,7 +1624,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
 
         ws8.merge_cells('A8:R8')
         n2 = ws8.cell(row=8,column=1)
-        n2.value = "ACCIDENT DATA FROM "+start_date+" TO "+end_date
+        n2.value = "ACCIDENT DATA FROM "+new_start_date+" TO "+new_end_date
         ws8.merge_cells('A9:C9')
         n1 = ws8.cell(row=9,column=1)
         n1.value = "Legends as per Foot Note"
