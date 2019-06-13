@@ -73,6 +73,8 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
     # for cell in ws['2:2']:
     #     cell.font = font
 
+    
+
     for cell2 in ws['9:9']:
         cell2.fill = fill
         cell2.font = font
@@ -81,8 +83,16 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
         cell3.fill = fill
         cell3.font = font
 
+
+
+
+
+
+
     for i in range(3,row_count+1):
         ws.row_dimensions[i].height = 50
+
+
 
     ws.row_dimensions[2].height = 40
     ws.row_dimensions[1].height = 40
@@ -92,6 +102,25 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
             cell1.border = border
             cell1.alignment = Alignment(wrap_text=True, horizontal='center', vertical='center')
     
+    for i0 in ws['1:1']:
+        i0.alignment = Alignment(horizontal='left', vertical='center')
+    for i1 in ws['2:2']:
+        i1.alignment = Alignment(horizontal='left', vertical='center')
+
+    for i2 in ws['3:3']:
+        i2.alignment = Alignment(horizontal='left', vertical='center')
+    for i3 in ws['4:4']:
+        i3.alignment = Alignment(horizontal='left', vertical='center')
+    for i4 in ws['5:5']:
+        i4.alignment = Alignment(horizontal='left', vertical='center')
+    for i5 in ws['6:6']:
+        i5.alignment = Alignment(horizontal='left', vertical='center')
+    for i6 in ws['7:7']:
+        i6.alignment = Alignment(horizontal='left', vertical='center')
+    for i7 in ws['8:8']:
+        i7.alignment = Alignment(horizontal='left', vertical='center')
+
+
     column_widths = []
     for row in fieldnames:
         for i in range(len(row)):
@@ -917,11 +946,25 @@ def accident_detail(ws,fieldnames):
             ws.column_dimensions[get_column_letter(i+1)].width = column_width
     
     
+    
+    
     for row in ws:
         for cell1 in row:
             cell1.border = border
             cell1.alignment = Alignment(wrap_text=True, horizontal='center', vertical='center')
-    
+    for i0 in ws['1:1']:
+        i0.alignment = Alignment(horizontal='left', vertical='center')
+    for i1 in ws['2:2']:
+        i1.alignment = Alignment(horizontal='left', vertical='center')
+
+    for i2 in ws['3:3']:
+        i2.alignment = Alignment(horizontal='left', vertical='center')
+    for i3 in ws['4:4']:
+        i3.alignment = Alignment(horizontal='left', vertical='center')
+    for i4 in ws['5:5']:
+        i4.alignment = Alignment(horizontal='left', vertical='center')
+    for i5 in ws['6:6']:
+        i5.alignment = Alignment(horizontal='left', vertical='center')
 
 def accident_report(ws, fieldnames):
     # row=30
@@ -996,6 +1039,20 @@ def accident_report(ws, fieldnames):
         for cell1 in row:
             cell1.border = border
             cell1.alignment = Alignment(wrap_text=True, horizontal='center', vertical='center')
+    
+    for i0 in ws['1:1']:
+        i0.alignment = Alignment(horizontal='left', vertical='center')
+    for i1 in ws['2:2']:
+        i1.alignment = Alignment(horizontal='left', vertical='center')
+
+    for i2 in ws['3:3']:
+        i2.alignment = Alignment(horizontal='left', vertical='center')
+    for i3 in ws['4:4']:
+        i3.alignment = Alignment(horizontal='left', vertical='center')
+    for i4 in ws['5:5']:
+        i4.alignment = Alignment(horizontal='left', vertical='center')
+    for i5 in ws['6:6']:
+        i5.alignment = Alignment(horizontal='left', vertical='center')
     
 
     i = []
@@ -1099,9 +1156,14 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         # ws1['B1'] = ""
         # ws1['B2'] = ""
         ws1['B3'] = "Admin" if user.custom_role=="1" else "User"
-        ws1['B4'] = project.name
-        ws1['B5'] = "Inspection Report with Photograph"
-       
+        
+        ws1.merge_cells('B4:E4')
+        n1 = ws1.cell(row=4,column=2)
+        n1.value = project.name
+        ws1.merge_cells('B5:C5')
+        n2 = ws1.cell(row=5,column=2)
+        n2.value = "Inspection Report with Photograph"
+
         ws1['B6'] = asset if asset else "All"
         ws1['B7'] = performance if performance else "All"
         ws1['B8'] = "To Date: "+end_date
@@ -1152,9 +1214,15 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         # ws1['B1'] = ""
         # ws1['B2'] = ""
         ws5['B3'] = "Admin" if user.custom_role=="1" else "User"
-        ws5['B4'] = project.name
-        ws5['B5'] = "Inspection Report without Photograph"
-       
+        
+        ws5.merge_cells('B4:E4')
+        n1 = ws5.cell(row=4,column=2)
+        n1.value = project.name
+        
+        ws5.merge_cells('B5:C5')
+        n2 = ws5.cell(row=5,column=2)
+        n2.value = "Inspection Report without Photograph"
+
         ws5['B6'] = asset if asset else "All"
         ws5['B7'] = performance if performance else "All"
         ws5['A8'] ="To Date: "+ end_date
@@ -1206,9 +1274,15 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         # ws1['B1'] = ""
         # ws1['B2'] = ""
         ws2['B3'] = "Admin" if user.custom_role=="1" else "User"
-        ws2['B4'] = project.name
-        ws2['B5'] = "Manitenance Report with Photograph"
-       
+        
+        ws2.merge_cells('B4:E4')
+        n1 = ws2.cell(row=4,column=2)
+        n1.value = project.name
+        
+        ws2.merge_cells('B5:C5')
+        n2 = ws2.cell(row=5,column=2)
+        n2.value = "Manitenance Report with Photograph"
+
         ws2['B6'] = asset if asset else "All"
         ws2['B7'] = performance if performance else "All"
         ws2['B8'] = "To Date: "+end_date
@@ -1280,8 +1354,15 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         # ws1['B1'] = ""
         # ws1['B2'] = ""
         ws4['B3'] = "Admin" if user.custom_role=="1" else "User"
-        ws4['B4'] = project.name
-        ws4['B5'] = "Manitenance Report without Photograph"
+        
+        ws4.merge_cells('B4:E4')
+        n1 = ws4.cell(row=4,column=2)
+        n1.value = project.name
+        
+        ws4.merge_cells('B5:C5')
+        n2 = ws4.cell(row=5,column=2)
+        n2.value = "Manitenance Report without Photograph"
+
        
         ws4['B6'] = asset if asset else "All"
         ws4['B7'] = performance if performance else "All"
@@ -1353,8 +1434,15 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         # ws1['B1'] = ""
         # ws1['B2'] = ""
         ws3['B3'] = "Admin" if user.custom_role=="1" else "User"
-        ws3['B4'] = project.name
-        ws3['B5'] = "Test and Investigation Report"
+    
+        ws3.merge_cells('B4:E4')
+        n1 = ws3.cell(row=4,column=2)
+        n1.value = project.name
+        
+        ws3.merge_cells('B5:C5')
+        n2 = ws3.cell(row=5,column=2)
+        n2.value = "Test and Investigation Report"
+
        
         ws3['B6'] = asset if asset else "All"
         ws3['B7'] = performance if performance else "All"
@@ -1405,8 +1493,14 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         # ws1['B1'] = ""
         # ws1['B2'] = ""
         ws6['B3'] = "Admin" if user.custom_role=="1" else "User"
-        ws6['B4'] = project.name
-        ws6['B5'] = "Test and Investigation Report"
+
+        ws6.merge_cells('B4:E4')
+        n1 = ws6.cell(row=4,column=2)
+        n1.value = project.name
+        
+        ws6.merge_cells('B5:C5')
+        n2 = ws6.cell(row=5,column=2)
+        n2.value = "Test and Investigation Report"
        
         ws6['B6'] = asset if asset else "All"
         ws6['B7'] = performance if performance else "All"
@@ -1461,8 +1555,14 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         # ws1['B1'] = ""
         # ws1['B2'] = ""
         ws4['B3'] = "Admin" if user.custom_role=="1" else "User"
-        ws4['B4'] = project.name
-        ws4['B5'] = "Summary of Accident Report"
+        
+        ws4.merge_cells('B4:E4')
+        n1 = ws4.cell(row=4,column=2)
+        n1.value = project.name
+        
+        ws4.merge_cells('B5:C5')
+        n2 = ws4.cell(row=5,column=2)
+        n2.value = "Summary of Accident Report"
        
         ws4['B6'] = "To Date: "+end_date
         ws4['B7'] = ""
@@ -1504,9 +1604,15 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws8['B2'] = user.email
         # ws1['B1'] = ""
         # ws1['B2'] = ""
-        ws8['B3'] = "Admin" if user.custom_role=="1" else "User"
-        ws8['B4'] = project.name
-        ws8['B5'] = "Summary of Accident Report"
+        ws8['B3'] = "Admin" if user.custom_role=="1" else "User"    
+
+        ws8.merge_cells('B4:E4')
+        n1 = ws8.cell(row=4,column=2)
+        n1.value = project.name
+        
+        ws8.merge_cells('B5:C5')
+        n2 = ws8.cell(row=5,column=2)
+        n2.value = "Detail of Accident Report"
        
         ws8['B6'] = "To Date: "+end_date
         ws8['B7'] = ""
@@ -1679,7 +1785,11 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
             timeline = b-a
             target_date = datetime.strftime(b,"%d-%m-%Y")
+
+            c = issue.modified_date.date()
             
+            modified_date = datetime.strftime(c,"%d-%m-%Y")
+
             if issue.attachments:
                 file_name = "" 
                 files = []
@@ -1729,7 +1839,6 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
 
             issue_data = [[
                     issue.ref,
-                    # issue.project.name,
                     issue.chainage_from,
                     issue.chainage_to,
                     issue.chainage_side,
@@ -1744,7 +1853,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
                     timeline,
                     target_date,
                     str(issue.status) if issue.status else None,
-                    issue.finished_date if status_name=='Closed' else None,
+                    modified_date if str(issue.status)=='Closed' else None,
                     'Yes' if issue.compliance_is_update==True else 'No',
                     issue.assigned_to.full_name if issue.assigned_to else None,
                     issue.compliance_description,
