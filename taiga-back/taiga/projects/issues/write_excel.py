@@ -1103,7 +1103,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
     new_start_date = datetime.strftime(str_start_date,"%d-%m-%Y")
 
     str_end_date = datetime.strptime(end_date,'%Y-%m-%d')
-    new_end_date = datetime.strftime(str_new_end_date,"%d-%m-%Y")
+    new_end_date = datetime.strftime(str_end_date,"%d-%m-%Y")
     
 
 
