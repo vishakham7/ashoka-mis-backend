@@ -73,8 +73,6 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
     # for cell in ws['2:2']:
     #     cell.font = font
 
-    
-
     for cell2 in ws['9:9']:
         cell2.fill = fill
         cell2.font = font
@@ -83,16 +81,8 @@ def style(ws,fieldnames, issue,file_name=None,Compliance_file_name=None):
         cell3.fill = fill
         cell3.font = font
 
-
-
-
-
-
-
     for i in range(3,row_count+1):
         ws.row_dimensions[i].height = 50
-
-
 
     ws.row_dimensions[2].height = 40
     ws.row_dimensions[1].height = 40
@@ -1196,7 +1186,6 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         
 
     if type == 'Issue' and photo=="without photo" and status==None:
-
         ws5.title = "Inspection Reportssssss"
         ws5['A1'] = "User Name:"
         ws5['A2'] = "User Id:"
@@ -1225,7 +1214,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
 
         ws5['B6'] = asset if asset else "All"
         ws5['B7'] = performance if performance else "All"
-        ws5['A8'] ="To Date: "+ end_date
+        ws5['B8'] ="To Date: "+ end_date
 
         fieldnames = ["Ref.No.", "Chainage","" , "Direction", "Description of Issue",
                               "Asset Type", "Performance Parameter",
@@ -1325,9 +1314,9 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         n1 = ws2.cell(row=10,column=15)
         n2 = ws2.cell(row=10,column=16)
         n3 = ws2.cell(row=10,column=17)
-        n1.value = "Status\n(Open/Closed/Under Rectification)"
-        n2.value = "Issue Closed On Date\n(If Closed)"
-        n3.value = "Complianced\n (Yes/No)"
+        n1.value = "Status"
+        n2.value = "Issue Closed On Date"
+        n3.value = "Complianced"
 
         # ws2.merge_cells('Q3:Q4')
         ws2.merge_cells('R9:R10')
@@ -1398,17 +1387,17 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
         ws4.merge_cells('K9:L9')
         n1 = ws4.cell(row=10,column=11)
         n2 = ws4.cell(row=10,column=12)
-        n1.value = "Timeline\n (As per  Schedule F)"
-        n2.value = "Target Date\n(As per  Schedule F)"
+        n1.value = "Timeline"
+        n2.value = "Target Date"
         # ws2.merge_cells('M3:M4')
         # ws2.merge_cells('N3:N4')
         ws4.merge_cells('M9:O9')
         n1 = ws4.cell(row=10,column=13)
         n2 = ws4.cell(row=10,column=14)
         n3 = ws4.cell(row=10,column=15)
-        n1.value = "Status\n(Open/Closed/Under Rectification)"
-        n2.value = "Issue Closed On Date\n(If Closed)"
-        n3.value = "Complianced\n (Yes/No)"
+        n1.value = "Status"
+        n2.value = "Issue Closed On Date"
+        n3.value = "Complianced"
         ws4.merge_cells('P9:P10')
         ws4.merge_cells('Q9:Q10')
         ws4.merge_cells('R9:R10')
@@ -2309,7 +2298,33 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             data.append(cols)
 
         if type=='Issue' and photo=="with photo" and status==None:
+            data[0][0]['align'] = "left"
+            data[0][1]['align'] = "left"
+
+            data[1][0]['align'] = "left"
+            data[1][1]['align'] = "left"
+
+            data[2][0]['align'] = "left"
+            data[2][1]['align'] = "left"
+
+            data[3][0]['align'] = "left"
+            data[3][1]['align'] = "left"
+
+            data[4][0]['align'] = "left"
+            data[4][1]['align'] = "left"
+
+            data[5][0]['align'] = "left"
+            data[5][1]['align'] = "left"
+
+            data[6][0]['align'] = "left"
+            data[6][1]['align'] = "left"
+
+            data[7][0]['align'] = "left"
+            data[7][1]['align'] = "left"
             
+            data[4][1]['colspan'] = "2"
+            data[4][2].decompose()
+
             data[3][1]['colspan'] = "5"
             data[3][2].decompose()
             data[3][3].decompose()
@@ -2344,11 +2359,40 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
 
         
         if type=='Issue' and photo=="without photo" and status==None:
+           
+            data[0][0]['align'] = "left"
+            data[0][1]['align'] = "left"
+
+            data[1][0]['align'] = "left"
+            data[1][1]['align'] = "left"
+
+            data[2][0]['align'] = "left"
+            data[2][1]['align'] = "left"
+
+            data[3][0]['align'] = "left"
+            data[3][1]['align'] = "left"
+
+            data[4][0]['align'] = "left"
+            data[4][1]['align'] = "left"
+
+            data[5][0]['align'] = "left"
+            data[5][1]['align'] = "left"
+
+            data[6][0]['align'] = "left"
+            data[6][1]['align'] = "left"
+
+            data[7][0]['align'] = "left"
+            data[7][1]['align'] = "left"
+
+
             data[3][1]['colspan'] = "5"
             data[3][2].decompose()
             data[3][3].decompose()
             data[3][4].decompose()
             data[3][5].decompose()
+
+            data[4][1]['colspan'] = "2"
+            data[4][2].decompose()
 
             data[8][1]['colspan'] = "2"
             data[8][2].decompose()
@@ -2375,6 +2419,34 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             data[9][9].decompose()
 
         if type == 'Issue' and name=="Compliance" and photo=="with photo" and status:
+
+            data[0][0]['align'] = "left"
+            data[0][1]['align'] = "left"
+
+            data[0][0]['width'] = "100"
+
+            data[1][0]['align'] = "left"
+            data[1][1]['align'] = "left"
+
+            data[2][0]['align'] = "left"
+            data[2][1]['align'] = "left"
+
+            data[3][0]['align'] = "left"
+            data[3][1]['align'] = "left"
+
+            data[4][0]['align'] = "left"
+            data[4][1]['align'] = "left"
+
+            data[5][0]['align'] = "left"
+            data[5][1]['align'] = "left"
+
+            data[6][0]['align'] = "left"
+            data[6][1]['align'] = "left"
+            # data[6][0]['colspan'] = "2"
+            # data[6][1].decompose()
+            data[7][0]['align'] = "left"
+            data[7][1]['align'] = "left"
+            
             data[3][1]['colspan'] = "5"
             data[3][2].decompose()
             data[3][3].decompose()
@@ -2386,7 +2458,6 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             data[4][3].decompose()
             # data[4][4].decompose()
             # data[4][5].decompose()
-
 
             data[8][1]['colspan'] = "2"
             data[8][2].decompose()
@@ -2442,6 +2513,31 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
 
 
         if type == 'Issue' and name=="Compliance" and photo=="without photo" and status:
+            data[0][0]['width'] = "100"
+            data[0][0]['align'] = "left"
+            data[0][1]['align'] = "left"
+
+            data[1][0]['align'] = "left"
+            data[1][1]['align'] = "left"
+
+            data[2][0]['align'] = "left"
+            data[2][1]['align'] = "left"
+
+            data[3][0]['align'] = "left"
+            data[3][1]['align'] = "left"
+
+            data[4][0]['align'] = "left"
+            data[4][1]['align'] = "left"
+
+            data[5][0]['align'] = "left"
+            data[5][1]['align'] = "left"
+
+            data[6][0]['align'] = "left"
+            data[6][1]['align'] = "left"
+            
+            data[7][0]['align'] = "left"
+            data[7][1]['align'] = "left"
+            
             data[3][1]['colspan'] = "5"
             data[3][2].decompose()
             data[3][3].decompose()
@@ -2500,6 +2596,30 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
 
 
         if type=="Investigation" and photo=="with photo":
+            data[0][0]['align'] = "left"
+            data[0][1]['align'] = "left"
+
+            data[1][0]['align'] = "left"
+            data[1][1]['align'] = "left"
+
+            data[2][0]['align'] = "left"
+            data[2][1]['align'] = "left"
+
+            data[3][0]['align'] = "left"
+            data[3][1]['align'] = "left"
+
+            data[4][0]['align'] = "left"
+            data[4][1]['align'] = "left"
+
+            data[5][0]['align'] = "left"
+            data[5][1]['align'] = "left"
+
+            data[6][0]['align'] = "left"
+            data[6][1]['align'] = "left"
+
+            data[7][0]['align'] = "left"
+            data[7][1]['align'] = "left"
+
             data[3][1]['colspan'] = "5"
             data[3][2].decompose()
             data[3][3].decompose()
@@ -2543,6 +2663,30 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             # data[9][12].decompose()
 
         if type=="Investigation" and photo=="without photo":
+            data[0][0]['align'] = "left"
+            data[0][1]['align'] = "left"
+
+            data[1][0]['align'] = "left"
+            data[1][1]['align'] = "left"
+
+            data[2][0]['align'] = "left"
+            data[2][1]['align'] = "left"
+
+            data[3][0]['align'] = "left"
+            data[3][1]['align'] = "left"
+
+            data[4][0]['align'] = "left"
+            data[4][1]['align'] = "left"
+
+            data[5][0]['align'] = "left"
+            data[5][1]['align'] = "left"
+
+            data[6][0]['align'] = "left"
+            data[6][1]['align'] = "left"
+
+            data[7][0]['align'] = "left"
+            data[7][1]['align'] = "left"
+
             data[3][1]['colspan'] = "5"
             data[3][2].decompose()
             data[3][3].decompose()
@@ -2583,6 +2727,30 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             data[9][11].decompose()
 
         if type=="Accident" and accident_report_type== "Detail":
+            data[0][0]['align'] = "left"
+            data[0][1]['align'] = "left"
+
+            data[1][0]['align'] = "left"
+            data[1][1]['align'] = "left"
+
+            data[2][0]['align'] = "left"
+            data[2][1]['align'] = "left"
+
+            data[3][0]['align'] = "left"
+            data[3][1]['align'] = "left"
+
+            data[4][0]['align'] = "left"
+            data[4][1]['align'] = "left"
+
+            data[5][0]['align'] = "left"
+            data[5][1]['align'] = "left"
+
+            # data[6][0]['align'] = "left"
+            # data[6][1]['align'] = "left"
+
+            # data[7][0]['align'] = "left"
+            # data[7][1]['align'] = "left"
+
             data[3][1]['colspan'] = "3"
             data[3][2].decompose()
             data[3][3].decompose()
@@ -2615,9 +2783,6 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             data[8][12]['colspan'] = "4"
             data[8][13].decompose()
             data[8][14].decompose()
-
-
-            print(data[-9])
 
             data[-9][0]['align'] = "left"
             data[-9][0]['align'] = "left"
@@ -2730,12 +2895,32 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             data[-1][7].decompose()
             data[-1][8].decompose()
             data[-1][9].decompose()
-            # data[-2][10].decompose()
-
-
-
-
+  
         if type=="Accident" and accident_report_type=="Summary":
+            data[0][0]['align'] = "left"
+            data[0][1]['align'] = "left"
+
+            data[1][0]['align'] = "left"
+            data[1][1]['align'] = "left"
+
+            data[2][0]['align'] = "left"
+            data[2][1]['align'] = "left"
+
+            data[3][0]['align'] = "left"
+            data[3][1]['align'] = "left"
+
+            data[4][0]['align'] = "left"
+            data[4][1]['align'] = "left"
+
+            data[5][0]['align'] = "left"
+            data[5][1]['align'] = "left"
+
+            # data[6][0]['align'] = "left"
+            # data[6][1]['align'] = "left"
+
+            # data[7][0]['align'] = "left"
+            # data[7][1]['align'] = "left"
+
             data[3][1]['colspan'] = "5"
             data[3][2].decompose()
             data[3][3].decompose()
