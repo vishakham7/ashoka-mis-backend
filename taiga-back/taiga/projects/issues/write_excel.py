@@ -1693,6 +1693,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             print(file_name)
             
             Raised_date = datetime.strftime(issue.created_date.date(),"%d-%m-%Y")
+
             issue_data = [[
                 issue.ref,
                 # issue.project.name,
@@ -1781,9 +1782,13 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
 
             for i in range(len(split)):
                 new_watcher_list = split[i]+'\n' + new_watcher_list
+
             a = issue.created_date.date()
             b = datetime.strptime(issue.target_date,"%d/%m/%Y").date()
             timeline = b-a
+            days = timeline.days
+            timeline_hrs = str(days*24) +" Hrs"
+            
             target_date = datetime.strftime(b,"%d-%m-%Y")
 
             c = issue.modified_date.date()
@@ -1836,7 +1841,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
                 for i in new_status_name:
                     new = i
 
-
+            Raised_date = datetime.strftime(issue.created_date.date(),"%d-%m-%Y")
             issue_data = [[
                     issue.ref,
                     issue.chainage_from,
@@ -1847,10 +1852,10 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
                     Compliance_file_name,
                     issue.issue_category,
                     issue.issue_subcategory,
-                    issue.created_date.date(),
+                    Raised_date,
                     issue.owner.full_name if issue.owner else None,
                     new_watcher_list,
-                    timeline,
+                    timeline_hrs,
                     target_date,
                     str(issue.status) if issue.status else None,
                     modified_date if str(issue.status)=='Closed' else None,
@@ -1914,6 +1919,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
                 new =""
                 for i in new_status_name:
                     new = i
+            Raised_date = datetime.strftime(issue.created_date.date(),"%d-%m-%Y")
             issue_data = [[
                     issue.ref,
                     issue.chainage_from,
@@ -1922,7 +1928,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
                     issue.description,
                     issue.issue_category,
                     issue.issue_subcategory,
-                    issue.created_date.date(),
+                    Raised_date,
                     issue.owner.full_name if issue.owner else None,
                     new_watcher_list,
                     timeline,
@@ -1946,6 +1952,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             wb.save("table.xlsx")
 
         if issue.type.name == 'Investigation' and photo=="with photo":
+            Raised_date = datetime.strftime(issue.created_date.date(),"%d-%m-%Y")
             issue_data = [[
                 issue.ref,
                 issue.investigation_description,
@@ -1957,7 +1964,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
                 issue.test_name,
                 issue.testing_method,
                 issue.test_specifications,
-                issue.created_date.date(),
+                Raised_date,
                 issue.owner.full_name if issue.owner else None,
             ]]
             for data in issue_data:
@@ -1973,6 +1980,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
             style(ws3,fieldnames, issue)
 
         if issue.type.name == 'Investigation' and photo=="without photo":
+            Raised_date = datetime.strftime(issue.created_date.date(),"%d-%m-%Y")
             issue_data = [[
                 issue.ref,
                 issue.investigation_description,
@@ -1984,7 +1992,7 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
                 issue.test_name,
                 issue.testing_method,
                 issue.test_specifications,
-                issue.created_date.date(),
+                Raised_date,
                 issue.owner.full_name if issue.owner else None,
             ]]
             for data in issue_data:
