@@ -2070,12 +2070,36 @@ def write_excel(self,request, project, queryset, type, status,start_date, end_da
                     if i:
                         new_list_current.append(int(i))
 
+            
+            if issue.accident_nature:
+                b = 0
+                if issue.accident_nature=="Over turning":
+                    b = 1
+                elif issue.accident_nature=="Head on collision":
+                    b = 2
+                elif issue.accident_nature=="Rear End collision":
+                    b = 3
+                elif issue.accident_nature=="Collision Brush/Side Wipe":
+                    b = 4
+                elif issue.accident_nature=="Left Turn collision":
+                    b = 5
+                elif issue.accident_nature=="Skidding":
+                    b = 6
+                elif issue.accident_nature=="Right Turn Collision":
+                    b = 7
+                elif issue.accident_nature=="Others":
+                    b = 8
+                else:
+                    pass
+            else:
+                pass
+  
             issue_data = [[
                count,
                issue.accident_date,
                issue.accident_time,
                issue.chainage_from,
-               issue.accident_nature,
+               b if issue.accident_nature else None,
                issue.accident_classification,
                issue.accident_causes,
                issue.road_feature,
