@@ -7,7 +7,7 @@ beautifulsoup4==4.7.1
 billiard==3.5.0.5
 bleach==2.0.0
 cairocffi==1.0.2
-CairoSVG==2.0.3
+CairoSVG==2.5.1
 celery==4.0.2
 certifi==2019.3.9
 cffi==1.12.3
