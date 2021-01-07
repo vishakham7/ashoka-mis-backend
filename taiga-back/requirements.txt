@@ -46,7 +46,7 @@ jdcal==1.4.1
 jedi==0.13.3
 Jinja2==2.9.6
 kombu==4.0.2
-lxml==3.8.0
+lxml==4.6.2
 Markdown==3.0.dev0
 MarkupSafe==1.1.1
 netaddr==0.7.19
